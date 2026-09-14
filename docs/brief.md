@@ -51,8 +51,8 @@ One site, one person. The personal isn't hidden to look professional — it's th
    outlives the example. Prefer the mechanism to the personality.
 4. Political and moral writing is welcome when it's about how things work and includes yourself in
    the critique. Current-events partisanship is not the site's signature.
-5. One contact surface: a single email. No phone number, no street address, no student address.
-   The web CV is scrubbed to match.
+5. Contact: the inbox form (anonymous allowed) and a single email. No phone number, no street
+   address, no student address. The web CV is scrubbed to match.
 6. Takes are opinions, not verdicts. Spice and retirement keep them honest.
 7. AI assistance disclosed once, in the colophon, in one sentence. *(John to confirm — see open decisions.)*
 
@@ -72,6 +72,7 @@ Applied: *Ragebait and the Architecture of Influence* publishes with a light edi
 | Takes | Short opinions with spice and an as-of date; retire when he changes his mind | one sentence | whenever | friends, everyone |
 | Taste | Books, film, music, shows. One line each. Links out. | one line | weekly | friends |
 | CV | Web page plus print-ready PDF | — | per change | recruiters |
+| Inbox | A form for notes, anonymous or not; received privately via the host (Netlify Forms). Added 2026-09-14. | — | — | everyone |
 | **Should** | | | | |
 | Photos | A curated set. The cockpit is the signature. *(No photos yet — design imagery-light with slots.)* | an image | seasonal | friends |
 | Questions | Things he's trying to figure out | one question | whenever | professors |

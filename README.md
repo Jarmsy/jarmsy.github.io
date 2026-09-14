@@ -37,6 +37,7 @@ extensions (Astro, YAML) — they flag mistakes as you type.
 | Add a profile link (Letterboxd, Spotify…) | `site.yaml` → `links` |
 | Change the default theme or hide the light/dark switch | `site.yaml` → `theme` |
 | Change the Takes subtitle or spice labels | `site.yaml` → `takes` |
+| Open or close the inbox, change its intro, or send notes elsewhere | `site.yaml` → `inbox` |
 | Change colours, fonts, text size, line length, spacing | `src/styles/tokens.css` |
 | Write an essay or a note | new `.md` file in `content/writing/` |
 | Add a take | new `.md` file in `content/takes/` |
@@ -101,6 +102,23 @@ a value in quotes if it contains a colon.
 Any `topics:` tag used anywhere gets its own page at `/topics/<tag>/` that
 gathers matching writing, takes, work and questions. Nothing to maintain.
 
+### The inbox
+
+`/inbox/` is a plain form: a note, an optional name, an optional way to reach
+the sender. Notes are received by Netlify Forms (the host) and appear under
+**Forms** in the Netlify dashboard; turn on **Forms → Notifications → Email**
+once to get each note by email. A hidden honeypot field plus Netlify's spam
+filter keep bots out. To receive notes somewhere else, put that service's form
+URL in `site.yaml` → `inbox.action`; to pause the inbox, set `enabled: false`
+(the page then points people to email).
+
+## Hosting
+
+The site is deployed by Netlify from the `main` branch on GitHub: every merge
+to `main` rebuilds and publishes it. Build settings live in `netlify.toml`.
+Once the site has its address, put it in `site.yaml` → `url` so the RSS feed
+and sitemap use it.
+
 ## Where things live
 
 ```
@@ -115,6 +133,7 @@ src/
   content.config.ts    what each content file may contain — the rules behind the error messages
   components/ layouts/ pages/ lib/    the machinery
 public/                files served as-is: favicon.svg, cv.pdf, images/
+netlify.toml           how the host builds the site
 docs/brief.md          the site brief — what this site is for and why it's shaped this way
 ```
 

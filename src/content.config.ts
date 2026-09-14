@@ -72,6 +72,15 @@ const settings = defineCollection({
       })
       .prefault({}),
     dates: z.object({ locale: z.string().default('en-US') }).prefault({}),
+    inbox: z
+      .object({
+        enabled: z.boolean({ error: 'inbox.enabled must be true or false' }).default(false),
+        intro: z.string().default('Leave me a note. Anonymous is fine.'),
+        action: z
+          .union([z.literal(''), z.url({ error: 'inbox.action must be blank (Netlify Forms) or a full URL' })])
+          .default(''),
+      })
+      .prefault({}),
   }),
 });
 
