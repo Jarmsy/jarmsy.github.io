@@ -32,6 +32,7 @@ function isCurrent(href: string) {
     <title>{pageTitle}</title>
     {description && <meta name="description" content={description} />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title={`${SITE.name} — Writing`} href="/rss.xml" />
   </head>
   <body>
     <header class="site-header">
