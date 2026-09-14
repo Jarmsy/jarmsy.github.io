@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import TakeCard from '../components/TakeCard.astro';
+import { SITE } from '../config';
+
+const takes = (await getCollection('takes', ({ data }) => !data.retired))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const posts = (await getCollection('writing'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<Base description={SITE.tagline}>
+  <section class="hero">
+    <h1>Hi, I'm {SITE.name}.</h1>
+    <p class="tagline">{SITE.tagline}</p>
+    <p class="intro">{SITE.intro}</p>
+  </section>
+
+  <div class="section-head">
+    <h2>Latest hot takes</h2>
+    <a href="/takes/">all takes →</a>
+  </div>
+  {takes.map((take) => <TakeCard take={take} />)}
+
+  {posts.length > 0 && (
+    <>
+      <div class="section-head">
+        <h2>Recent writing</h2>
+        <a href="/writing/">all writing →</a>
+      </div>
+      {posts.map((post) => (
+        <article class="post-item">
+          <h3><a href={`/writing/${post.id}/`}>{post.data.title}</a></h3>
+          {post.data.description && <p style="margin: 0.2rem 0;">{post.data.description}</p>}
+          <span class="post-date">
+            {post.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}
+          </span>
+        </article>
+      ))}
+    </>
+  )}
+</Base>

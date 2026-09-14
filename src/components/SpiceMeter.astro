@@ -1,0 +1,29 @@
+---
+interface Props {
+  level: number;
+}
+
+const { level } = Astro.props;
+
+const labels: Record<number, string> = {
+  1: 'mild',
+  2: 'spicy',
+  3: 'will die on this hill',
+};
+---
+
+<span class="spice" title={labels[level]}>
+  {'🌶️'.repeat(level)}
+  <span class="spice-label">{labels[level]}</span>
+</span>
+
+<style>
+  .spice {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .spice-label {
+    font-style: italic;
+  }
+</style>

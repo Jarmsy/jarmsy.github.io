@@ -1,0 +1,65 @@
+---
+import { SITE } from '../config';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const pageTitle = title ? `${title} · ${SITE.name}` : SITE.name;
+const currentPath = Astro.url.pathname;
+
+const nav = [
+  { label: 'Home', href: '/' },
+  { label: 'Hot Takes', href: '/takes/' },
+  { label: 'Writing', href: '/writing/' },
+  { label: 'About', href: '/about/' },
+];
+
+function isCurrent(href: string) {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="site-name" href="/">{SITE.name}</a>
+        <nav class="site-nav">
+          {nav.map((item) => (
+            <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap">
+        <slot />
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <span>© {new Date().getFullYear()} {SITE.name}</span>
+        <div class="footer-links">
+          {SITE.links.map((link) => <a href={link.href}>{link.label}</a>)}
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

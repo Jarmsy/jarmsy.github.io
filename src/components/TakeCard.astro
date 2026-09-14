@@ -1,0 +1,36 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import SpiceMeter from './SpiceMeter.astro';
+
+interface Props {
+  take: CollectionEntry<'takes'>;
+}
+
+const { take } = Astro.props;
+const { Content } = await render(take);
+
+const dateStamp = take.data.date.toLocaleDateString('en-US', {
+  month: 'short',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+---
+
+<article
+  class:list={['take-card', { retired: take.data.retired }]}
+  data-topics={take.data.topics.join(',')}
+>
+  <div class="take-body">
+    <Content />
+  </div>
+  <div class="take-meta">
+    <SpiceMeter level={take.data.spice} />
+    <span class="take-topics">
+      {take.data.topics.map((topic) => <span class="topic-tag">{topic}</span>)}
+    </span>
+    <span>as of {dateStamp}</span>
+  </div>
+  {take.data.retired && take.data.retiredNote && (
+    <p class="retired-note">Retired: {take.data.retiredNote}</p>
+  )}
+</article>
