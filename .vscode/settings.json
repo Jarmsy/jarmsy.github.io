@@ -1,0 +1,15 @@
+{
+  "files.associations": {
+    "*.yaml": "yaml",
+    "*.md": "markdown"
+  },
+  "editor.wordWrap": "on",
+  "[markdown]": {
+    "editor.quickSuggestions": { "other": "off", "comments": "off", "strings": "off" }
+  },
+  "files.exclude": {
+    "node_modules": true,
+    "dist": true,
+    ".astro": true
+  }
+}

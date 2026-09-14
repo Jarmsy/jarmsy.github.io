@@ -1,0 +1,56 @@
+---
+import type { Site } from '../lib/site';
+
+interface Props {
+  site: Site;
+}
+
+const { site } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav class="rooms" aria-label="More">
+      {site.footer.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+    <div class="bottom">
+      <span class="label">© {year} {site.name}</span>
+      <span class="profiles">
+        {site.links.map((link) => <a href={link.href}>{link.label}</a>)}
+      </span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: var(--space-4) 0 var(--space-5);
+    margin-top: var(--space-6);
+  }
+  .rooms,
+  .profiles {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+  .rooms a,
+  .profiles a {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .rooms a:hover,
+  .profiles a:hover {
+    color: var(--accent);
+  }
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-top: var(--space-3);
+  }
+</style>

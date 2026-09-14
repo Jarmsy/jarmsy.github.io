@@ -1,0 +1,49 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Stamp from './Stamp.astro';
+import TopicTags from './TopicTags.astro';
+
+interface Props {
+  item: CollectionEntry<'questions'>;
+  locale: string;
+}
+
+const { item, locale } = Astro.props;
+const { data } = item;
+---
+
+<li class:list={['question', { answered: data.status === 'answered' }]}>
+  <p class="q">{data.question}</p>
+  {data.note && <p class="note">{data.note}</p>}
+  <p class="meta">
+    {data.since && <Stamp date={data.since} prefix="since" locale={locale} />}
+    {data.status === 'answered' && <span class="label">answered</span>}
+    <TopicTags topics={data.topics} />
+  </p>
+</li>
+
+<style>
+  .question {
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .q {
+    font-size: var(--step-1);
+    line-height: 1.35;
+    margin: 0 0 var(--space-1);
+  }
+  .answered .q {
+    color: var(--text-muted);
+  }
+  .note {
+    color: var(--text-muted);
+    margin: 0 0 var(--space-2);
+  }
+  .meta {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0;
+  }
+</style>

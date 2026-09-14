@@ -1,0 +1,71 @@
+# ============================================================
+# site.yaml — the settings for the whole site.
+#
+# Edit freely. When the site builds (or while `dev.cmd` is
+# running) this file is checked, and any mistake is reported
+# with the field name and what was expected.
+#
+# Tip: if a value contains a colon (:) or starts with a
+# symbol, wrap it in quotes:  motto: "Systems: made of people"
+# ============================================================
+
+# --- Identity ------------------------------------------------
+name: John Harms                  # full name — page titles, footer, CV
+short_name: John                  # the wordmark in the header
+motto: Systems are made of people.
+corollary: ""                     # the line under the motto — leave "" to hide it
+one_liner: Mechanical engineer turned policy researcher. Pilot.
+email: harmsyjohn@gmail.com
+url: https://example.com          # your real domain once you have one (RSS + sitemap use it)
+
+# --- Navigation ----------------------------------------------
+# Header links, in order. Any room not listed here still exists
+# at its address — it's just unlisted. Remove a line to hide it.
+nav:
+  - { label: About,   href: /about/ }
+  - { label: Writing, href: /writing/ }
+  - { label: Work,    href: /work/ }
+  - { label: Takes,   href: /takes/ }
+  - { label: Taste,   href: /taste/ }
+
+# Footer links, in order.
+footer:
+  - { label: Now,       href: /now/ }
+  - { label: Photos,    href: /photos/ }
+  - { label: Questions, href: /questions/ }
+  - { label: CV,        href: /cv/ }
+  - { label: Colophon,  href: /colophon/ }
+  - { label: RSS,       href: /rss.xml }
+
+# External profiles — shown on the About page and in the footer.
+# Add, remove, reorder. Delete the examples you don't use.
+links:
+  - { label: Email, href: "mailto:harmsyjohn@gmail.com" }
+  # - { label: Letterboxd, href: https://letterboxd.com/yourname }
+  # - { label: Spotify,    href: https://open.spotify.com/user/yourname }
+  # - { label: GitHub,     href: https://github.com/yourname }
+
+# --- Home page -----------------------------------------------
+# Sections on the home page, top to bottom.
+# Valid sections: now, takes, writing, work, taste, questions
+# `count` = how many items to show (ignored by `now`).
+home:
+  - { section: now }
+  - { section: takes,   count: 3 }
+  - { section: writing, count: 3 }
+  - { section: work,    count: 2 }
+
+# --- Appearance ----------------------------------------------
+theme:
+  default: system     # system | light | dark   (what first-time visitors get)
+  toggle: true        # show the light/dark switch in the header
+
+# Colours, fonts, sizes and spacing live in src/styles/tokens.css
+
+# --- Rooms ---------------------------------------------------
+takes:
+  subtitle: Robust, loosely held.
+  spice: [mild, spicy, will die on this hill]   # labels for spice levels 1, 2, 3
+
+dates:
+  locale: en-US       # how dates are written, e.g. en-US → "July 6, 2026"

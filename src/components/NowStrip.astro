@@ -1,0 +1,59 @@
+---
+// The heartbeat: one line from content/pages/now.md and when it was last updated.
+import { getEntry } from 'astro:content';
+import Stamp from './Stamp.astro';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const now = await getEntry('pages', 'now');
+---
+
+{now && (
+  <a class="now" href="/now/">
+    <span class="label now-label">Now</span>
+    <span class="summary">{now.data.summary ?? 'What this season looks like →'}</span>
+    <span class="stamp"><Stamp date={now.data.updated} prefix="as of" locale={locale} /></span>
+  </a>
+)}
+
+<style>
+  .now {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    margin: var(--space-4) 0 var(--space-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-raised);
+    color: var(--text);
+    text-decoration: none;
+    transition: border-color var(--dur) var(--ease);
+  }
+  .now:hover {
+    border-color: var(--accent);
+  }
+  .now-label {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+  }
+  .summary {
+    text-wrap: pretty;
+  }
+  .stamp {
+    white-space: nowrap;
+  }
+  @media (max-width: 520px) {
+    .now {
+      grid-template-columns: auto 1fr;
+    }
+    .stamp {
+      grid-column: 2;
+    }
+  }
+</style>

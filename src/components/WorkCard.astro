@@ -1,0 +1,49 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+
+interface Props {
+  item: CollectionEntry<'work'>;
+}
+
+const { item } = Astro.props;
+const { data } = item;
+const where = [data.org, data.period].filter(Boolean).join(' · ');
+---
+
+<article class="work">
+  {data.cover && <Image class="cover" src={data.cover} alt="" width={720} />}
+  <div class="body">
+    {where && <p class="label">{where}</p>}
+    <h3><a href={`/work/${item.id}/`}>{data.title}</a></h3>
+    <p class="summary">{data.summary}</p>
+    {data.outcome && <p class="outcome">{data.outcome}</p>}
+    {data.tools.length > 0 && <p class="label tools">{data.tools.join(' · ')}</p>}
+  </div>
+</article>
+
+<style>
+  .work {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .cover {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+  }
+  .label { margin: 0 0 var(--space-1); }
+  h3 { margin: 0 0 var(--space-1); }
+  h3 a { color: var(--text); text-decoration: none; }
+  h3 a:hover { color: var(--accent); }
+  .summary { margin: 0 0 var(--space-2); }
+  .outcome {
+    margin: 0 0 var(--space-2);
+    padding-left: var(--space-3);
+    border-left: 2px solid var(--accent);
+    color: var(--text-muted);
+  }
+  .tools { margin: 0; }
+</style>

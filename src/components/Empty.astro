@@ -1,0 +1,27 @@
+---
+// Shown when a room has no content yet.
+interface Props {
+  what: string;   // "takes", "photos" …
+  where: string;  // the file or folder to add to
+}
+
+const { what, where } = Astro.props;
+---
+
+<p class="empty">
+  No {what} yet. <span class="label">Add to <code>{where}</code></span>
+</p>
+
+<style>
+  .empty {
+    color: var(--text-muted);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-4);
+    margin: var(--space-3) 0 var(--space-5);
+  }
+  .empty .label {
+    display: block;
+    margin-top: var(--space-1);
+  }
+</style>

@@ -1,0 +1,25 @@
+# Books. One entry per book; the top of the list shows first, so add new ones at the top.
+# Fields: title (required), by, year, note, rating (1–5), link — all others optional.
+
+- title: The Righteous Mind
+  by: Jonathan Haidt
+  year: 2012
+  note: Why good people are divided by politics and religion. The moral-foundations lens I keep reaching for.
+
+- title: Escape from Freedom
+  by: Erich Fromm
+  year: 1941
+  note: On why freedom can feel unbearable, and what people do about it.
+
+- title: The Authoritarian Personality
+  by: Theodor Adorno
+  year: 1950
+
+- title: "The Worm at the Core: On the Role of Death in Life"
+  by: Sheldon Solomon, Jeff Greenberg, Tom Pyszczynski
+  year: 2015
+  note: Terror management theory, explained by the people who built it.
+
+- title: A Theory of Cognitive Dissonance
+  by: Leon Festinger
+  year: 1957

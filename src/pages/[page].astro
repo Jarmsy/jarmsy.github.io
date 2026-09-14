@@ -1,0 +1,58 @@
+---
+// Every markdown file in content/pages/ becomes a page at /<filename>/.
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Stamp from '../components/Stamp.astro';
+import { getSite } from '../lib/site';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return pages.map((page) => ({ params: { page: page.id }, props: { page } }));
+}
+
+const { page } = Astro.props;
+const site = await getSite();
+const { Content } = await render(page);
+const showProfiles = page.id === 'about' && site.links.length > 0;
+---
+
+<Base title={page.data.title} description={page.data.description}>
+  <article>
+    <header class="head">
+      <h1>{page.data.title}</h1>
+      <Stamp date={page.data.updated} prefix="updated" locale={site.dates.locale} />
+    </header>
+    <div class="prose">
+      <Content />
+      {showProfiles && (
+        <p class="profiles">
+          <span class="label">Elsewhere</span>
+          {site.links.map((link) => <a href={link.href}>{link.label}</a>)}
+        </p>
+      )}
+    </div>
+  </article>
+</Base>
+
+<style>
+  .head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin: var(--space-4) 0 var(--space-4);
+  }
+  .head h1 {
+    margin: 0;
+  }
+  .profiles {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    align-items: baseline;
+    margin-top: var(--space-5);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border);
+  }
+</style>

@@ -1,79 +1,143 @@
-# Personal website
+# John Harms — personal website
 
-A markdown-powered personal site built with [Astro](https://astro.build).
-All content lives as plain text files — the site is just a thin template
-layer over a folder of markdown you own forever.
+A folder of plain-text files that becomes a website. You edit the text; the
+site takes care of the rest. Nothing here needs a developer for day-to-day use.
 
-## Everyday tasks
+## The two things to know
 
-### Add a hot take
+1. **Everything you write lives in `content/`.** One markdown file per essay,
+   take, or case study; one short YAML list for books, films, music, shows,
+   questions and photos.
+2. **Everything about the site itself lives in two files.** `site.yaml` for
+   *what and where* (name, motto, nav, footer, home-page sections) and
+   `src/styles/tokens.css` for *how it looks* (colours, fonts, sizes).
 
-Create a new `.md` file in `src/content/takes/` (any filename):
+Both are checked every time the site builds. If something's wrong, the message
+names the file and the field.
 
-```markdown
----
-topics: [food, travel]   # tags for the filter chips — invent new ones freely
-spice: 2                  # 1 = mild, 2 = spicy, 3 = will die on this hill
-date: 2026-07-06
----
+## Running it
 
-Your take goes here. Markdown works — *italics*, **bold**, links.
-```
+| Do this | To |
+|---|---|
+| Double-click **`dev.cmd`** | Preview at http://localhost:4321 — refreshes as you save. Close the window to stop. |
+| Double-click **`check.cmd`** | Check every page for mistakes. Ends with "All good" or the problem. |
 
-### Retire a take (changed your mind)
+Or from a terminal: `npm run dev`, `npm run doctor`, `npm run build` (output in `dist/`).
 
-Add to its frontmatter:
+Editing in VS Code is recommended: open the folder and accept the two suggested
+extensions (Astro, YAML) — they flag mistakes as you type.
 
-```yaml
-retired: true
-retiredNote: "Why you changed your mind (optional but fun)."
-```
+## I want to…
 
-### Add a longer piece
+| … | Edit |
+|---|---|
+| Change my name, motto, tagline, email, domain | `site.yaml` |
+| Reorder, hide, or add header / footer links | `site.yaml` → `nav`, `footer` |
+| Change what the home page shows, and how many | `site.yaml` → `home` |
+| Add a profile link (Letterboxd, Spotify…) | `site.yaml` → `links` |
+| Change the default theme or hide the light/dark switch | `site.yaml` → `theme` |
+| Change the Takes subtitle or spice labels | `site.yaml` → `takes` |
+| Change colours, fonts, text size, line length, spacing | `src/styles/tokens.css` |
+| Write an essay or a note | new `.md` file in `content/writing/` |
+| Add a take | new `.md` file in `content/takes/` |
+| Add a case study | copy `content/work/_example.md`, rename it, fill it in |
+| Add a book, film, album, or show | one entry at the top of `content/taste/<kind>.yaml` |
+| Add a question | one entry at the top of `content/questions.yaml` |
+| Add a photo | image into `content/photos/`, one entry in `photos.yaml` |
+| Update Now / About / Colophon / CV | `content/pages/<name>.md` |
+| Add a whole new plain page | new `.md` in `content/pages/` → appears at `/<filename>/` |
+| Hide something without deleting it | rename the file to start with `_` |
 
-Create a `.md` file in `src/content/writing/`:
+### Writing (`content/writing/`)
 
 ```markdown
 ---
 title: 'The title'
-description: 'One-line teaser shown in lists.'
+description: 'One line shown in lists and previews.'
 date: 2026-07-06
+kind: essay          # essay | note          (default: note)
+status: evergreen    # evergreen | dated | draft   (default: evergreen)
+topics: [media, systems]
 ---
 
-The piece...
+The piece. Markdown works: *italics*, **bold**, [links](https://…), lists, > quotes.
 ```
 
-Use `.mdx` instead of `.md` if you want components like `<Figure>` —
-see `src/content/writing/sample-essay.mdx` for a working example.
+- `draft` still builds (preview it at its address) but is hidden from lists and the RSS feed.
+- `dated` adds a small notice that the piece reflects what you thought at the time.
+- The filename is the address: `ragebait.md` → `/writing/ragebait/`. Keep it short; never change it once public.
+- Need a figure with a caption? Use `.mdx` and see `content/writing/sample-essay.mdx`.
 
-### Edit fixed pages
+### Takes (`content/takes/`)
 
-- Your name, tagline, intro, and social links: `src/config.ts`
-- The About page: `src/pages/about.md`
+```markdown
+---
+topics: [food, travel]   # invent new ones freely — they become filter chips and topic pages
+spice: 2                 # 1 mild · 2 spicy · 3 will die on this hill
+date: 2026-07-06         # the "as of" stamp
+---
 
-## Running it
-
-```powershell
-npm install       # first time only
-npm run dev       # local preview at http://localhost:4321
-npm run build     # production build into dist/
+The take. One or two sentences is the sweet spot.
 ```
+
+Changed your mind? Add `retired: true` and, if you like,
+`retiredNote: "Why."` — it moves to the Retired section, struck through, note shown.
+
+### Pages (`content/pages/`)
+
+Every file here is a page. Frontmatter: `title`, `updated` (a date — shown as the
+"updated" stamp), optional `description`. `now.md` also takes `summary`, one
+line shown on the home page.
+
+### Lists (`content/taste/*.yaml`, `questions.yaml`, `photos/photos.yaml`)
+
+Each file starts with a comment explaining its fields. The top entry shows
+first, so add new things at the top. YAML rules of thumb: every entry starts
+with `- `, each field is `name: value` on its own line, indented the same; wrap
+a value in quotes if it contains a colon.
+
+### Topics
+
+Any `topics:` tag used anywhere gets its own page at `/topics/<tag>/` that
+gathers matching writing, takes, work and questions. Nothing to maintain.
 
 ## Where things live
 
 ```
+site.yaml              settings — the "what and where" dials
+content/               everything you write
+  pages/               about, now, colophon, cv (one page per file)
+  writing/  takes/  work/
+  taste/  questions.yaml  photos/
 src/
-  config.ts            ← your name, tagline, links
-  content/
-    takes/             ← one file per hot take
-    writing/           ← one file per longer piece
-  pages/
-    about.md           ← the About page (plain markdown)
-    index.astro        ← homepage template
-    takes/index.astro  ← hot takes page (filter chips live here)
-  components/          ← Figure, TakeCard, SpiceMeter
-  layouts/             ← page shells (header/footer)
-  styles/global.css    ← all styling; design tokens at the top
-public/
-  images/              ← images referenced as /images/...
+  styles/tokens.css    the "how it looks" dials
+  styles/base.css      shared text styles (rarely touched)
+  content.config.ts    what each content file may contain — the rules behind the error messages
+  components/ layouts/ pages/ lib/    the machinery
+public/                files served as-is: favicon.svg, cv.pdf, images/
+docs/brief.md          the site brief — what this site is for and why it's shaped this way
 ```
+
+## When something breaks
+
+Run `check.cmd`. The last lines say what's wrong, e.g.
+
+```
+content/taste/books.yaml has a YAML mistake.
+bad indentation of a mapping entry (5:8)
+```
+
+or
+
+```
+takes → sample-walking data does not match collection schema.
+  spice: spice must be 1, 2 or 3
+```
+
+Fix the named file, run it again. If it says **All good**, it is.
+
+## Changing a font (the one "developer-ish" task)
+
+Fonts are self-hosted from npm packages so the site never depends on a third
+party. To switch: `npm install @fontsource-variable/<name>`, replace the import
+in `src/layouts/Base.astro`, then change the family name in `tokens.css`.

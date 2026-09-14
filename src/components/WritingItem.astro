@@ -1,0 +1,57 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { isoDate, longDate } from '../lib/format';
+
+interface Props {
+  post: CollectionEntry<'writing'>;
+  locale: string;
+}
+
+const { post, locale } = Astro.props;
+const { data } = post;
+---
+
+<article class="item">
+  <p class="label meta">
+    <span class="kind">{data.kind}</span>
+    <time datetime={isoDate(data.date)}>{longDate(data.date, locale)}</time>
+    {data.status === 'dated' && <span class="dated">dated</span>}
+  </p>
+  <h3><a href={`/writing/${post.id}/`}>{data.title}</a></h3>
+  {data.description && <p class="desc">{data.description}</p>}
+</article>
+
+<style>
+  .item {
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .meta {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin: 0 0 var(--space-1);
+  }
+  .kind {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+  .dated {
+    font-style: italic;
+  }
+  h3 {
+    margin: 0 0 var(--space-1);
+  }
+  h3 a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  h3 a:hover {
+    color: var(--accent);
+  }
+  .desc {
+    margin: 0;
+    color: var(--text-muted);
+  }
+</style>

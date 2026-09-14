@@ -1,0 +1,11 @@
+# Films. One entry per film; add new ones at the top.
+# Fields: title (required), by (director), year, note, rating (1–5), link — all others optional.
+#
+# Example (delete the leading # on each line to use it):
+# - title: Arrival
+#   by: Denis Villeneuve
+#   year: 2016
+#   note: The best film about language and time I know.
+#   rating: 5
+
+[]

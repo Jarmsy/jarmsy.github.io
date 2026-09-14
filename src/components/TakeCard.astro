@@ -1,36 +1,67 @@
 ---
 import { render, type CollectionEntry } from 'astro:content';
 import SpiceMeter from './SpiceMeter.astro';
+import Stamp from './Stamp.astro';
+import TopicTags from './TopicTags.astro';
 
 interface Props {
   take: CollectionEntry<'takes'>;
+  spiceLabels: [string, string, string];
+  locale: string;
 }
 
-const { take } = Astro.props;
+const { take, spiceLabels, locale } = Astro.props;
 const { Content } = await render(take);
-
-const dateStamp = take.data.date.toLocaleDateString('en-US', {
-  month: 'short',
-  year: 'numeric',
-  timeZone: 'UTC',
-});
 ---
 
-<article
-  class:list={['take-card', { retired: take.data.retired }]}
-  data-topics={take.data.topics.join(',')}
->
+<article class:list={['take', { retired: take.data.retired }]}>
   <div class="take-body">
     <Content />
   </div>
   <div class="take-meta">
-    <SpiceMeter level={take.data.spice} />
-    <span class="take-topics">
-      {take.data.topics.map((topic) => <span class="topic-tag">{topic}</span>)}
-    </span>
-    <span>as of {dateStamp}</span>
+    <SpiceMeter level={take.data.spice} labels={spiceLabels} />
+    <TopicTags topics={take.data.topics} />
+    <Stamp date={take.data.updated ?? take.data.date} locale={locale} />
   </div>
-  {take.data.retired && take.data.retiredNote && (
-    <p class="retired-note">Retired: {take.data.retiredNote}</p>
-  )}
+  {take.data.retired && take.data.retiredNote && <p class="retired-note">Retired: {take.data.retiredNote}</p>}
 </article>
+
+<style>
+  .take {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-3) var(--space-4);
+    margin: 0 0 var(--space-3);
+  }
+  .take.retired {
+    opacity: 0.7;
+  }
+  .take.retired .take-body {
+    text-decoration: line-through;
+    text-decoration-color: var(--text-muted);
+    text-decoration-thickness: 1px;
+  }
+  .take-body {
+    font-size: var(--step-1);
+    line-height: 1.4;
+    text-wrap: pretty;
+  }
+  .take-body :global(> :first-child) { margin-top: 0; }
+  .take-body :global(> :last-child) { margin-bottom: 0; }
+  .take-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-top: var(--space-2);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+  .retired-note {
+    margin: var(--space-2) 0 0;
+    font-size: var(--step--1);
+    color: var(--text-muted);
+    font-style: italic;
+  }
+</style>

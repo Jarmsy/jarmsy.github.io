@@ -1,0 +1,76 @@
+/* ============================================================
+   tokens.css — the visual dials for the whole site.
+
+   Change a value here and every page follows. Nothing else in
+   the site declares a raw colour, font, or size.
+
+   Colours are written as hex (#rrggbb). A quick way to pick
+   them: any "colour picker" website — copy the hex it gives you.
+   ============================================================ */
+
+:root {
+  /* ---- Colours: light theme ---------------------------------- */
+  --accent:        #c23b12;                    /* links, highlights, the one bold colour */
+  --accent-soft:   rgba(194, 59, 18, 0.10);    /* faint accent for tags and chips */
+  --bg:            #faf7f2;                    /* page background */
+  --bg-raised:     #ffffff;                    /* cards, code blocks */
+  --text:          #23201c;                    /* body text */
+  --text-muted:    #6f675e;                    /* dates, labels, secondary text */
+  --border:        #e5ddd2;                    /* hairlines and card edges */
+
+  /* ---- Fonts -------------------------------------------------- */
+  /* To change a font: 1) npm install the @fontsource package,
+     2) swap the import in src/layouts/Base.astro, 3) change the name here. */
+  --font-serif: 'Newsreader Variable', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+  --font-mono:  'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Menlo, Consolas, monospace;
+
+  /* ---- Type sizes (grow gently with the screen) -------------- */
+  --step--1: clamp(0.88rem, 0.85rem + 0.15vw, 0.95rem);   /* small: dates, labels */
+  --step-0:  clamp(1.05rem, 1.00rem + 0.25vw, 1.15rem);   /* body text */
+  --step-1:  clamp(1.25rem, 1.15rem + 0.45vw, 1.45rem);   /* card text, lead paragraphs */
+  --step-2:  clamp(1.55rem, 1.35rem + 0.90vw, 1.95rem);   /* h2 */
+  --step-3:  clamp(2.00rem, 1.60rem + 1.80vw, 2.80rem);   /* h1 */
+  --step-4:  clamp(2.40rem, 1.80rem + 2.80vw, 3.60rem);   /* the home-page motto */
+
+  --leading: 1.6;             /* line height for body text */
+  --measure: 66ch;            /* max line length for reading — 60–75 is comfortable */
+  --page-width: 46rem;        /* overall content column */
+
+  /* ---- Shape and spacing ------------------------------------- */
+  --radius: 6px;              /* corner rounding on cards and chips */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.5rem;
+  --space-6: 4rem;
+
+  /* ---- Motion ------------------------------------------------- */
+  --dur: 180ms;               /* hover and toggle transitions */
+  --dur-page: 220ms;          /* crossfade between pages */
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ---- Colours: dark theme ------------------------------------- */
+/* Used when the visitor's system is dark (unless they chose light),
+   or when they switch to dark. Keep every colour above defined here too. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --accent:       #ff6a3d;
+    --accent-soft:  rgba(255, 106, 61, 0.14);
+    --bg:           #191613;
+    --bg-raised:    #221e1a;
+    --text:         #ece7df;
+    --text-muted:   #a39a8e;
+    --border:       #37312a;
+  }
+}
+:root[data-theme='dark'] {
+  --accent:       #ff6a3d;
+  --accent-soft:  rgba(255, 106, 61, 0.14);
+  --bg:           #191613;
+  --bg-raised:    #221e1a;
+  --text:         #ece7df;
+  --text-muted:   #a39a8e;
+  --border:       #37312a;
+}

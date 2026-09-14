@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Empty from '../../components/Empty.astro';
+import PhotoGrid from '../../components/PhotoGrid.astro';
+import { getSite } from '../../lib/site';
+
+const site = await getSite();
+const photos = await getCollection('photos');
+---
+
+<Base title="Photos" description="A few pictures, mostly from the air.">
+  <h1>Photos</h1>
+  {photos.length === 0 ? (
+    <Empty what="photos" where="content/photos/ (the image, plus a line in photos.yaml)" />
+  ) : (
+    <PhotoGrid photos={photos} locale={site.dates.locale} />
+  )}
+</Base>

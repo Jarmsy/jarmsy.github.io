@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Empty from '../../components/Empty.astro';
+import WorkCard from '../../components/WorkCard.astro';
+import { byDateDesc } from '../../lib/format';
+
+const items = (await getCollection('work'))
+  .sort(byDateDesc)
+  .sort((a, b) => Number(b.data.featured) - Number(a.data.featured));
+---
+
+<Base title="Work" description="Research and projects: the problem, what I did, what happened.">
+  <h1>Work</h1>
+  <p class="muted">Research and projects — the problem, what I did, and what happened.</p>
+
+  {items.length === 0 ? (
+    <Empty what="case studies" where="content/work/ (copy _example.md to start)" />
+  ) : (
+    items.map((item) => <WorkCard item={item} />)
+  )}
+</Base>

@@ -3,12 +3,16 @@ import Base from '../layouts/Base.astro';
 ---
 
 <Base title="Page not found">
-  <section class="hero">
+  <section class="lost">
+    <p class="label">404</p>
     <h1>Page not found.</h1>
-    <p class="intro">
-      Whatever you were looking for isn't here. It may have moved, or never
-      existed in the first place.
-    </p>
+    <p class="muted">Whatever you were looking for isn't here. It may have moved, or never existed in the first place.</p>
     <p><a href="/">← Back home</a></p>
   </section>
 </Base>
+
+<style>
+  .lost {
+    padding: var(--space-5) 0;
+  }
+</style>

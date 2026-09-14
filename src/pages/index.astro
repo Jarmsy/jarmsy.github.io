@@ -1,46 +1,142 @@
 ---
+// The front door. Which sections appear, in what order, and how many items
+// each shows is set in site.yaml under `home`.
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import NowStrip from '../components/NowStrip.astro';
+import SectionHead from '../components/SectionHead.astro';
 import TakeCard from '../components/TakeCard.astro';
-import { SITE } from '../config';
+import WritingItem from '../components/WritingItem.astro';
+import WorkCard from '../components/WorkCard.astro';
+import QuestionItem from '../components/QuestionItem.astro';
+import { getSite } from '../lib/site';
+import { byDateDesc } from '../lib/format';
 
-const takes = (await getCollection('takes', ({ data }) => !data.retired))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 3);
+const site = await getSite();
+const locale = site.dates.locale;
 
-const posts = (await getCollection('writing'))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 3);
+const takes = (await getCollection('takes', ({ data }) => !data.retired)).sort(byDateDesc);
+const writing = (await getCollection('writing', ({ data }) => data.status !== 'draft')).sort(byDateDesc);
+const work = (await getCollection('work'))
+  .sort(byDateDesc)
+  .sort((a, b) => Number(b.data.featured) - Number(a.data.featured));
+const questions = await getCollection('questions');
+const currently = (
+  await Promise.all([
+    getCollection('books').then((b) => ['Reading', b[0]] as const),
+    getCollection('films').then((f) => ['Watched', f[0]] as const),
+    getCollection('music').then((m) => ['On repeat', m[0]] as const),
+    getCollection('shows').then((s) => ['Watching', s[0]] as const),
+  ])
+).filter(([, item]) => item);
 ---
 
-<Base description={SITE.tagline}>
+<Base description={site.one_liner || site.motto}>
   <section class="hero">
-    <h1>Hi, I'm {SITE.name}.</h1>
-    <p class="tagline">{SITE.tagline}</p>
-    <p class="intro">{SITE.intro}</p>
+    <p class="label name">{site.name}</p>
+    <h1 class="motto">{site.motto}</h1>
+    {site.corollary && <p class="corollary">{site.corollary}</p>}
+    {site.one_liner && <p class="label one-liner">{site.one_liner}</p>}
   </section>
 
-  <div class="section-head">
-    <h2>Latest hot takes</h2>
-    <a href="/takes/">all takes →</a>
-  </div>
-  {takes.map((take) => <TakeCard take={take} />)}
-
-  {posts.length > 0 && (
-    <>
-      <div class="section-head">
-        <h2>Recent writing</h2>
-        <a href="/writing/">all writing →</a>
-      </div>
-      {posts.map((post) => (
-        <article class="post-item">
-          <h3><a href={`/writing/${post.id}/`}>{post.data.title}</a></h3>
-          {post.data.description && <p style="margin: 0.2rem 0;">{post.data.description}</p>}
-          <span class="post-date">
-            {post.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}
-          </span>
-        </article>
-      ))}
-    </>
-  )}
+  {site.home.map(({ section, count }) => {
+    switch (section) {
+      case 'now':
+        return <NowStrip locale={locale} />;
+      case 'takes':
+        return takes.length > 0 && (
+          <>
+            <SectionHead title="Latest takes" href="/takes/" more="all takes" />
+            {takes.slice(0, count).map((take) => (
+              <TakeCard take={take} spiceLabels={site.takes.spice} locale={locale} />
+            ))}
+          </>
+        );
+      case 'writing':
+        return writing.length > 0 && (
+          <>
+            <SectionHead title="Writing" href="/writing/" more="all writing" />
+            {writing.slice(0, count).map((post) => <WritingItem post={post} locale={locale} />)}
+          </>
+        );
+      case 'work':
+        return work.length > 0 && (
+          <>
+            <SectionHead title="Work" href="/work/" more="all work" />
+            {work.slice(0, count).map((item) => <WorkCard item={item} />)}
+          </>
+        );
+      case 'taste':
+        return currently.length > 0 && (
+          <>
+            <SectionHead title="Currently" href="/taste/" more="all taste" />
+            <dl class="currently">
+              {currently.map(([label, item]) => (
+                <div>
+                  <dt class="label">{label}</dt>
+                  <dd>
+                    {item!.data.title}
+                    {item!.data.by && <span class="muted"> — {item!.data.by}</span>}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </>
+        );
+      case 'questions':
+        return questions.length > 0 && (
+          <>
+            <SectionHead title="Open questions" href="/questions/" more="all questions" />
+            <ol class="plain">
+              {questions.slice(0, count).map((item) => <QuestionItem item={item} locale={locale} />)}
+            </ol>
+          </>
+        );
+    }
+  })}
 </Base>
+
+<style>
+  .hero {
+    padding: var(--space-5) 0 var(--space-4);
+  }
+  .name {
+    margin: 0 0 var(--space-3);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .motto {
+    font-size: var(--step-4);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin: 0 0 var(--space-3);
+    max-width: 18ch;
+  }
+  .corollary {
+    font-size: var(--step-1);
+    color: var(--text-muted);
+    max-width: var(--measure);
+    margin: 0 0 var(--space-3);
+  }
+  .one-liner {
+    margin: 0;
+  }
+  .currently {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--space-3);
+    margin: 0;
+  }
+  .currently dt {
+    margin-bottom: var(--space-1);
+  }
+  .currently dd {
+    margin: 0;
+  }
+  .plain {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+</style>

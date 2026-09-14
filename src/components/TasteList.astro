@@ -1,0 +1,70 @@
+---
+// One list of books / films / music / shows. File order is display order.
+import Empty from './Empty.astro';
+
+interface Item {
+  id: string;
+  data: { title: string; by?: string; year?: number; note?: string; rating?: number; link?: string };
+}
+
+interface Props {
+  title: string;
+  items: Item[];
+  file: string;
+  limit?: number;
+}
+
+const { title, items, file, limit } = Astro.props;
+const shown = limit ? items.slice(0, limit) : items;
+---
+
+<section class="taste">
+  <h2 id={title.toLowerCase()}>{title}</h2>
+  {shown.length === 0 ? (
+    <Empty what={title.toLowerCase()} where={file} />
+  ) : (
+    <ol class="list">
+      {shown.map(({ data }) => (
+        <li>
+          <span class="title">{data.link ? <a href={data.link}>{data.title}</a> : data.title}</span>
+          {(data.by || data.year) && (
+            <span class="label by">{[data.by, data.year].filter(Boolean).join(', ')}</span>
+          )}
+          {data.rating && (
+            <span class="label rating" title={`${data.rating} of 5`} aria-label={`${data.rating} of 5`}>
+              {'●'.repeat(data.rating)}{'○'.repeat(5 - data.rating)}
+            </span>
+          )}
+          {data.note && <span class="note">{data.note}</span>}
+        </li>
+      ))}
+    </ol>
+  )}
+</section>
+
+<style>
+  .taste { margin-bottom: var(--space-5); }
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .list li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: 'title rating' 'by by' 'note note';
+    column-gap: var(--space-3);
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .title { grid-area: title; }
+  .title a { color: var(--text); }
+  .by { grid-area: by; }
+  .rating { grid-area: rating; color: var(--accent); letter-spacing: 0.1em; }
+  .note {
+    grid-area: note;
+    color: var(--text-muted);
+    margin-top: var(--space-1);
+    text-wrap: pretty;
+  }
+</style>

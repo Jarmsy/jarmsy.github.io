@@ -1,12 +1,16 @@
 // @ts-check
+import { readFileSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import { load } from 'js-yaml';
+
+// The site's domain lives in site.yaml so it's set in one place.
+const site = /** @type {{ url?: string }} */ (load(readFileSync('./site.yaml', 'utf8')));
 
 // https://astro.build/config
 export default defineConfig({
-  // Set this to your real domain once you have one, e.g. 'https://johnharms.com'
-  // (sitemap.xml and rss.xml both need this to generate correct absolute URLs)
-  site: 'https://example.com',
+  site: site.url ?? 'https://example.com',
   integrations: [mdx(), sitemap()],
+  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
 });
