@@ -16,7 +16,7 @@ motto: Systems are made of people.
 corollary: ""                     # the line under the motto — leave "" to hide it
 one_liner: Mechanical engineer turned policy researcher. Pilot.
 email: harmsyjohn@gmail.com
-url: https://example.com          # your real domain once you have one (RSS + sitemap use it)
+url: https://peaceful-bavarois-780060.netlify.app   # the site's address (RSS + sitemap use it); change when you get a domain
 
 # --- Navigation ----------------------------------------------
 # Header links, in order. Any room not listed here still exists
