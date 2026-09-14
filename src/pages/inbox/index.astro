@@ -1,0 +1,141 @@
+---
+// The inbox: a plain HTML form, so it works without JavaScript.
+// Where notes go is set in site.yaml → inbox.action (blank = Netlify Forms).
+import Base from '../../layouts/Base.astro';
+import { getSite } from '../../lib/site';
+
+const site = await getSite();
+const { enabled, intro, action } = site.inbox;
+const useNetlify = enabled && action === '';
+---
+
+<Base title="Inbox" description="Leave me a note — anonymous is fine.">
+  <h1>Inbox</h1>
+
+  {!enabled ? (
+    <p class="muted">
+      The inbox is closed right now. <a href={`mailto:${site.email}`}>Email me</a> instead.
+    </p>
+  ) : (
+    <>
+      <p class="intro">{intro}</p>
+
+      <form
+        class="note"
+        name="inbox"
+        method="POST"
+        action={useNetlify ? '/inbox/thanks/' : action}
+        data-netlify={useNetlify ? 'true' : undefined}
+        netlify-honeypot={useNetlify ? 'website' : undefined}
+      >
+        {useNetlify && <input type="hidden" name="form-name" value="inbox" />}
+
+        <p class="trap" aria-hidden="true">
+          <label>Leave this field empty <input name="website" tabindex="-1" autocomplete="off" /></label>
+        </p>
+
+        <div class="field">
+          <label for="message">Your note</label>
+          <textarea id="message" name="message" rows="7" required maxlength="5000"></textarea>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="name">Name <span class="label">optional</span></label>
+            <input id="name" name="name" maxlength="120" autocomplete="name" />
+          </div>
+          <div class="field">
+            <label for="contact">How to reach you <span class="label">optional</span></label>
+            <input id="contact" name="contact" maxlength="200" placeholder="email, or wherever" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit">Send</button>
+          <span class="label">Notes go to me only. Nothing is published.</span>
+        </div>
+      </form>
+    </>
+  )}
+</Base>
+
+<style>
+  .intro {
+    font-size: var(--step-1);
+    color: var(--text-muted);
+    max-width: var(--measure);
+    margin: 0 0 var(--space-4);
+  }
+  .note {
+    display: grid;
+    gap: var(--space-4);
+    max-width: var(--measure);
+  }
+  .trap {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    margin: 0;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--space-4);
+  }
+  .field {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .field > label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-2);
+  }
+  textarea,
+  input {
+    font: inherit;
+    font-size: var(--step-0);
+    color: var(--text);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-2) var(--space-3);
+    width: 100%;
+    transition: border-color var(--dur) var(--ease);
+  }
+  textarea {
+    resize: vertical;
+    line-height: var(--leading);
+  }
+  textarea:focus,
+  input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+  button {
+    font: inherit;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.04em;
+    background: var(--accent);
+    color: var(--bg);
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 0.55em 1.4em;
+    cursor: pointer;
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  button:hover {
+    background: transparent;
+    color: var(--accent);
+  }
+</style>

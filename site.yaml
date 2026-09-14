@@ -34,6 +34,7 @@ footer:
   - { label: Photos,    href: /photos/ }
   - { label: Questions, href: /questions/ }
   - { label: CV,        href: /cv/ }
+  - { label: Inbox,     href: /inbox/ }
   - { label: Colophon,  href: /colophon/ }
   - { label: RSS,       href: /rss.xml }
 
@@ -66,6 +67,15 @@ theme:
 takes:
   subtitle: Robust, loosely held.
   spice: [mild, spicy, will die on this hill]   # labels for spice levels 1, 2, 3
+
+# The inbox: a form where anyone can leave you a note, anonymously or not.
+# Notes are received by the site's host (Netlify Forms) and sent to your email —
+# set that up once under Netlify → Forms → Notifications.
+# To send notes somewhere else instead, put that service's form URL in `action`.
+inbox:
+  enabled: true
+  intro: Leave me a note — a thought, a disagreement, a recommendation. Anonymous is fine. If you'd like a reply, say how to reach you.
+  action: ""          # blank = Netlify Forms. Or a URL such as https://formspree.io/f/xxxx
 
 dates:
   locale: en-US       # how dates are written, e.g. en-US → "July 6, 2026"

@@ -11,6 +11,6 @@ const site = /** @type {{ url?: string }} */ (load(readFileSync('./site.yaml', '
 // https://astro.build/config
 export default defineConfig({
   site: site.url ?? 'https://example.com',
-  integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap({ filter: (page) => !page.includes('/inbox/thanks/') })],
   prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
 });

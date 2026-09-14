@@ -22,4 +22,4 @@ A year ago I wrote that my worldview was "an often reformulating understanding o
 
 ## Say hi
 
-The best way to reach me is email. I read everything, eventually.
+Leave a note in the [inbox](/inbox/) — anonymously if you like — or email me. I read everything, eventually.
