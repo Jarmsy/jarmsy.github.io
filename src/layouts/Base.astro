@@ -1,27 +1,26 @@
 ---
-import { SITE } from '../config';
-import '../styles/global.css';
+// The shell around every page: <head>, fonts, theme, header, footer.
+import { ClientRouter } from 'astro:transitions';
+import '@fontsource-variable/newsreader/opsz.css';
+import '@fontsource-variable/newsreader/opsz-italic.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getSite } from '../lib/site';
 
 interface Props {
   title?: string;
   description?: string;
 }
 
+const site = await getSite();
 const { title, description } = Astro.props;
-const pageTitle = title ? `${title} · ${SITE.name}` : SITE.name;
-const currentPath = Astro.url.pathname;
-
-const nav = [
-  { label: 'Home', href: '/' },
-  { label: 'Hot Takes', href: '/takes/' },
-  { label: 'Writing', href: '/writing/' },
-  { label: 'About', href: '/about/' },
-];
-
-function isCurrent(href: string) {
-  if (href === '/') return currentPath === '/';
-  return currentPath.startsWith(href);
-}
+const pageTitle = title ? `${title} · ${site.name}` : site.name;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const defaultTheme = site.theme.default;
 ---
 
 <!doctype html>
@@ -29,38 +28,47 @@ function isCurrent(href: string) {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
     {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="alternate" type="application/rss+xml" title={`${SITE.name} — Writing`} href="/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title={`${site.name} — Writing`} href="/rss.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title ?? site.name} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <script is:inline define:vars={{ defaultTheme }}>
+      // Apply the visitor's theme before the page paints, and again after every page transition.
+      const applyTheme = () => {
+        let theme = null;
+        try {
+          theme = localStorage.getItem('theme');
+        } catch {}
+        theme = theme || defaultTheme;
+        if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+        else delete document.documentElement.dataset.theme;
+      };
+      applyTheme();
+      document.addEventListener('astro:after-swap', applyTheme);
+    </script>
+    <ClientRouter />
   </head>
   <body>
-    <header class="site-header">
-      <div class="wrap">
-        <a class="site-name" href="/">{SITE.name}</a>
-        <nav class="site-nav">
-          {nav.map((item) => (
-            <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
-              {item.label}
-            </a>
-          ))}
-        </nav>
-      </div>
-    </header>
-
-    <main>
-      <div class="wrap">
-        <slot />
-      </div>
+    <Header site={site} />
+    <main class="wrap">
+      <slot />
     </main>
-
-    <footer class="site-footer">
-      <div class="wrap">
-        <span>© {new Date().getFullYear()} {SITE.name}</span>
-        <div class="footer-links">
-          {SITE.links.map((link) => <a href={link.href}>{link.label}</a>)}
-        </div>
-      </div>
-    </footer>
+    <Footer site={site} />
   </body>
 </html>
+
+<style>
+  main {
+    flex: 1;
+    padding: var(--space-3) 0 var(--space-5);
+  }
+</style>

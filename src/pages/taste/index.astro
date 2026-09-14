@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import TasteList from '../../components/TasteList.astro';
+
+const [books, films, music, shows] = await Promise.all([
+  getCollection('books'),
+  getCollection('films'),
+  getCollection('music'),
+  getCollection('shows'),
+]);
+
+const sections = [
+  { title: 'Books', items: books, file: 'content/taste/books.yaml' },
+  { title: 'Films', items: films, file: 'content/taste/films.yaml' },
+  { title: 'Music', items: music, file: 'content/taste/music.yaml' },
+  { title: 'Shows', items: shows, file: 'content/taste/shows.yaml' },
+];
+---
+
+<Base title="Taste" description="Books, films, music and shows I'd recommend.">
+  <h1>Taste</h1>
+  <p class="muted">What I've been reading, watching and listening to. Newest at the top.</p>
+  <nav class="jump label" aria-label="Sections">
+    {sections.map((s) => <a href={`#${s.title.toLowerCase()}`}>{s.title}</a>)}
+  </nav>
+
+  {sections.map((s) => <TasteList title={s.title} items={s.items} file={s.file} />)}
+</Base>
+
+<style>
+  .jump {
+    display: flex;
+    gap: var(--space-3);
+    margin: 0 0 var(--space-4);
+  }
+  .jump a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .jump a:hover {
+    color: var(--accent);
+  }
+</style>

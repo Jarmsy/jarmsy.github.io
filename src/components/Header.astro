@@ -1,0 +1,70 @@
+---
+import type { Site } from '../lib/site';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  site: Site;
+}
+
+const { site } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+function isCurrent(href: string) {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="wordmark" href="/">{site.short_name}</a>
+    <nav class="nav" aria-label="Main">
+      {site.nav.map((item) => (
+        <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
+      ))}
+      {site.theme.toggle && <ThemeToggle />}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    padding: var(--space-4) 0 var(--space-3);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+  .wordmark {
+    font-size: var(--step-1);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+  .nav a {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 0.2em 0;
+    border-bottom: 1px solid transparent;
+    transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  .nav a:hover {
+    color: var(--accent);
+  }
+  .nav a[aria-current='page'] {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+  }
+</style>

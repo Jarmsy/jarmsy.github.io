@@ -1,0 +1,10 @@
+# Music — albums, artists, or songs. Add new ones at the top; the first one is "on repeat" on the home page.
+# Fields: title (required), by (artist), year, note, rating (1–5), link — all others optional.
+#
+# Example:
+# - title: Blonde
+#   by: Frank Ocean
+#   year: 2016
+#   note: Late-night driving music.
+
+[]

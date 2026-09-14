@@ -1,66 +1,59 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Empty from '../../components/Empty.astro';
+import FilterChips from '../../components/FilterChips.astro';
 import TakeCard from '../../components/TakeCard.astro';
+import { getSite } from '../../lib/site';
+import { byDateDesc } from '../../lib/format';
 
-const all = (await getCollection('takes')).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-);
-
+const site = await getSite();
+const all = (await getCollection('takes')).sort(byDateDesc);
 const active = all.filter((t) => !t.data.retired);
 const retired = all.filter((t) => t.data.retired);
-
-// Every topic used by at least one take, for the filter chips
 const topics = [...new Set(active.flatMap((t) => t.data.topics))].sort();
+const [mild, , hill] = site.takes.spice;
 ---
 
-<Base
-  title="Hot Takes"
-  description="Beliefs, sorted by topic and rated by spice level."
->
-  <h1>Hot Takes</h1>
-  <p style="color: var(--text-muted);">
-    Things I believe, rated from 🌶️ (mild) to 🌶️🌶️🌶️ (will die on this hill).
-    Each one is stamped with when I last stood behind it.
+<Base title="Takes" description={site.takes.subtitle || 'Short opinions, rated by spice.'}>
+  <h1>Takes</h1>
+  {site.takes.subtitle && <p class="subtitle">{site.takes.subtitle}</p>}
+  <p class="muted">
+    Rated from 🌶️ ({mild}) to 🌶️🌶️🌶️ ({hill}). Each one is stamped with when I last stood behind it.
   </p>
 
-  <div class="chip-row" id="topic-filters">
-    <button class="chip active" data-topic="all">All</button>
-    {topics.map((topic) => (
-      <button class="chip" data-topic={topic}>{topic}</button>
-    ))}
-  </div>
-
-  <div id="takes-list">
-    {active.map((take) => <TakeCard take={take} />)}
-  </div>
+  {active.length === 0 ? (
+    <Empty what="takes" where="content/takes/" />
+  ) : (
+    <div data-filter-scope>
+      <FilterChips groups={[{ key: 'topic', label: 'Topic', values: topics }]} />
+      {active.map((take) => (
+        <div data-filter-item data-topic={take.data.topics.join(',')}>
+          <TakeCard take={take} spiceLabels={site.takes.spice} locale={site.dates.locale} />
+        </div>
+      ))}
+    </div>
+  )}
 
   {retired.length > 0 && (
-    <>
-      <h2 style="margin-top: 3rem;">Retired takes</h2>
-      <p style="color: var(--text-muted); font-size: 0.95rem;">
-        Things I no longer believe. Changing your mind in public is a feature.
-      </p>
-      {retired.map((take) => <TakeCard take={take} />)}
-    </>
+    <section class="retired">
+      <h2>Retired takes</h2>
+      <p class="muted">Things I no longer believe. Changing your mind in public is a feature.</p>
+      {retired.map((take) => (
+        <TakeCard take={take} spiceLabels={site.takes.spice} locale={site.dates.locale} />
+      ))}
+    </section>
   )}
 </Base>
 
-<script>
-  const chips = document.querySelectorAll<HTMLButtonElement>('#topic-filters .chip');
-  const cards = document.querySelectorAll<HTMLElement>('#takes-list .take-card');
-
-  chips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      chips.forEach((c) => c.classList.remove('active'));
-      chip.classList.add('active');
-
-      const topic = chip.dataset.topic;
-      cards.forEach((card) => {
-        const cardTopics = (card.dataset.topics ?? '').split(',');
-        card.style.display =
-          topic === 'all' || cardTopics.includes(topic ?? '') ? '' : 'none';
-      });
-    });
-  });
-</script>
+<style>
+  .subtitle {
+    font-size: var(--step-1);
+    font-style: italic;
+    color: var(--accent);
+    margin: 0 0 var(--space-2);
+  }
+  .retired {
+    margin-top: var(--space-6);
+  }
+</style>

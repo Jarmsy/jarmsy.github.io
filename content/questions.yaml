@@ -1,0 +1,19 @@
+# Questions I'm trying to figure out. One entry per question; the top of the list shows first.
+# Fields: question (required), since (date you started asking), note, status (open | answered), topics.
+
+- question: How do you evaluate a safety policy when disclosure itself carries professional risk?
+  since: 2025-09-01
+  topics: [aviation, policy]
+  note: Pilot mental-health rules are the case I keep coming back to.
+
+- question: Which indirect indicators actually predict safety outcomes in aviation, and which only feel like they should?
+  since: 2025-09-01
+  topics: [aviation, policy]
+
+- question: How much of media polarization is designed, and how much is demanded?
+  since: 2025-11-01
+  topics: [media]
+
+- question: What makes a mind open under threat instead of closing?
+  since: 2025-06-01
+  topics: [psychology]

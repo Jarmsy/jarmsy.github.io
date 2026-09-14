@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Empty from '../../components/Empty.astro';
+import QuestionItem from '../../components/QuestionItem.astro';
+import { getSite } from '../../lib/site';
+
+const site = await getSite();
+const questions = await getCollection('questions');
+---
+
+<Base title="Questions" description="Things I'm trying to figure out.">
+  <h1>Questions</h1>
+  <p class="muted">Things I'm trying to figure out. If you have a lead on any of them, I'd love to hear it.</p>
+
+  {questions.length === 0 ? (
+    <Empty what="questions" where="content/questions.yaml" />
+  ) : (
+    <ol class="questions">
+      {questions.map((item) => <QuestionItem item={item} locale={site.dates.locale} />)}
+    </ol>
+  )}
+</Base>
+
+<style>
+  .questions {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-4) 0 0;
+  }
+</style>

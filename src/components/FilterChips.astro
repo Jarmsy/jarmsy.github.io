@@ -1,0 +1,89 @@
+---
+// Filter chips for a list of cards. Each card carries data-<key>="a,b" attributes;
+// a card shows only if every group's active value is "all" or one of its values.
+// Wrap the chips and the cards in one element with data-filter-scope.
+interface Group {
+  key: string;     // matches the card's data-<key>
+  label: string;   // shown before the chips
+  values: string[];
+}
+
+interface Props {
+  groups: Group[];
+}
+
+const { groups } = Astro.props;
+---
+
+{groups.map((group) => (
+  <div class="chips" role="group" aria-label={group.label} data-filter-group={group.key}>
+    <span class="label group-label">{group.label}</span>
+    <button class="chip active" type="button" data-filter="all" aria-pressed="true">all</button>
+    {group.values.map((value) => (
+      <button class="chip" type="button" data-filter={value} aria-pressed="false">{value}</button>
+    ))}
+  </div>
+))}
+
+<script>
+  document.addEventListener('click', (event) => {
+    const chip = (event.target as HTMLElement).closest<HTMLButtonElement>('.chip[data-filter]');
+    if (!chip) return;
+    const group = chip.closest<HTMLElement>('[data-filter-group]');
+    const scope = chip.closest<HTMLElement>('[data-filter-scope]');
+    if (!group || !scope) return;
+
+    group.querySelectorAll('.chip').forEach((c) => {
+      c.classList.toggle('active', c === chip);
+      c.setAttribute('aria-pressed', c === chip ? 'true' : 'false');
+    });
+
+    const active = Array.from(scope.querySelectorAll<HTMLElement>('[data-filter-group]')).map((g) => ({
+      key: g.dataset.filterGroup!,
+      value: g.querySelector<HTMLElement>('.chip.active')?.dataset.filter ?? 'all',
+    }));
+
+    scope.querySelectorAll<HTMLElement>('[data-filter-item]').forEach((item) => {
+      const visible = active.every(({ key, value }) => {
+        if (value === 'all') return true;
+        const values = (item.dataset[key] ?? '').split(',');
+        return values.includes(value);
+      });
+      item.hidden = !visible;
+    });
+  });
+</script>
+
+<style>
+  .chips {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin: 0 0 var(--space-3);
+  }
+  .group-label {
+    margin-right: var(--space-1);
+  }
+  .chip {
+    font: inherit;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 999px;
+    padding: 0.2em 0.85em;
+    cursor: pointer;
+    transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease), background var(--dur) var(--ease);
+  }
+  .chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .chip.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+  }
+</style>

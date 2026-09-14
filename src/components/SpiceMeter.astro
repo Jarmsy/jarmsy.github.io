@@ -1,20 +1,16 @@
 ---
 interface Props {
   level: number;
+  labels: [string, string, string];
 }
 
-const { level } = Astro.props;
-
-const labels: Record<number, string> = {
-  1: 'mild',
-  2: 'spicy',
-  3: 'will die on this hill',
-};
+const { level, labels } = Astro.props;
+const label = labels[level - 1] ?? labels[0];
 ---
 
-<span class="spice" title={labels[level]}>
-  {'🌶️'.repeat(level)}
-  <span class="spice-label">{labels[level]}</span>
+<span class="spice" title={label}>
+  <span aria-hidden="true">{'🌶️'.repeat(level)}</span>
+  <span class="spice-label">{label}</span>
 </span>
 
 <style>

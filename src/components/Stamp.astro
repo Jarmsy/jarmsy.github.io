@@ -1,0 +1,15 @@
+---
+// The logbook stamp: "as of Jul 2026", "updated Sep 2026".
+import { isoDate, monthYear } from '../lib/format';
+
+interface Props {
+  date: Date;
+  prefix?: string;
+  locale: string;
+  class?: string;
+}
+
+const { date, prefix = 'as of', locale, class: className } = Astro.props;
+---
+
+<time class:list={['label', className]} datetime={isoDate(date)}>{prefix} {monthYear(date, locale)}</time>
