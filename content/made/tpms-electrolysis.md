@@ -22,10 +22,10 @@ A PEM electrolyzer splits water into hydrogen and oxygen with electricity. Betwe
 
 The question our senior design team took on: can you design that sponge instead of just using whatever sintered metal comes off the shelf?
 
-We weren't starting from nothing. A paper published the previous fall had shown that 3D-printed TPMS lattices could outperform commercial sintered PTLs. That result gave us our baseline — the gyroid it used — and our question: if one of these surfaces beats the incumbent, do the others beat the gyroid?
+We weren't starting from nothing. A [paper published the previous fall](https://doi.org/10.1038/s41598-025-95399-8) had shown that 3D-printed gyroid lattices could outperform commercial sintered PTLs, and its best performer was a gyroid it called G10. That gave us our baseline — the same G10 — and our question: if one of these surfaces beats the incumbent, do the others beat the gyroid?
 
-<!-- Add the paper here when you have it: authors, title, journal, year, and a link.
-     Something like: *(See [Authors], "Title," Journal, 2025.)* -->
+<!-- Kaya, M. F. & Kıstı, M. "Innovative anode porous transport layers for polymer
+     electrolyte membrane water electrolyzers." Scientific Reports 15, 33751 (30 Sep 2025). -->
 
 ## What we made
 
