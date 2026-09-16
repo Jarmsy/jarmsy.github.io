@@ -112,6 +112,17 @@ filter keep bots out. To receive notes somewhere else, put that service's form
 URL in `site.yaml` → `inbox.action`; to pause the inbox, set `enabled: false`
 (the page then points people to email).
 
+### Spotify ("On repeat" on the Taste page)
+
+A live top-5-tracks widget, fetched from a small Netlify function
+(`netlify/functions/spotify-top-tracks.js`) so it updates without a rebuild.
+Needs three secrets set once in **Netlify → Site configuration → Environment
+variables** (never in this repo): `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`,
+`SPOTIFY_REFRESH_TOKEN`. If they're missing or Spotify errors, the section
+just doesn't show — nothing else on the page is affected. The refresh token
+doesn't expire on its own; if Spotify ever revokes it, redo the one-time
+authorization in `docs/spotify-setup.md`.
+
 ## Hosting
 
 The site is deployed by Netlify from the `main` branch on GitHub: every merge

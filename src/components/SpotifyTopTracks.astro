@@ -1,0 +1,149 @@
+---
+// Live top-5 tracks from Spotify, fetched client-side from a Netlify
+// function (netlify/functions/spotify-top-tracks.js) so it can update
+// without a rebuild. If the function isn't configured or Spotify errors,
+// this section just doesn't render — the rest of the page is unaffected.
+---
+
+<section class="spotify" id="on-repeat" data-spotify hidden>
+  <div class="head">
+    <h2>On repeat</h2>
+    <div class="range" role="group" aria-label="Time range">
+      <button type="button" class="chip active" data-range="short">last 4 weeks</button>
+      <button type="button" class="chip" data-range="medium">last 6 months</button>
+    </div>
+  </div>
+  <ol class="tracks" data-tracks></ol>
+  <p class="label note">From Spotify — updates automatically as I listen.</p>
+</section>
+
+<script>
+  const maybeSection = document.querySelector<HTMLElement>('[data-spotify]');
+  const maybeList = maybeSection?.querySelector<HTMLElement>('[data-tracks]');
+
+  if (maybeSection && maybeList) {
+    const section = maybeSection;
+    const list = maybeList;
+    const cache = new Map<string, unknown[]>();
+
+    async function load(range: string) {
+      if (cache.has(range)) return render(cache.get(range)!);
+      try {
+        const res = await fetch(`/.netlify/functions/spotify-top-tracks?range=${range}`);
+        if (!res.ok) throw new Error('not ok');
+        const { tracks } = await res.json();
+        if (!Array.isArray(tracks) || tracks.length === 0) throw new Error('empty');
+        cache.set(range, tracks);
+        render(tracks);
+        section.hidden = false;
+      } catch {
+        section.hidden = true;
+      }
+    }
+
+    function render(tracks: any[]) {
+      list.innerHTML = '';
+      for (const track of tracks) {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          ${track.cover ? `<img src="${track.cover}" alt="" width="48" height="48" loading="lazy" />` : ''}
+          <span class="info">
+            <a class="title" href="${track.link}" target="_blank" rel="noopener">${track.title}</a>
+            <span class="label by">${track.by}</span>
+          </span>
+        `;
+        list.appendChild(li);
+      }
+    }
+
+    section.querySelectorAll<HTMLButtonElement>('[data-range]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        section.querySelectorAll('.chip').forEach((c) => c.classList.toggle('active', c === btn));
+        load(btn.dataset.range!);
+      });
+    });
+
+    load('short');
+  }
+</script>
+
+<style>
+  .spotify {
+    margin-bottom: var(--space-5);
+    padding: var(--space-4);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  .head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-3);
+  }
+  .head h2 {
+    margin: 0;
+  }
+  .range {
+    display: flex;
+    gap: var(--space-2);
+  }
+  .chip {
+    font: inherit;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 999px;
+    padding: 0.2em 0.8em;
+    cursor: pointer;
+    transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  .chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .chip.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+  }
+  .tracks {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+  .tracks li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .tracks img {
+    border-radius: 4px;
+    flex: none;
+  }
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1em;
+    min-width: 0;
+  }
+  .title {
+    color: var(--text);
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .title:hover {
+    color: var(--accent);
+  }
+  .note {
+    margin: var(--space-3) 0 0;
+  }
+</style>
