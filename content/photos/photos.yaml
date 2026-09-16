@@ -1,20 +1,19 @@
 # Photos. Put the image file in this folder, then add an entry. The top of the list shows first.
-# Fields: src (required — the filename, e.g. ./over-madison.jpg), alt (required — describe the picture),
-#         caption, date, place — optional.
-src: ./Intensity.jpg
-alt: Intention
-caption: The setting sun shines through the trees on the bank of the Missippi, it's light sharpens what it passes by
-date: 08/22/2026
-place: Saint Paul, MN
+#
+# Each photo starts with "- " on its first line; the rest of its lines are indented two spaces.
+# Fields: src (required — the filename, exactly as in this folder, including the extension),
+#         alt (required — describe the picture for someone who can't see it),
+#         caption, date (written 2026-08-22), place — optional.
+#
+# Keep filenames lowercase with no spaces: the live server is case-sensitive, Windows isn't.
 
-src: ./Selfie_G5
-alt: Selfie on Canon G5 Powershot
-date: 07/31/2026
-# Example:
-# - src: ./over-madison.jpg
-#   alt: Lake Mendota from 3,000 feet, late afternoon
-#   caption: First solo cross-country.
-#   date: 2024-08-14
-#   place: Madison, WI
+- src: ./intensity.jpg
+  alt: Low sun through trees on the bank of the Mississippi, the light catching the branches
+  caption: The setting sun shines through the trees on the bank of the Mississippi; its light sharpens what it passes by.
+  date: 2026-08-22
+  place: Saint Paul, MN
 
-[]
+- src: ./selfie-g5.jpg
+  alt: Selfie on a Canon PowerShot G5
+  caption: Selfie on Canon powershot G5
+  date: 2026-07-31
