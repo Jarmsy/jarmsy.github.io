@@ -7,7 +7,7 @@ org: UW–Madison, ME 352 senior design with the HERD Lab
 role: Led the modeling and simulation
 tools: [nTop, ANSYS Fluent, a custom C UDF, SpaceClaim]
 outcome: The best lidinoid lattice let water through 3.7× more easily than the gyroid baseline, with 70% lower inlet pressure and 17% less oxygen trapped at the catalyst.
-# cover: ./tpms-electrolysis.png   # save the results figure next to this file with that name, then remove the leading #
+cover: ./tpms-gyroid-annotated.png   # swap for ./tpms-pathlines.png once that screenshot is saved here
 topics: [engineering, energy, simulation]
 featured: true
 ---
@@ -27,7 +27,17 @@ We built the PTL out of *triply periodic minimal surfaces* — TPMS lattices, th
 1. **Single-phase**: push water through slowly enough that the flow is purely viscous, measure the pressure drop, and back out the Darcy permeability and the *tortuosity* — how much longer the actual path through the pores is than a straight line.
 2. **Two-phase**: add the electrochemistry. I wrote a small C function that injects oxygen into a 50-micron band at the electrode face at the rate Faraday's law says it should for 10,000 A/m², and consumes water to match. Then watch where the gas goes.
 
-Every lidinoid beat the gyroid. The best one, at a 2.21 mm unit cell, had **3.7× the permeability** of the baseline, because its tortuosity was 24–35% lower — the pores run more directly through the plane. In two-phase, the same geometry showed **70% lower inlet pressure** and **17% less oxygen** sitting in the catalyst zone, with a more even pressure gradient from bottom to top.
+Every lidinoid beat the gyroid. The best one, at a 2.21 mm unit cell, had **3.7× the permeability** of the baseline, because its tortuosity was 24–35% lower — the pores run more directly through the plane.
+
+![Bar chart of permeability relative to the gyroid for five lidinoid variants, with tortuosity overlaid; every lidinoid is higher, Lidinoid 2.21 highest at 3.7×](./tpms-results-permeability.png)
+
+*Single-phase results: permeability relative to the gyroid (bars) and tortuosity (line). Lower tortuosity, higher permeability, every time.*
+
+In two-phase, the same geometry showed **70% lower inlet pressure** and **17% less oxygen** sitting in the catalyst zone, with a more even pressure gradient from bottom to top.
+
+![Three bar charts comparing the gyroid and Lidinoid 2.21 in two-phase: catalyst oxygen saturation 0.54% vs 0.45%, inlet pressure 9,971 vs 2,979 Pa, and pressure-gradient asymmetry 1.8× vs 1.4×](./tpms-results-two-phase.png)
+
+*Two-phase results with oxygen generation switched on. The cheap single-phase simulation had already predicted this ranking.*
 
 One honest footnote: the lidinoids are also more porous (39% vs 23%), so some of the gain is simply more hole. The interesting result is that even per unit of porosity they win, and that the cheap single-phase simulation predicted the ranking of the expensive two-phase one every time.
 
