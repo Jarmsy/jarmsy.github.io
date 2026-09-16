@@ -49,6 +49,6 @@ What if we applied those same questions to TikToks, tweets, YouTube clips, or ev
 - What could be missing? Alternative perspectives, testimonies, facts?
 - What questions didn't they ask?
 
-We don't need to disengage from the world to think clearly. We just need to pause before reacting. To recognize when we're letting one piece of content disproportionally change what we think (for more about this, research Bayesian Thinking). Most importantly, to cultivate a craving not just for justice or outrage, but for *truth*. 
+We don't need to disengage from the world to think clearly. We just need to pause before reacting. To recognize when we're letting one piece of content disproportionally change what we think ([check out Bayesian Thinking](https://www.youtube.com/watch?v=UrO__x4R-_M&t=64s)). Most importantly, to cultivate a craving not just for justice or outrage, but for *truth*. 
 
 Ragebait isn't going away. But if more of us learn to pause, to question, and to engage with clarity instead of reflex, we might begin to shift something deeper. We might begin to think more freely, more honestly. And in that, we reclaim something powerful — our ability to shape not just what we believe, but how we believe. Our ability to seek truth, not in opposition to others, but in curiosity beside them.
