@@ -1,7 +1,15 @@
 # Photos. Put the image file in this folder, then add an entry. The top of the list shows first.
 # Fields: src (required — the filename, e.g. ./over-madison.jpg), alt (required — describe the picture),
 #         caption, date, place — optional.
-#
+src: ./Intensity.jpg
+alt: Intention
+caption: The setting sun shines through the trees on the bank of the Missippi, it's light sharpens what it passes by
+date: 08/22/2026
+place: Saint Paul, MN
+
+src: ./Selfie_G5
+alt: Selfie on Canon G5 Powershot
+date: 07/31/2026
 # Example:
 # - src: ./over-madison.jpg
 #   alt: Lake Mendota from 3,000 feet, late afternoon
