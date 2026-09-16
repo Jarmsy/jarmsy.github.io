@@ -1,16 +1,22 @@
 ---
-// Live top-5 tracks from Spotify, fetched client-side from a Netlify
-// function (netlify/functions/spotify-top-tracks.js) so it can update
-// without a rebuild. If the function isn't configured or Spotify errors,
-// this section just doesn't render — the rest of the page is unaffected.
+// Live tracks from Spotify, fetched client-side from a Netlify function
+// (netlify/functions/spotify-top-tracks.js) so it can update without a
+// rebuild. If the function isn't configured or Spotify errors, this
+// section just doesn't render — the rest of the page is unaffected.
+// Shows a shuffled sample of the top 50 (not just a fixed top 5), so
+// there's plenty to discover.
+
 ---
 
 <section class="spotify" id="on-repeat" data-spotify hidden>
   <div class="head">
     <h2>On repeat</h2>
-    <div class="range" role="group" aria-label="Time range">
-      <button type="button" class="chip active" data-range="short">last 4 weeks</button>
-      <button type="button" class="chip" data-range="medium">last 6 months</button>
+    <div class="controls">
+      <div class="range" role="group" aria-label="Time range">
+        <button type="button" class="chip active" data-range="short">last 4 weeks</button>
+        <button type="button" class="chip" data-range="medium">last 6 months</button>
+      </div>
+      <button type="button" class="shuffle" data-shuffle>Shuffle</button>
     </div>
   </div>
   <ol class="tracks" data-tracks></ol>
@@ -18,16 +24,43 @@
 </section>
 
 <script>
+  import { weightedSample } from '../lib/sample';
+
+  const SHOW_COUNT = 5;
   const maybeSection = document.querySelector<HTMLElement>('[data-spotify]');
   const maybeList = maybeSection?.querySelector<HTMLElement>('[data-tracks]');
 
   if (maybeSection && maybeList) {
     const section = maybeSection;
     const list = maybeList;
-    const cache = new Map<string, unknown[]>();
+    const shuffleBtn = section.querySelector<HTMLButtonElement>('[data-shuffle]');
+    const cache = new Map<string, any[]>();
+    let currentRange = 'short';
+
+    function render(pool: any[]) {
+      list.innerHTML = '';
+      // Gentle weighting: rank runs 1–50, so using it raw would make the
+      // most-played track ~50x likelier than the least-played and the bottom
+      // half would almost never surface. 1 + rank/25 keeps it to about 3x,
+      // which favours the heavy rotation without hiding the deep cuts.
+      const picked = weightedSample(pool, SHOW_COUNT, (t: any) => 1 + (t.rank ?? 1) / 25);
+      for (const track of picked) {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          ${track.cover ? `<img src="${track.cover}" alt="" width="48" height="48" loading="lazy" />` : ''}
+          <span class="info">
+            <a class="title" href="${track.link}" target="_blank" rel="noopener">${track.title}</a>
+            <span class="label by">${track.by}</span>
+          </span>
+        `;
+        list.appendChild(li);
+      }
+    }
 
     async function load(range: string) {
-      if (cache.has(range)) return render(cache.get(range)!);
+      currentRange = range;
+      const cached = cache.get(range);
+      if (cached) return render(cached);
       try {
         const res = await fetch(`/.netlify/functions/spotify-top-tracks?range=${range}`);
         if (!res.ok) throw new Error('not ok');
@@ -41,26 +74,16 @@
       }
     }
 
-    function render(tracks: any[]) {
-      list.innerHTML = '';
-      for (const track of tracks) {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          ${track.cover ? `<img src="${track.cover}" alt="" width="48" height="48" loading="lazy" />` : ''}
-          <span class="info">
-            <a class="title" href="${track.link}" target="_blank" rel="noopener">${track.title}</a>
-            <span class="label by">${track.by}</span>
-          </span>
-        `;
-        list.appendChild(li);
-      }
-    }
-
     section.querySelectorAll<HTMLButtonElement>('[data-range]').forEach((btn) => {
       btn.addEventListener('click', () => {
         section.querySelectorAll('.chip').forEach((c) => c.classList.toggle('active', c === btn));
         load(btn.dataset.range!);
       });
+    });
+
+    shuffleBtn?.addEventListener('click', () => {
+      const pool = cache.get(currentRange);
+      if (pool) render(pool);
     });
 
     load('short');
@@ -75,6 +98,9 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
   }
+  .spotify[hidden] {
+    display: none;
+  }
   .head {
     display: flex;
     align-items: baseline;
@@ -86,11 +112,18 @@
   .head h2 {
     margin: 0;
   }
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
   .range {
     display: flex;
     gap: var(--space-2);
   }
-  .chip {
+  .chip,
+  .shuffle {
     font: inherit;
     font-family: var(--font-mono);
     font-size: var(--step--1);
@@ -102,7 +135,8 @@
     cursor: pointer;
     transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
   }
-  .chip:hover {
+  .chip:hover,
+  .shuffle:hover {
     border-color: var(--accent);
     color: var(--accent);
   }

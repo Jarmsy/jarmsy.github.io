@@ -1,4 +1,8 @@
-// Serverless function: returns John's top Spotify tracks.
+// Serverless function: returns a pool of John's top 50 Spotify tracks (not
+// just a fixed top 5) so the widget can shuffle through more than a
+// handful — see SpotifyTopTracks.astro, which picks a weighted random
+// sample favouring the most-played but gives every track in the pool
+// a real chance to show.
 //
 // Needs three secrets set in the Netlify dashboard (Site configuration →
 // Environment variables) — never in this repo:
@@ -39,17 +43,22 @@ export default async (req) => {
   try {
     const accessToken = await getAccessToken();
     const res = await fetch(
-      `https://api.spotify.com/v1/me/top/tracks?time_range=${range}&limit=5`,
+      // 50 is the most Spotify returns in one request — a deep pool for the shuffle.
+      `https://api.spotify.com/v1/me/top/tracks?time_range=${range}&limit=50`,
       { headers: { Authorization: `Bearer ${accessToken}` } },
     );
     if (!res.ok) throw new Error(`Spotify top-tracks request failed: ${res.status}`);
     const data = await res.json();
 
-    const tracks = data.items.map((track) => ({
+    // rank: 1 for the most-played track, counting down — used to weight
+    // the widget's shuffle so heavier plays are more likely without
+    // making the rest of the pool unreachable.
+    const tracks = data.items.map((track, index) => ({
       title: track.name,
       by: track.artists.map((a) => a.name).join(', '),
       link: track.external_urls.spotify,
       cover: track.album.images.at(-1)?.url ?? null, // smallest image
+      rank: data.items.length - index,
     }));
 
     return new Response(JSON.stringify({ tracks }), {

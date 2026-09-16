@@ -29,6 +29,8 @@ const { username, topCount } = Astro.props;
 )}
 
 <script>
+  import { weightedSample } from '../lib/sample';
+
   function stars(rating: number | null) {
     if (rating === null) return '';
     const full = Math.floor(rating);
@@ -47,19 +49,6 @@ const { username, topCount } = Astro.props;
     `;
   }
 
-  // Weighted random sample, without replacement, favouring higher ratings —
-  // not a fixed "top N," so every reviewed film has some chance of showing,
-  // not just whichever ones are tied for the highest rating. This is the
-  // "A-ES" algorithm: each item gets a random key raised by 1/weight, and
-  // the highest keys win.
-  function sample<T extends { rating: number | null }>(pool: T[], count: number): T[] {
-    return pool
-      .map((item) => ({ item, key: Math.random() ** (1 / Math.max(item.rating ?? 1, 0.1)) }))
-      .sort((a, b) => b.key - a.key)
-      .slice(0, count)
-      .map(({ item }) => item);
-  }
-
   const section = document.querySelector<HTMLElement>('[data-letterboxd]');
   if (section) {
     const recentEl = section.querySelector<HTMLElement>('[data-recent]');
@@ -70,7 +59,7 @@ const { username, topCount } = Astro.props;
 
     function renderTop(pool: any[]) {
       if (!topEl) return;
-      const picked = sample(pool, topCount);
+      const picked = weightedSample(pool, topCount, (e) => e.rating ?? 1);
       topEl.innerHTML = picked.map((e) => `<li>${card(e)}</li>`).join('');
     }
 
