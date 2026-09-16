@@ -7,14 +7,16 @@ org: UW–Madison, ME 352 senior design with the HERD Lab
 role: Led the modeling and simulation
 tools: [nTop, ANSYS Fluent, a custom C UDF, SpaceClaim]
 outcome: The best lidinoid lattice let water through 3.7× more easily than the gyroid baseline, with 70% lower inlet pressure and 17% less oxygen trapped at the catalyst.
-cover: ./tpms-gyroid-annotated.png   # swap for ./tpms-pathlines.png once that screenshot is saved here
+cover: ./tpms-pathlines.png
 topics: [engineering, energy, simulation]
 featured: true
 ---
 
 <!-- Draft written from your handoff guide. Things to check: teammates and advisor
      you'd want to name, whether the geometries were designed in nTop (the guide
-     says so), and the two "why" sentences in the first section. -->
+     says so), and the two "why" sentences in the first section.
+     The cover is the pathlines render: colours are Fluent's particle IDs (they
+     just tell streamlines apart), which is why the caption doesn't read them. -->
 
 A PEM electrolyzer splits water into hydrogen and oxygen with electricity. Between the electrode where the reaction happens and the channel that feeds it sits a thin porous layer — the *porous transport layer*, or PTL — that has to do two things at once: let water in, and let the oxygen bubbles that form at the electrode get out. If the bubbles can't leave, they sit on the catalyst and block the water, and the whole thing gets less efficient the harder you push it.
 
@@ -22,7 +24,17 @@ The question our senior design team took on: can you design that sponge instead 
 
 ## What we made
 
-We built the PTL out of *triply periodic minimal surfaces* — TPMS lattices, the kind of smooth, self-supporting geometry you can 3D-print but not machine. The baseline was a gyroid (called G10 in our runs). Against it we designed a family of **lidinoid** lattices at different unit-cell sizes, and then simulated all of them in ANSYS Fluent two ways:
+We built the PTL out of *triply periodic minimal surfaces* — TPMS lattices, the kind of smooth, self-supporting geometry you can 3D-print but not machine. The baseline was a gyroid (called G10 in our runs). Against it we designed a family of **lidinoid** lattices at different unit-cell sizes.
+
+![Meshed unit cell of the gyroid: one continuous saddle surface curving in every direction, with round openings](./tpms-gyroid-mesh.png)
+
+*The gyroid baseline, meshed for simulation. Water enters at the bottom face and leaves at the top; the four sides wrap around to their opposites, so the cell behaves as one tile of an infinite sheet.*
+
+![Meshed unit cell of a lidinoid: distinct wavy layers stacked up the cell, connected by curved struts](./tpms-lidinoid-mesh.png)
+
+*A lidinoid unit cell. Same boundary conditions; a visibly different way of dividing up the space.*
+
+We simulated all of them in ANSYS Fluent two ways:
 
 1. **Single-phase**: push water through slowly enough that the flow is purely viscous, measure the pressure drop, and back out the Darcy permeability and the *tortuosity* — how much longer the actual path through the pores is than a straight line.
 2. **Two-phase**: add the electrochemistry. I wrote a small C function that injects oxygen into a 50-micron band at the electrode face at the rate Faraday's law says it should for 10,000 A/m², and consumes water to match. Then watch where the gas goes.
@@ -45,6 +57,7 @@ One honest footnote: the lidinoids are also more porous (39% vs 23%), so some of
 
 The numbers above are the clean version. The semester was mostly the unclean version.
 
+- **Three multiphase models before one worked.** The sharp-interface model (VOF) crashed on a single degenerate mesh cell — Courant number over 250 — that the geometry tool had left behind. The mixture model produced no sustained flow at all, because without gravity there was nothing driving the phases apart. The Eulerian dispersed-bubble model is what finally ran, and it's the only one that matched the physics of small bubbles in a pore.
 - **We overestimated permeability by a factor of a thousand** for weeks. Fluent reports mass flow in kg/s; Darcy's law wants volume flow in m³/s; water's density is 1000. One missing division, every lidinoid result wrong by exactly the same factor, and nothing in the software says a word.
 - **Fluent will tell you it has converged after one iteration** if the starting residuals happen to be below its threshold. We learned to ignore the "Converged" message and check that mass in equalled mass out to within 0.01%.
 - **The metric we planned to compare on was meaningless.** "Oxygen escape efficiency" — gas out over gas generated — is ~100% for *any* converged solution, because that's what conservation of mass means. It can't distinguish a good PTL from a bad one. We switched to local saturation and pressure.
