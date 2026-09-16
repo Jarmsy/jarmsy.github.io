@@ -5,7 +5,7 @@ import Article from '../../layouts/Article.astro';
 import { getSite } from '../../lib/site';
 
 export async function getStaticPaths() {
-  const items = await getCollection('work');
+  const items = await getCollection('made');
   return items.map((item) => ({ params: { slug: item.id }, props: { item } }));
 }
 
@@ -25,12 +25,11 @@ const facts = [
 <Article
   title={data.title}
   description={data.summary}
-  eyebrow="case study"
   date={data.date}
   topics={data.topics}
   locale={site.dates.locale}
-  backHref="/work/"
-  backLabel="Work"
+  backHref="/made/"
+  backLabel="Made"
 >
   {data.cover && <Image src={data.cover} alt="" width={1200} class="cover" />}
   {facts.length > 0 && (

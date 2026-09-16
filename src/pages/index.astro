@@ -7,7 +7,7 @@ import NowStrip from '../components/NowStrip.astro';
 import SectionHead from '../components/SectionHead.astro';
 import TakeCard from '../components/TakeCard.astro';
 import WritingItem from '../components/WritingItem.astro';
-import WorkCard from '../components/WorkCard.astro';
+import MadeCard from '../components/MadeCard.astro';
 import QuestionItem from '../components/QuestionItem.astro';
 import { getSite } from '../lib/site';
 import { byDateDesc } from '../lib/format';
@@ -17,7 +17,7 @@ const locale = site.dates.locale;
 
 const takes = (await getCollection('takes', ({ data }) => !data.retired)).sort(byDateDesc);
 const writing = (await getCollection('writing', ({ data }) => data.status !== 'draft')).sort(byDateDesc);
-const work = (await getCollection('work'))
+const made = (await getCollection('made'))
   .sort(byDateDesc)
   .sort((a, b) => Number(b.data.featured) - Number(a.data.featured));
 const questions = await getCollection('questions');
@@ -59,11 +59,11 @@ const currently = (
             {writing.slice(0, count).map((post) => <WritingItem post={post} locale={locale} />)}
           </>
         );
-      case 'work':
-        return work.length > 0 && (
+      case 'made':
+        return made.length > 0 && (
           <>
-            <SectionHead title="Work" href="/work/" more="all work" />
-            {work.slice(0, count).map((item) => <WorkCard item={item} />)}
+            <SectionHead title="Made" href="/made/" more="everything I've made" />
+            {made.slice(0, count).map((item) => <MadeCard item={item} />)}
           </>
         );
       case 'taste':

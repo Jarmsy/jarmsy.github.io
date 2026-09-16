@@ -1,5 +1,5 @@
 ---
-// A single piece of writing or a case study: header, stamps, then the prose.
+// A single piece of writing or a made-thing: header, stamps, then the prose.
 import Base from './Base.astro';
 import Stamp from '../components/Stamp.astro';
 import TopicTags from '../components/TopicTags.astro';
@@ -8,7 +8,7 @@ import { isoDate, longDate } from '../lib/format';
 interface Props {
   title: string;
   description?: string;
-  eyebrow?: string;      // "essay", "note", "case study"
+  eyebrow?: string;      // "essay", "note", "made"
   date: Date;
   updated?: Date;
   status?: 'evergreen' | 'dated' | 'draft';

@@ -68,7 +68,7 @@ Applied: *Ragebait and the Architecture of Influence* publishes with a light edi
 | About | The story told once, well. Values. The pivot. | a paragraph | yearly | professors, friends |
 | Now | This season, dated. The heartbeat. | five bullets | quarterly | colleagues |
 | Writing | Essays and Notes in one place, marked by kind and status | a post | notes monthly · essays yearly | everyone |
-| Work | Research and projects as case studies: problem, what he did, what happened | a case study | per project | recruiters |
+| Made | Things he has built, told as stories (what it was, what went wrong, what it taught him) — replaced the "Work / case studies" idea on 2026-09-16 because case studies read as interview material and the CV page now covers the recruiter audience | a story, ideally with a picture | per project | everyone |
 | Takes | Short opinions with spice and an as-of date; retire when he changes his mind | one sentence | whenever | friends, everyone |
 | Taste | Books, film, music, shows. One line each. Links out. | one line | weekly | friends |
 | CV | Web page plus print-ready PDF | — | per change | recruiters |
@@ -116,8 +116,8 @@ Pyszczynski, Festinger). Film, music, shows: John's.
 /now             this season, dated
 /writing         essays + notes, filter by kind and topic
 /writing/<slug>
-/work            case studies
-/work/<slug>
+/made            things made, as stories (was /work — redirected)
+/made/<slug>
 /takes
 /taste           books · film · music · shows
 /photos
@@ -127,14 +127,14 @@ Pyszczynski, Festinger). Film, music, shows: John's.
 /rss.xml         /sitemap-index.xml
 ```
 
-Nav (5): About · Writing · Work · Takes · Taste
+Nav (5): About · Writing · Made · Takes · Taste
 Footer: Now · Photos · Questions · CV · Colophon · RSS · Email
 Topics cut across rooms and produce topic pages for free.
 
 Built 2026-09-13. How the structure is held together:
 - `site.yaml` owns identity, nav, footer, profile links, home-page composition, theme default,
   Takes labels. `src/styles/tokens.css` owns every colour, font and size. Nothing else declares them.
-- `content/` owns every word: markdown per essay/take/case study, small YAML lists for taste,
+- `content/` owns every word: markdown per essay/take/thing made, small YAML lists for taste,
   questions and photos, one markdown file per plain page (a new file there is a new page).
 - Every file is schema-checked at build time with plain-English errors; `check.cmd` runs the check.
 - A file whose name starts with `_` is ignored — drafts and examples live in plain sight.
@@ -186,7 +186,7 @@ Open:
 
 1. Brief agreed (this document). Revise as decisions land. ✔
 2. Structure first (John's call, 2026-09-13): every room, config-driven, self-editable. ✔
-3. Real content: About, Now, five to ten takes, the case studies from the CV.
+3. Real content: About, Now, five to ten takes, things made (with pictures) — not case studies.
 4. Design pass on the built structure: mockups of the home page and one room; refine tokens,
    signature elements (monogram, accent), photography once it exists.
 5. Polish; then domain and hosting when John is ready.

@@ -24,7 +24,7 @@ url: https://johnharms.netlify.app   # the site's address (RSS + sitemap use it)
 nav:
   - { label: About,   href: /about/ }
   - { label: Writing, href: /writing/ }
-  - { label: Work,    href: /work/ }
+  - { label: Made,    href: /made/ }
   - { label: Takes,   href: /takes/ }
   - { label: Taste,   href: /taste/ }
 
@@ -48,13 +48,13 @@ links:
 
 # --- Home page -----------------------------------------------
 # Sections on the home page, top to bottom.
-# Valid sections: now, takes, writing, work, taste, questions
+# Valid sections: now, takes, writing, made, taste, questions
 # `count` = how many items to show (ignored by `now`).
 home:
   - { section: now }
   - { section: takes,   count: 3 }
   - { section: writing, count: 3 }
-  - { section: work,    count: 2 }
+  - { section: made,    count: 2 }
 
 # --- Appearance ----------------------------------------------
 theme:

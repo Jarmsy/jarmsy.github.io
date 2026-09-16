@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Empty from '../../components/Empty.astro';
+import MadeCard from '../../components/MadeCard.astro';
+import { byDateDesc } from '../../lib/format';
+
+const items = (await getCollection('made'))
+  .sort(byDateDesc)
+  .sort((a, b) => Number(b.data.featured) - Number(a.data.featured));
+---
+
+<Base title="Made" description="Things I've built, and what building them taught me.">
+  <h1>Made</h1>
+  <p class="muted">Things I've built — told the way I'd tell a friend, including the parts that went wrong.</p>
+
+  {items.length === 0 ? (
+    <Empty what="projects" where="content/made/ (copy _example.md to start)" />
+  ) : (
+    items.map((item) => <MadeCard item={item} />)
+  )}
+</Base>

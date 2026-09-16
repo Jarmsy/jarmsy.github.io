@@ -4,32 +4,32 @@ import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import TakeCard from '../../components/TakeCard.astro';
 import WritingItem from '../../components/WritingItem.astro';
-import WorkCard from '../../components/WorkCard.astro';
+import MadeCard from '../../components/MadeCard.astro';
 import QuestionItem from '../../components/QuestionItem.astro';
 import { getSite } from '../../lib/site';
 import { byDateDesc } from '../../lib/format';
 
 export async function getStaticPaths() {
-  const [writing, takes, work, questions] = await Promise.all([
+  const [writing, takes, made, questions] = await Promise.all([
     getCollection('writing', ({ data }) => data.status !== 'draft'),
     getCollection('takes'),
-    getCollection('work'),
+    getCollection('made'),
     getCollection('questions'),
   ]);
-  const topics = new Set([...writing, ...takes, ...work, ...questions].flatMap((e) => e.data.topics));
+  const topics = new Set([...writing, ...takes, ...made, ...questions].flatMap((e) => e.data.topics));
   return [...topics].map((topic) => ({
     params: { topic },
     props: {
       writing: writing.filter((e) => e.data.topics.includes(topic)).sort(byDateDesc),
       takes: takes.filter((e) => e.data.topics.includes(topic) && !e.data.retired).sort(byDateDesc),
-      work: work.filter((e) => e.data.topics.includes(topic)).sort(byDateDesc),
+      made: made.filter((e) => e.data.topics.includes(topic)).sort(byDateDesc),
       questions: questions.filter((e) => e.data.topics.includes(topic)),
     },
   }));
 }
 
 const { topic } = Astro.params;
-const { writing, takes, work, questions } = Astro.props;
+const { writing, takes, made, questions } = Astro.props;
 const site = await getSite();
 const locale = site.dates.locale;
 ---
@@ -50,10 +50,10 @@ const locale = site.dates.locale;
       {takes.map((take) => <TakeCard take={take} spiceLabels={site.takes.spice} locale={locale} />)}
     </section>
   )}
-  {work.length > 0 && (
+  {made.length > 0 && (
     <section>
-      <h2>Work</h2>
-      {work.map((item) => <WorkCard item={item} />)}
+      <h2>Made</h2>
+      {made.map((item) => <MadeCard item={item} />)}
     </section>
   )}
   {questions.length > 0 && (

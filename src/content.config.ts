@@ -46,8 +46,8 @@ const settings = defineCollection({
     home: z
       .array(
         z.object({
-          section: z.enum(['now', 'takes', 'writing', 'work', 'taste', 'questions'], {
-            error: 'home section must be one of: now, takes, writing, work, taste, questions',
+          section: z.enum(['now', 'takes', 'writing', 'made', 'taste', 'questions'], {
+            error: 'home section must be one of: now, takes, writing, made, taste, questions',
           }),
           count: z.number().int().positive({ error: 'count must be a whole number, 1 or more' }).default(3),
         }),
@@ -134,9 +134,11 @@ const takes = defineCollection({
   }),
 });
 
-// ---------- content/work/*.md — case studies ------------------
-const work = defineCollection({
-  loader: allowEmpty(glob({ pattern: MARKDOWN, base: './content/work' })),
+// ---------- content/made/*.md — things John has made -----------
+// Told as stories, not case studies: what it was, why, what happened,
+// what it taught him. The extra fields are context, all optional.
+const made = defineCollection({
+  loader: allowEmpty(glob({ pattern: MARKDOWN, base: './content/made' })),
   schema: ({ image }) =>
     z.object({
       title: z.string({ error: 'title is required' }),
@@ -200,7 +202,7 @@ export const collections = {
   pages,
   writing,
   takes,
-  work,
+  made,
   books,
   creators,
   questions,

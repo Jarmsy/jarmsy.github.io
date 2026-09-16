@@ -6,7 +6,7 @@ site takes care of the rest. Nothing here needs a developer for day-to-day use.
 ## The two things to know
 
 1. **Everything you write lives in `content/`.** One markdown file per essay,
-   take, or case study; one short YAML list for books, creators, questions and
+   take, or thing you made; one short YAML list for books, creators, questions and
    photos. (Films and music are covered live by the Letterboxd and Spotify
    widgets on the Taste page — see below — so there's no manual list for those.)
 2. **Everything about the site itself lives in two files.** `site.yaml` for
@@ -42,7 +42,7 @@ extensions (Astro, YAML) — they flag mistakes as you type.
 | Change colours, fonts, text size, line length, spacing | `src/styles/tokens.css` |
 | Write an essay or a note | new `.md` file in `content/writing/` |
 | Add a take | new `.md` file in `content/takes/` |
-| Add a case study | copy `content/work/_example.md`, rename it, fill it in |
+| Add something you made | copy `content/made/_example.md`, rename it, fill it in — tell it like a story, not a résumé |
 | Add a book, or a creator you admire (channel, podcast, writer) | one entry at the top of `content/taste/books.yaml` or `creators.yaml` |
 | Add a question | one entry at the top of `content/questions.yaml` |
 | Add a photo | image into `content/photos/`, one entry in `photos.yaml` |
@@ -149,7 +149,7 @@ and sitemap use it.
 site.yaml              settings — the "what and where" dials
 content/               everything you write
   pages/               about, now, colophon, cv (one page per file)
-  writing/  takes/  work/
+  writing/  takes/  made/
   taste/  questions.yaml  photos/
 src/
   styles/tokens.css    the "how it looks" dials
