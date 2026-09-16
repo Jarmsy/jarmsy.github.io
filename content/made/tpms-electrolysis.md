@@ -22,6 +22,11 @@ A PEM electrolyzer splits water into hydrogen and oxygen with electricity. Betwe
 
 The question our senior design team took on: can you design that sponge instead of just using whatever sintered metal comes off the shelf?
 
+We weren't starting from nothing. A paper published the previous fall had shown that 3D-printed TPMS lattices could outperform commercial sintered PTLs. That result gave us our baseline — the gyroid it used — and our question: if one of these surfaces beats the incumbent, do the others beat the gyroid?
+
+<!-- Add the paper here when you have it: authors, title, journal, year, and a link.
+     Something like: *(See [Authors], "Title," Journal, 2025.)* -->
+
 ## What we made
 
 We built the PTL out of *triply periodic minimal surfaces* — TPMS lattices, the kind of smooth, self-supporting geometry you can 3D-print but not machine. Each repeating unit cell is between 1 and about 2 mm in width, depth and height. The baseline was a gyroid (called G10 in our runs). Against it we designed a family of **lidinoid** lattices at different unit-cell sizes within that range.
