@@ -21,11 +21,11 @@ const work = (await getCollection('work'))
   .sort(byDateDesc)
   .sort((a, b) => Number(b.data.featured) - Number(a.data.featured));
 const questions = await getCollection('questions');
+// Films and music are covered live by the Letterboxd and Spotify widgets on
+// the Taste page — no manual list for those, so no home-page line for them either.
 const currently = (
   await Promise.all([
     getCollection('books').then((b) => ['Reading', b[0]] as const),
-    getCollection('films').then((f) => ['Watched', f[0]] as const),
-    getCollection('music').then((m) => ['On repeat', m[0]] as const),
     getCollection('shows').then((s) => ['Watching', s[0]] as const),
   ])
 ).filter(([, item]) => item);

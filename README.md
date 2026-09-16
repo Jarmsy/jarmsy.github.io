@@ -6,8 +6,9 @@ site takes care of the rest. Nothing here needs a developer for day-to-day use.
 ## The two things to know
 
 1. **Everything you write lives in `content/`.** One markdown file per essay,
-   take, or case study; one short YAML list for books, films, music, shows,
-   questions and photos.
+   take, or case study; one short YAML list for books, shows, questions and
+   photos. (Films and music are covered live by the Letterboxd and Spotify
+   widgets on the Taste page — see below — so there's no manual list for those.)
 2. **Everything about the site itself lives in two files.** `site.yaml` for
    *what and where* (name, motto, nav, footer, home-page sections) and
    `src/styles/tokens.css` for *how it looks* (colours, fonts, sizes).
@@ -42,7 +43,7 @@ extensions (Astro, YAML) — they flag mistakes as you type.
 | Write an essay or a note | new `.md` file in `content/writing/` |
 | Add a take | new `.md` file in `content/takes/` |
 | Add a case study | copy `content/work/_example.md`, rename it, fill it in |
-| Add a book, film, album, or show | one entry at the top of `content/taste/<kind>.yaml` |
+| Add a book or show | one entry at the top of `content/taste/books.yaml` or `shows.yaml` |
 | Add a question | one entry at the top of `content/questions.yaml` |
 | Add a photo | image into `content/photos/`, one entry in `photos.yaml` |
 | Update Now / About / Colophon / CV | `content/pages/<name>.md` |
@@ -116,7 +117,8 @@ URL in `site.yaml` → `inbox.action`; to pause the inbox, set `enabled: false`
 
 A live top-5-tracks widget, fetched from a small Netlify function
 (`netlify/functions/spotify-top-tracks.js`) so it updates without a rebuild.
-Needs three secrets set once in **Netlify → Site configuration → Environment
+This is the site's Music section — there's no manual `music.yaml`. Needs
+three secrets set once in **Netlify → Site configuration → Environment
 variables** (never in this repo): `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`,
 `SPOTIFY_REFRESH_TOKEN`. If they're missing or Spotify errors, the section
 just doesn't show — nothing else on the page is affected. The refresh token
@@ -127,11 +129,12 @@ authorization in `docs/spotify-setup.md`.
 
 A live widget, fetched from a small Netlify function
 (`netlify/functions/letterboxd-reviews.js`) that reads your public diary RSS
-feed — no account, no secrets, since Letterboxd's feed is public. Set your
-username in `site.yaml` → `letterboxd.username`; leave it blank to turn the
-widget off. `letterboxd.top_count` controls how many "top reviews" show (only
-entries where you actually wrote something are eligible, ranked by your star
-rating). If the feed can't be reached, the section just doesn't show.
+feed — no account, no secrets, since Letterboxd's feed is public. This is the
+site's Films section — there's no manual `films.yaml`. Set your username in
+`site.yaml` → `letterboxd.username`; leave it blank to turn the widget off.
+`letterboxd.top_count` controls how many "top reviews" show (only entries
+where you actually wrote something are eligible, ranked by your star rating).
+If the feed can't be reached, the section just doesn't show.
 
 ## Hosting
 

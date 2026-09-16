@@ -154,7 +154,10 @@ const work = defineCollection({
     }),
 });
 
-// ---------- content/taste/*.yaml — books, films, music, shows --
+// ---------- content/taste/*.yaml — books, shows ----------------
+// (films and music are covered live by the Letterboxd and Spotify
+// widgets on the Taste page — see src/components/LetterboxdReviews.astro
+// and SpotifyTopTracks.astro — so there's no manual list for those.)
 const tasteItem = z.object({
   title: z.string({ error: 'each entry needs a title' }),
   by: z.string().optional(),
@@ -165,8 +168,6 @@ const tasteItem = z.object({
 });
 
 const books = defineCollection({ loader: yamlList('content/taste/books.yaml'), schema: tasteItem });
-const films = defineCollection({ loader: yamlList('content/taste/films.yaml'), schema: tasteItem });
-const music = defineCollection({ loader: yamlList('content/taste/music.yaml'), schema: tasteItem });
 const shows = defineCollection({ loader: yamlList('content/taste/shows.yaml'), schema: tasteItem });
 
 // ---------- content/questions.yaml ----------------------------
@@ -201,8 +202,6 @@ export const collections = {
   takes,
   work,
   books,
-  films,
-  music,
   shows,
   questions,
   photos,

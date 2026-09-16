@@ -12,7 +12,7 @@ const { username, topCount } = Astro.props;
 ---
 
 {username && (
-  <section class="letterboxd" data-letterboxd data-username={username} data-top-count={topCount} hidden>
+  <section class="letterboxd" id="last-watched" data-letterboxd data-username={username} data-top-count={topCount} hidden>
     <div class="recent">
       <h2>Last watched</h2>
       <div class="card" data-recent></div>
@@ -21,7 +21,7 @@ const { username, topCount } = Astro.props;
       <h2>Top reviews lately</h2>
       <ol class="list" data-top></ol>
     </div>
-    <p class="label note">From my [Letterboxd](https://letterboxd.com/harmsyjohn/).</p>
+    <p class="label note">From my <a href={`https://letterboxd.com/${username}/`} target="_blank" rel="noopener noreferrer">Letterboxd</a>.</p>
   </section>
 )}
 
