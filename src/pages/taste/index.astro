@@ -3,7 +3,10 @@ import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import TasteList from '../../components/TasteList.astro';
 import SpotifyTopTracks from '../../components/SpotifyTopTracks.astro';
+import LetterboxdReviews from '../../components/LetterboxdReviews.astro';
+import { getSite } from '../../lib/site';
 
+const site = await getSite();
 const [books, films, music, shows] = await Promise.all([
   getCollection('books'),
   getCollection('films'),
@@ -27,6 +30,7 @@ const sections = [
   </nav>
 
   <SpotifyTopTracks />
+  <LetterboxdReviews username={site.letterboxd.username} topCount={site.letterboxd.top_count} />
 
   {sections.map((s) => <TasteList title={s.title} items={s.items} file={s.file} />)}
 </Base>

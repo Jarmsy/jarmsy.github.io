@@ -1,0 +1,142 @@
+---
+// Live Letterboxd activity, fetched client-side from a Netlify function
+// (netlify/functions/letterboxd-reviews.js) so it updates without a
+// rebuild. If the function errors or no username is set, this just
+// doesn't render — the rest of the page is unaffected.
+interface Props {
+  username: string;
+  topCount: number;
+}
+
+const { username, topCount } = Astro.props;
+---
+
+{username && (
+  <section class="letterboxd" data-letterboxd data-username={username} data-top-count={topCount} hidden>
+    <div class="recent">
+      <h2>Last watched</h2>
+      <div class="card" data-recent></div>
+    </div>
+    <div class="top">
+      <h2>Top reviews lately</h2>
+      <ol class="list" data-top></ol>
+    </div>
+    <p class="label note">From Letterboxd — updates automatically as I log films.</p>
+  </section>
+)}
+
+<script>
+  function stars(rating: number | null) {
+    if (rating === null) return '';
+    const full = Math.floor(rating);
+    const half = rating % 1 >= 0.5;
+    return '★'.repeat(full) + (half ? '½' : '');
+  }
+
+  function card(entry: any): string {
+    return `
+      ${entry.poster ? `<img src="${entry.poster}" alt="" loading="lazy" />` : ''}
+      <div class="info">
+        <a class="title" href="${entry.link}" target="_blank" rel="noopener">${entry.title}${entry.year ? ` (${entry.year})` : ''}</a>
+        ${entry.rating !== null ? `<span class="rating" aria-label="${entry.rating} of 5 stars">${stars(entry.rating)}</span>` : ''}
+        ${entry.review ? `<p class="review">${entry.review}</p>` : ''}
+      </div>
+    `;
+  }
+
+  const section = document.querySelector<HTMLElement>('[data-letterboxd]');
+  if (section) {
+    const recent = section.querySelector<HTMLElement>('[data-recent]');
+    const top = section.querySelector<HTMLElement>('[data-top]');
+    const username = section.dataset.username!;
+    const topCount = section.dataset.topCount ?? '3';
+
+    fetch(`/.netlify/functions/letterboxd-reviews?username=${encodeURIComponent(username)}&top=${topCount}`)
+      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then(({ mostRecent, topReviews }) => {
+        if (!mostRecent) throw new Error('empty');
+        if (recent) recent.innerHTML = card(mostRecent);
+        if (top) {
+          if (topReviews?.length) {
+            top.innerHTML = topReviews.map((e: any) => `<li>${card(e)}</li>`).join('');
+          } else {
+            section.querySelector('.top')?.remove();
+          }
+        }
+        section.hidden = false;
+      })
+      .catch(() => {
+        section.hidden = true;
+      });
+  }
+</script>
+
+<style>
+  .letterboxd {
+    margin-bottom: var(--space-5);
+    padding: var(--space-4);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    display: grid;
+    gap: var(--space-4);
+  }
+  .letterboxd[hidden] {
+    display: none;
+  }
+  .letterboxd h2 {
+    font-size: var(--step-0);
+    margin: 0 0 var(--space-2);
+  }
+  .card,
+  .list li {
+    display: flex;
+    gap: var(--space-3);
+  }
+  .card :global(img),
+  .list :global(img) {
+    width: 3.5rem;
+    height: auto;
+    border-radius: 4px;
+    flex: none;
+  }
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+    min-width: 0;
+  }
+  .title {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .title:hover {
+    color: var(--accent);
+  }
+  .rating {
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    font-size: var(--step--1);
+  }
+  .review {
+    margin: 0.2em 0 0;
+    color: var(--text-muted);
+    font-size: var(--step--1);
+    text-wrap: pretty;
+  }
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+  .list li + li {
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border);
+  }
+  .note {
+    margin: 0;
+  }
+</style>

@@ -81,6 +81,16 @@ const settings = defineCollection({
           .default(''),
       })
       .prefault({}),
+    letterboxd: z
+      .object({
+        username: z.string().default(''),
+        top_count: z
+          .number()
+          .int()
+          .positive({ error: 'letterboxd.top_count must be a whole number, 1 or more' })
+          .default(3),
+      })
+      .prefault({}),
   }),
 });
 

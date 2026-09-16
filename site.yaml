@@ -79,3 +79,10 @@ inbox:
 
 dates:
   locale: en-US       # how dates are written, e.g. en-US → "July 6, 2026"
+
+# Letterboxd: shows your most recently logged film and your highest-rated
+# recent reviews on the Taste page, pulled live from your public profile.
+# Leave username blank to turn this off.
+letterboxd:
+  username: harmsyjohn
+  top_count: 3        # how many "top reviews" to show

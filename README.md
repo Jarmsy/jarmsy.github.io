@@ -123,6 +123,16 @@ just doesn't show — nothing else on the page is affected. The refresh token
 doesn't expire on its own; if Spotify ever revokes it, redo the one-time
 authorization in `docs/spotify-setup.md`.
 
+### Letterboxd ("Last watched" / "Top reviews lately" on the Taste page)
+
+A live widget, fetched from a small Netlify function
+(`netlify/functions/letterboxd-reviews.js`) that reads your public diary RSS
+feed — no account, no secrets, since Letterboxd's feed is public. Set your
+username in `site.yaml` → `letterboxd.username`; leave it blank to turn the
+widget off. `letterboxd.top_count` controls how many "top reviews" show (only
+entries where you actually wrote something are eligible, ranked by your star
+rating). If the feed can't be reached, the section just doesn't show.
+
 ## Hosting
 
 The site is deployed by Netlify from the `main` branch on GitHub: every merge
