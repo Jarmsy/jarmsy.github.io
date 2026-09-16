@@ -24,22 +24,22 @@ The question our senior design team took on: can you design that sponge instead 
 
 ## What we made
 
-We built the PTL out of *triply periodic minimal surfaces* — TPMS lattices, the kind of smooth, self-supporting geometry you can 3D-print but not machine. The baseline was a gyroid (called G10 in our runs). Against it we designed a family of **lidinoid** lattices at different unit-cell sizes.
+We built the PTL out of *triply periodic minimal surfaces* — TPMS lattices, the kind of smooth, self-supporting geometry you can 3D-print but not machine. Each repeating unit cell is between 1 and about 2 mm in width, depth and height. The baseline was a gyroid (called G10 in our runs). Against it we designed a family of **lidinoid** lattices at different unit-cell sizes within that range.
 
 ![Meshed unit cell of the gyroid: one continuous saddle surface curving in every direction, with round openings](./tpms-gyroid-mesh.png)
 
-*The gyroid baseline, meshed for simulation. Water enters at the bottom face and leaves at the top; the four sides wrap around to their opposites, so the cell behaves as one tile of an infinite sheet.*
+*The gyroid baseline, meshed for simulation. For scale: the whole cell is about 1–2 mm on a side — small enough that several would fit on a grain of rice. Water enters at the bottom face and leaves at the top; the four sides wrap around to their opposites, so the cell behaves as one tile of an infinite sheet.*
 
 ![Meshed unit cell of a lidinoid: distinct wavy layers stacked up the cell, connected by curved struts](./tpms-lidinoid-mesh.png)
 
-*A lidinoid unit cell. Same boundary conditions; a visibly different way of dividing up the space.*
+*A lidinoid unit cell, at the same 1–2 mm scale. Same boundary conditions; a visibly different way of dividing up the space.*
 
 We simulated all of them in ANSYS Fluent two ways:
 
 1. **Single-phase**: push water through slowly enough that the flow is purely viscous, measure the pressure drop, and back out the Darcy permeability and the *tortuosity* — how much longer the actual path through the pores is than a straight line.
 2. **Two-phase**: add the electrochemistry. I wrote a small C function that injects oxygen into a 50-micron band at the electrode face at the rate Faraday's law says it should for 10,000 A/m², and consumes water to match. Then watch where the gas goes.
 
-Every lidinoid beat the gyroid. The best one, at a 2.21 mm unit cell, had **3.7× the permeability** of the baseline, because its tortuosity was 24–35% lower — the pores run more directly through the plane.
+Every lidinoid beat the gyroid by our metrics. The best one, at a 2.21 mm unit cell, had **3.7× the permeability** of the baseline, because its tortuosity was 24–35% lower — the pores run more directly through the plane.
 
 ![Bar chart of permeability relative to the gyroid for five lidinoid variants, with tortuosity overlaid; every lidinoid is higher, Lidinoid 2.21 highest at 3.7×](./tpms-results-permeability.png)
 
