@@ -26,7 +26,7 @@ const questions = await getCollection('questions');
 const currently = (
   await Promise.all([
     getCollection('books').then((b) => ['Reading', b[0]] as const),
-    getCollection('shows').then((s) => ['Watching', s[0]] as const),
+    getCollection('creators').then((c) => ['Following', c[0]] as const),
   ])
 ).filter(([, item]) => item);
 ---

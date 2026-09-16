@@ -14,6 +14,10 @@ const TIP =
 
 async function readYaml(filePath: string, fileName: string): Promise<unknown> {
   const text = await fs.readFile(filePath, 'utf8');
+  // A file with nothing but comments and blank lines means "no entries yet" —
+  // js-yaml 5 would otherwise throw "input is empty" and force a stray "[]".
+  const hasContent = text.split(/\r?\n/).some((line) => line.trim() !== '' && !line.trim().startsWith('#'));
+  if (!hasContent) return null;
   try {
     return load(text, { filename: fileName });
   } catch (error) {

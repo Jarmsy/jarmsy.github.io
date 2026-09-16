@@ -1,10 +1,7 @@
 # Books. One entry per book; the top of the list shows first, so add new ones at the top.
 # Fields: title (required), by, year, note, rating (1–5), link — all others optional.
 
-- title: The Righteous Mind
-  by: Jonathan Haidt
-  year: 2012
-  note: Why good people are divided by politics and religion. The moral-foundations lens I keep reaching for.
+
 
 - title: The Color of Law
   by: Richard Rothstein

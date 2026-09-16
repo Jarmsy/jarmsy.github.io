@@ -7,17 +7,17 @@ import LetterboxdReviews from '../../components/LetterboxdReviews.astro';
 import { getSite } from '../../lib/site';
 
 const site = await getSite();
-const [books, shows] = await Promise.all([getCollection('books'), getCollection('shows')]);
+const [books, creators] = await Promise.all([getCollection('books'), getCollection('creators')]);
 
 const sections = [
   { title: 'Books', items: books, file: 'content/taste/books.yaml' },
-  { title: 'Shows', items: shows, file: 'content/taste/shows.yaml' },
+  { title: 'Creators', items: creators, file: 'content/taste/creators.yaml' },
 ];
 ---
 
-<Base title="Taste" description="Books, films, music and shows I'd recommend.">
+<Base title="Taste" description="Music, films, books, and the creators I'd point you to.">
   <h1>Taste</h1>
-  <p class="muted">What I've been reading, watching and listening to. Newest at the top.</p>
+  <p class="muted">What I've been listening to, watching and reading — and the people who make things I admire. Newest at the top.</p>
   <nav class="jump label" aria-label="Sections">
     <a href="#on-repeat">Music</a>
     <a href="#last-watched">Films</a>

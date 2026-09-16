@@ -6,7 +6,7 @@ site takes care of the rest. Nothing here needs a developer for day-to-day use.
 ## The two things to know
 
 1. **Everything you write lives in `content/`.** One markdown file per essay,
-   take, or case study; one short YAML list for books, shows, questions and
+   take, or case study; one short YAML list for books, creators, questions and
    photos. (Films and music are covered live by the Letterboxd and Spotify
    widgets on the Taste page — see below — so there's no manual list for those.)
 2. **Everything about the site itself lives in two files.** `site.yaml` for
@@ -43,7 +43,7 @@ extensions (Astro, YAML) — they flag mistakes as you type.
 | Write an essay or a note | new `.md` file in `content/writing/` |
 | Add a take | new `.md` file in `content/takes/` |
 | Add a case study | copy `content/work/_example.md`, rename it, fill it in |
-| Add a book or show | one entry at the top of `content/taste/books.yaml` or `shows.yaml` |
+| Add a book, or a creator you admire (channel, podcast, writer) | one entry at the top of `content/taste/books.yaml` or `creators.yaml` |
 | Add a question | one entry at the top of `content/questions.yaml` |
 | Add a photo | image into `content/photos/`, one entry in `photos.yaml` |
 | Update Now / About / Colophon / CV | `content/pages/<name>.md` |

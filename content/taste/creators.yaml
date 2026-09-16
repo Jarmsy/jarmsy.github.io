@@ -1,0 +1,15 @@
+# Creators I admire — YouTube channels, podcasts, newsletters, writers, anyone
+# whose work you'd point a friend to. One entry each; the top of the list shows first.
+#
+# Each entry starts with "- " on its first line; the rest of its lines are indented two spaces.
+# Fields: title (required — the channel, show, or person's name)
+#         by       what and where it is, e.g. "YouTube · video essays" or "Podcast"
+#         link     the address, e.g. https://www.youtube.com/@name
+#         note     why you rate them — one or two sentences
+#         year     optional; rating (1–5) optional
+#
+# Example (remove the # from each line to use it):
+# - title: Practical Engineering
+#   by: YouTube · how infrastructure actually works
+#   link: https://www.youtube.com/@PracticalEngineeringChannel
+#   note: Grady explains dams, grids and roads the way I wish my textbooks had.
