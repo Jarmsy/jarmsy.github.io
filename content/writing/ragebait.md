@@ -20,23 +20,25 @@ I started noticing two common ways people engage with ragebait:
 1. **Being upset and agreeing with it.** This reaction affirms our worldview. We feel morally righteous, validated.
 2. **Being upset and disagreeing with it.** We argue. We debunk. It distorts our view of others and can give us a pessimistic outlook.
 
-In both cases, we're locked in. The emotional activation rewards our brain. The content wins. The cycle deepens.
+In both cases, we're locked in. The emotional activation rewards our brain. The content wins. The cycle is reinforced algorithmically. 
 
-And here's where things get darker.
+This isn't always accidental. There are both centralized actors (media corporations, political commentators, institutions) and decentralized ones (individual creators, influencers, bots) who benefit from our division. Ragebait isn't always born from sincere belief. Often, it's disingenuous. Sometimes it's cynical. And sometimes it's crafted in such a way that its creators can feign ignorance.
 
-This isn't always accidental. There are both centralized actors (media corporations, political commentators, institutions) and decentralized ones (individual creators, influencers, bots) who benefit from our division. Ragebait isn't always born from sincere belief. Sometimes it's cynical. Sometimes it's disingenuous. And sometimes it's crafted in such a way that its creators can feign ignorance.
+Perpetuators of this irresponsible content might post cherry-picked anecdotes and decontextualized claims and pass off AI-deepfakes and videos as authentic. They provoke outrage — some knowing full well that it deepens ideological trenches, others having convinced themselves it's just a decent way to make a living. They don't need to lie outright. All they need is to make us feel something strong enough that we stop thinking clearly.
 
-They post cherry-picked anecdotes and decontextualized claims, and pass off AI-generated scripts and videos as authentic. They provoke outrage — some knowing full well that it deepens ideological trenches, others having convinced themselves it's just a decent way to make a living. They don't need to lie outright. All they need is to make us feel something strong enough that we stop thinking clearly.
+Individuals can deflect blame and downplay responsibility in perpetuating inflammatory misinformation: 
+"It's just content.” 
+“I’m just sharing what I saw.”
+“It’s what gets views”
 
-They can always say: "It's just content."
+And if we start asking who holds the most responsibility, we run into fog. Platforms point at an individual’s algorithm. Creators blame the platform. Executives blame fiduciary responsibility. They all shrug their shoulders and tell us to blame “human nature”, or turning the blame to the consumers for being the source of demand. 
 
-And if we start asking who is responsible, we run into fog. Platforms blame algorithms. Creators blame platforms. Executives blame shareholders. Everyone blames "the culture."
+“Blame Human Nature” 
 
-Maybe that's the point.
+It’s an example of a thought terminating cliché that is perpetuated throughout our media, in this context, and others. I see it as a post-hoc rationalization that pacifies our ambition to imagine a better situation. I believe that it’s critical thought, empathy, and a will to perpetuate them, that will save us from these cycles of negativity. Both on a systemic and personal level. 
 
-Because if the system is designed so that no one is accountable, then nothing ever has to change.
+Although I don’t prescribe the blame for the spreading of inflammatory content to the individual, that doesn’t mean we as individuals are powerless.
 
-But this isn't a call to despair. It's a call to awareness.
 
 I started thinking about how I was trained to analyze media back in high school. In AP U.S. History, we learned to break down historical documents: Who wrote this? What was the context? Who was the audience? What was the purpose?
 
@@ -47,6 +49,6 @@ What if we applied those same questions to TikToks, tweets, YouTube clips, or ev
 - What could be missing? Alternative perspectives, testimonies, facts?
 - What questions didn't they ask?
 
-We don't need to disengage from the world to think clearly. We just need to pause before reacting. To learn how to recognize when we're being baited. To cultivate a craving not just for justice or outrage, but for *truth*.
+We don't need to disengage from the world to think clearly. We just need to pause before reacting. To recognize when we're letting one piece of content disproportionally change what we think (for more about this, research Bayesian Thinking). Most importantly, to cultivate a craving not just for justice or outrage, but for *truth*. 
 
 Ragebait isn't going away. But if more of us learn to pause, to question, and to engage with clarity instead of reflex, we might begin to shift something deeper. We might begin to think more freely, more honestly. And in that, we reclaim something powerful — our ability to shape not just what we believe, but how we believe. Our ability to seek truth, not in opposition to others, but in curiosity beside them.
