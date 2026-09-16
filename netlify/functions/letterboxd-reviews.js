@@ -1,7 +1,12 @@
-// Serverless function: returns John's most recent Letterboxd entry and his
-// highest-rated recent reviews, parsed from his public diary RSS feed.
-// No secrets needed — Letterboxd's feed is public. Username comes from the
-// caller (the Taste page passes it from site.yaml).
+// Serverless function: returns John's most recent Letterboxd entry, plus the
+// full pool of his other reviewed entries, parsed from his public diary RSS
+// feed. No secrets needed — Letterboxd's feed is public. Username comes from
+// the caller (the Taste page passes it from site.yaml).
+//
+// The client does the picking (see LetterboxdReviews.astro): a weighted
+// random sample favouring higher ratings, not a fixed "top N by rating" —
+// otherwise the same handful of tied 5-star reviews would win forever and
+// everything else would never be shown.
 
 import { XMLParser } from 'fast-xml-parser';
 
@@ -43,7 +48,6 @@ function normalize(item) {
 export default async (req) => {
   const url = new URL(req.url);
   const username = url.searchParams.get('username');
-  const topCount = Math.min(Number(url.searchParams.get('top')) || 3, 10);
 
   if (!username) {
     return new Response(JSON.stringify({ error: 'No Letterboxd username configured.' }), {
@@ -67,12 +71,14 @@ export default async (req) => {
 
     const entries = list.map(normalize);
     const mostRecent = entries[0];
-    const topReviews = entries
-      .filter((e) => e.hasReview && e.rating !== null)
-      .sort((a, b) => b.rating - a.rating)
-      .slice(0, topCount);
+    // Every other reviewed entry is eligible — not just the highest-rated —
+    // so nothing is permanently excluded by a fixed cutoff. Capped at 30 as
+    // a sane payload limit; the feed itself only carries recent history anyway.
+    const pool = entries
+      .filter((e) => e.hasReview && e.rating !== null && e.link !== mostRecent.link)
+      .slice(0, 30);
 
-    return new Response(JSON.stringify({ mostRecent, topReviews }), {
+    return new Response(JSON.stringify({ mostRecent, pool }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',

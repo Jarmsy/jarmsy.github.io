@@ -18,7 +18,10 @@ const { username, topCount } = Astro.props;
       <div class="card" data-recent></div>
     </div>
     <div class="top">
-      <h2>Top reviews lately</h2>
+      <div class="top-head">
+        <h2>Top reviews lately</h2>
+        <button type="button" class="shuffle" data-shuffle>Shuffle</button>
+      </div>
       <ol class="list" data-top></ol>
     </div>
     <p class="label note">From my <a href={`https://letterboxd.com/${username}/`} target="_blank" rel="noopener noreferrer">Letterboxd</a>.</p>
@@ -44,24 +47,44 @@ const { username, topCount } = Astro.props;
     `;
   }
 
+  // Weighted random sample, without replacement, favouring higher ratings —
+  // not a fixed "top N," so every reviewed film has some chance of showing,
+  // not just whichever ones are tied for the highest rating. This is the
+  // "A-ES" algorithm: each item gets a random key raised by 1/weight, and
+  // the highest keys win.
+  function sample<T extends { rating: number | null }>(pool: T[], count: number): T[] {
+    return pool
+      .map((item) => ({ item, key: Math.random() ** (1 / Math.max(item.rating ?? 1, 0.1)) }))
+      .sort((a, b) => b.key - a.key)
+      .slice(0, count)
+      .map(({ item }) => item);
+  }
+
   const section = document.querySelector<HTMLElement>('[data-letterboxd]');
   if (section) {
-    const recent = section.querySelector<HTMLElement>('[data-recent]');
-    const top = section.querySelector<HTMLElement>('[data-top]');
+    const recentEl = section.querySelector<HTMLElement>('[data-recent]');
+    const topEl = section.querySelector<HTMLElement>('[data-top]');
+    const shuffleBtn = section.querySelector<HTMLButtonElement>('[data-shuffle]');
     const username = section.dataset.username!;
-    const topCount = section.dataset.topCount ?? '3';
+    const topCount = Number(section.dataset.topCount) || 3;
 
-    fetch(`/.netlify/functions/letterboxd-reviews?username=${encodeURIComponent(username)}&top=${topCount}`)
+    function renderTop(pool: any[]) {
+      if (!topEl) return;
+      const picked = sample(pool, topCount);
+      topEl.innerHTML = picked.map((e) => `<li>${card(e)}</li>`).join('');
+    }
+
+    fetch(`/.netlify/functions/letterboxd-reviews?username=${encodeURIComponent(username)}`)
       .then((res) => (res.ok ? res.json() : Promise.reject()))
-      .then(({ mostRecent, topReviews }) => {
+      .then(({ mostRecent, pool }) => {
         if (!mostRecent) throw new Error('empty');
-        if (recent) recent.innerHTML = card(mostRecent);
-        if (top) {
-          if (topReviews?.length) {
-            top.innerHTML = topReviews.map((e: any) => `<li>${card(e)}</li>`).join('');
-          } else {
-            section.querySelector('.top')?.remove();
-          }
+        if (recentEl) recentEl.innerHTML = card(mostRecent);
+
+        if (Array.isArray(pool) && pool.length > 0) {
+          renderTop(pool);
+          shuffleBtn?.addEventListener('click', () => renderTop(pool));
+        } else {
+          section.querySelector('.top')?.remove();
         }
         section.hidden = false;
       })
@@ -86,7 +109,30 @@ const { username, topCount } = Astro.props;
   }
   .letterboxd h2 {
     font-size: var(--step-0);
-    margin: 0 0 var(--space-2);
+    margin: 0;
+  }
+  .top-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+  }
+  .shuffle {
+    font: inherit;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 999px;
+    padding: 0.2em 0.8em;
+    cursor: pointer;
+    transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  .shuffle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
   }
   .card,
   .list li {
