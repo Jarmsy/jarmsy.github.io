@@ -51,14 +51,13 @@ In two-phase, the same geometry showed **70% lower inlet pressure** and **17% le
 
 *Two-phase results with oxygen generation switched on. The cheap single-phase simulation had already predicted this ranking.*
 
-One honest footnote: the lidinoids are also more porous (39% vs 23%), so some of the gain is simply more hole. The interesting result is that even per unit of porosity they win, and that the cheap single-phase simulation predicted the ranking of the expensive two-phase one every time.
+Two honest footnotes. The lidinoids are also more porous (39% vs 23%), so some of the gain is simply more hole — though even per unit of porosity they win, and the cheap single-phase simulation predicted the ranking of the expensive two-phase one every time. And the two-phase model we ended up with leaves out the force I'd most want in — more on that below.
 
 ## What actually happened
 
 The numbers above are the clean version. The semester was mostly the unclean version.
 
-- **Three multiphase models before one worked.** The sharp-interface model (VOF) crashed on a single degenerate mesh cell — Courant number over 250 — that the geometry tool had left behind. The mixture model produced no sustained flow at all, because without gravity there was nothing driving the phases apart. The Eulerian dispersed-bubble model is what finally ran, and it's the only one that matched the physics of small bubbles in a pore.
-- **We overestimated permeability by a factor of a thousand** for weeks. Fluent reports mass flow in kg/s; Darcy's law wants volume flow in m³/s; water's density is 1000. One missing division, every lidinoid result wrong by exactly the same factor, and nothing in the software says a word.
+- **We tried three multiphase models before one worked.** The sharp-interface model (VOF) crashed on a single degenerate mesh cell —which turned out to be not easy to reliably find and fix— that the geometry meshing tool had left behind. The mixture model produced no sustained flow at all, because without gravity there was nothing driving the phases apart. The Eulerian dispersed-bubble model is what finally ran, and it's the only one that matched the physics of small bubbles in a pore.
 - **Fluent will tell you it has converged after one iteration** if the starting residuals happen to be below its threshold. We learned to ignore the "Converged" message and check that mass in equalled mass out to within 0.01%.
 - **The metric we planned to compare on was meaningless.** "Oxygen escape efficiency" — gas out over gas generated — is ~100% for *any* converged solution, because that's what conservation of mass means. It can't distinguish a good PTL from a bad one. We switched to local saturation and pressure.
 - **The fluid domain was named `..._solid`**, because the geometry tool names the void after the thing it was subtracted from. Trusting labels instead of looking at the mesh cost a day.
