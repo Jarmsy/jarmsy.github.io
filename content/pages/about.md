@@ -46,7 +46,7 @@ Flying is such an incredible privilege. It has allowed me to get a new perspecti
 
 ## Along the way
 
-Before any of this I fueled and towed jets on the ramp at a Madison airport, cooked and served at a bar, and ran web-handling equipment on a manufacturing line. I list those on purpose. They're where I learned what salt-of-the-earth work looks like.
+Before any of this I fueled and towed jets on the ramp at a Madison airport, cooked and served at a bar, and ran web-handling equipment on a manufacturing line. They're where I learned what salt-of-the-earth work looks like.
 
 ## What I'm after
 

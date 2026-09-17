@@ -63,7 +63,6 @@ links:
 # `count` = how many items to show (ignored by `now`).
 home:
   - { section: now }
-  - { section: takes,   count: 3 }
   - { section: writing, count: 3 }
   - { section: made,    count: 2 }
 
