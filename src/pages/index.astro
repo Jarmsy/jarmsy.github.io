@@ -9,11 +9,23 @@ import TakeCard from '../components/TakeCard.astro';
 import WritingItem from '../components/WritingItem.astro';
 import MadeCard from '../components/MadeCard.astro';
 import QuestionItem from '../components/QuestionItem.astro';
+import { Image } from 'astro:assets';
 import { getSite } from '../lib/site';
 import { byDateDesc } from '../lib/format';
 
 const site = await getSite();
 const locale = site.dates.locale;
+
+// The portrait is any file in content/photos/, named in site.yaml → portrait.
+const photoFiles = import.meta.glob<{ default: ImageMetadata }>('../../content/photos/*.{jpg,jpeg,png,webp,avif}');
+const portraitPath = site.portrait ? `../../content/photos/${site.portrait}` : '';
+if (portraitPath && !photoFiles[portraitPath]) {
+  throw new Error(
+    `site.yaml → portrait: "${site.portrait}" isn't in content/photos/. ` +
+      `Files there: ${Object.keys(photoFiles).map((f) => f.split('/').pop()).join(', ') || '(none)'}`,
+  );
+}
+const portrait = portraitPath ? (await photoFiles[portraitPath]()).default : null;
 
 const takes = (await getCollection('takes', ({ data }) => !data.retired)).sort(byDateDesc);
 const writing = (await getCollection('writing', ({ data }) => data.status !== 'draft')).sort(byDateDesc);
@@ -33,10 +45,12 @@ const currently = (
 
 <Base description={site.one_liner || site.motto}>
   <section class="hero">
-    <p class="label name">{site.name}</p>
-    <h1 class="motto">{site.motto}</h1>
-    {site.corollary && <p class="corollary">{site.corollary}</p>}
-    {site.one_liner && <p class="label one-liner">{site.one_liner}</p>}
+    <div class="intro">
+      <h1 class="name">{site.name}</h1>
+      {site.one_liner && <p class="one-liner">{site.one_liner}</p>}
+      {site.motto && <p class="motto">{site.motto}{site.corollary && <span class="corollary"> {site.corollary}</span>}</p>}
+    </div>
+    {portrait && <Image src={portrait} alt={`${site.name}`} width={520} densities={[1, 2]} class="portrait" loading="eager" />}
   </section>
 
   {site.home.map(({ section, count }) => {
@@ -97,30 +111,62 @@ const currently = (
 </Base>
 
 <style>
+  /* Name and one-liner lead; the motto is a quiet aside, and the portrait
+     sits beside them (below them on narrow screens). */
   .hero {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
     padding: var(--space-5) 0 var(--space-4);
   }
-  .name {
-    margin: 0 0 var(--space-3);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
+  .intro {
+    flex: 1 1 18rem;
+    min-width: 0;
   }
-  .motto {
-    font-size: var(--step-4);
+  .name {
+    font-size: var(--step-3);
     font-weight: 500;
     letter-spacing: -0.02em;
-    line-height: 1.05;
-    margin: 0 0 var(--space-3);
-    max-width: 18ch;
+    line-height: 1.1;
+    margin: 0 0 var(--space-2);
   }
-  .corollary {
+  .one-liner {
     font-size: var(--step-1);
     color: var(--text-muted);
     max-width: var(--measure);
     margin: 0 0 var(--space-3);
   }
-  .one-liner {
+  .motto {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text-muted);
     margin: 0;
+  }
+  .corollary {
+    color: var(--text-muted);
+  }
+  .portrait {
+    flex: 0 0 auto;
+    width: clamp(9rem, 26vw, 14rem);
+    aspect-ratio: 4 / 5;
+    height: auto;
+    object-fit: cover;
+    object-position: 50% 25%;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  @media (max-width: 40rem) {
+    .hero {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+      gap: var(--space-4);
+    }
+    .intro {
+      flex: none;
+    }
+    .portrait {
+      width: 9rem;
+    }
   }
   .currently {
     display: grid;

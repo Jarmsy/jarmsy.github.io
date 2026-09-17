@@ -15,6 +15,7 @@ short_name: John                  # the wordmark in the header
 motto: Systems are made of people.
 corollary: ""                     # the line under the motto — leave "" to hide it
 one_liner: Mechanical engineer turned policy researcher. Pilot.
+portrait: portrait.jpg            # a photo of you on the front page — a filename from content/photos/, or "" for none
 email: harmsyjohn@gmail.com
 url: https://jarmsy.github.io   # the site's address (RSS + sitemap use it); change when you get a domain
 
