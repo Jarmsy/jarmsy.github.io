@@ -17,3 +17,50 @@
   alt: Selfie on a Canon PowerShot G5
   caption: Selfie on Canon powershot G5
   date: 2026-07-31
+
+- src: ./saint-paul.jpg
+  alt: Picture of Downtown Saint Paul
+  caption: Downtown Saint Paul, from across the Mississippi River
+  date: 2026-08-22
+
+- src: ./monarch-at-arboretum.jpg
+  alt: Picture of Monarch Butterfly
+  caption: Monarch Butterfly
+  date: 2026-08-08
+  place: University of Minnesota Arboretum
+
+- src: ./eastern-tiger-swallowtail.jpg
+  alt: Picture of Eastern Swallowtail Butterfly
+  caption: Male Eastern Tiger Swallowtail Butterfly
+  date: 2026-08-08
+  place: University of Minnesota Arboretum
+
+- src: ./tiger-in-motion.jpg
+  alt: Picture of Eastern Swallowtail Butterfly in motion
+  caption: Tiger in Motion
+  date: 2026-08-08
+  place: University of Minnesota Arboretum
+
+- src: ./female-tiger-swallowtail.jpg
+  alt: Picture of Eastern Swallowtail Butterfly
+  caption: Female Tiger Swallowtail on a White Swan
+  date: 2026-08-08
+  place: University of Minnesota Arboretum
+
+- src: ./downtown.jpg
+  alt: Picture of madison from the air
+  caption: The Isthmus from 1,000 ft
+  date: 2025-03-20
+  place: Madison, WI
+
+# These two were in the folder without an entry — I wrote the alt text from the
+# pictures; add a date and change the captions as you like.
+- src: ./harper-memorial-library.jpg
+  alt: Stone entrance hall of Harper Memorial Library, a hanging lantern lit beside leaded windows, stairs curving up through a pointed arch
+  caption: Harper Memorial Library
+  place: University of Chicago
+
+- src: ./stuart-hall.jpg
+  alt: Stuart Hall's gothic limestone facade, almost entirely covered in ivy, two spired turrets against an overcast sky
+  caption: Stuart Hall
+  place: University of Chicago
