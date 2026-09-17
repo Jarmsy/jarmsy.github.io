@@ -10,9 +10,9 @@ const items = (await getCollection('made'))
   .sort((a, b) => Number(b.data.featured) - Number(a.data.featured));
 ---
 
-<Base title="Made" description="Things I've built, and what building them taught me.">
+<Base title="Made" description="Things I've built.">
   <h1>Made</h1>
-  <p class="muted">Things I've built — told the way I'd tell a friend, including the parts that went wrong.</p>
+  <p class="muted">Things I've built, including the parts that went wrong.</p>
 
   {items.length === 0 ? (
     <Empty what="projects" where="content/made/ (copy _example.md to start)" />

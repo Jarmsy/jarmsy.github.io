@@ -16,7 +16,7 @@ const topics = [...new Set(posts.flatMap((p) => p.data.topics))].sort();
 
 <Base title="Writing" description="Essays and notes.">
   <h1>Writing</h1>
-  <p class="muted">Essays are the long, considered pieces. Notes are shorter and more casual.</p>
+  <p class="muted">Essays, and the occasional shorter note.</p>
 
   {posts.length === 0 ? (
     <Empty what="writing" where="content/writing/" />

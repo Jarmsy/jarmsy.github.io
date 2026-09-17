@@ -12,12 +12,6 @@ topics: [engineering, energy, simulation]
 featured: true
 ---
 
-<!-- Draft written from your handoff guide. Things to check: teammates and advisor
-     you'd want to name, whether the geometries were designed in nTop (the guide
-     says so), and the two "why" sentences in the first section.
-     The cover is the pathlines render: colours are Fluent's particle IDs (they
-     just tell streamlines apart), which is why the caption doesn't read them. -->
-
 A PEM electrolyzer splits water into hydrogen and oxygen with electricity. Between the electrode where the reaction happens and the channel that feeds it sits a thin porous layer — the *porous transport layer*, or PTL — that has to do two things at once: let water in, and let the oxygen bubbles that form at the electrode get out. If the bubbles can't leave, they sit on the catalyst and block the water, and the whole thing gets less efficient the harder you push it.
 
 The question our senior design team took on: can you design that component to outperform the mass produced commercial version? 

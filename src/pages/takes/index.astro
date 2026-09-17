@@ -38,7 +38,7 @@ const [mild, , hill] = site.takes.spice;
   {retired.length > 0 && (
     <section class="retired">
       <h2>Retired takes</h2>
-      <p class="muted">Things I no longer believe. Changing your mind in public is a feature.</p>
+      <p class="muted">Things I no longer believe.</p>
       {retired.map((take) => (
         <TakeCard take={take} spiceLabels={site.takes.spice} locale={site.dates.locale} />
       ))}

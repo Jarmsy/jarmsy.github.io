@@ -1,12 +1,8 @@
 ---
 title: About
-description: Who I am, in more than one sentence.
+description: Who I am.
 updated: 2026-09-18
 ---
-
-<!-- Draft written from your CV, statements, essays and messages. Everything here is
-     something you've said or written — edit freely. Lines like this one are notes to
-     yourself and don't show on the site. -->
 
 I'm John. I trained as a mechanical engineer, I fly small planes, and I've just moved to Hyde Park in Chicago to study computational analysis and public policy at the University of Chicago's Harris School. This page is the long version of why those three things belong together.
 

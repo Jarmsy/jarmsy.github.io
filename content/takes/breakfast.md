@@ -1,6 +1,6 @@
 ---
 topics: [food]
-spice: 2
+spice: 1
 date: 2026-09-14
 ---
 
