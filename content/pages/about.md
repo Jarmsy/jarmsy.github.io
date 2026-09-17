@@ -40,7 +40,7 @@ At 3M, I led the intern innovation project: a group of interns from different sp
 
 ## Flying
 
-I've always tested my coordination on something — sports, video games, driving. Flight training started as one more skill to build and became a private pilot licence (2024) and an instrument rating (2025). It's also where I learned to take checklists seriously, which explains more about this website than it should.
+I've always tested my coordination on something — sports, video games, driving. Flight training started as one more skill to build and became a private pilot licence (2024) and an instrument rating (2025). It's also where I learned to take checklists seriously.
 
 <!-- Optional: one concrete flying memory — a first solo, a favourite route, a photo. -->
 
@@ -50,7 +50,7 @@ Before any of this I fueled and towed jets on the ramp at a Madison airport, coo
 
 ## What I'm after
 
-I'm not chasing recognition. I want to be a positive force in the change I'd like to see — and to grow into someone who creates more: good times with the people I love, writing that others connect with, and policy and tools that make things better for people.
+I want to be a positive force in the change I'd like to see — and to grow into someone who creates more: good times with the people I love, writing that others connect with, and policy and tools that make things better for people.
 
 ## Say hi
 
