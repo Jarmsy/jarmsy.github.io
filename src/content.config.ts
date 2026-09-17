@@ -77,7 +77,7 @@ const settings = defineCollection({
         enabled: z.boolean({ error: 'inbox.enabled must be true or false' }).default(false),
         intro: z.string().default('Leave me a note. Anonymous is fine.'),
         action: z
-          .union([z.literal(''), z.url({ error: 'inbox.action must be blank (Netlify Forms) or a full URL' })])
+          .union([z.literal(''), z.url({ error: 'inbox.action must be blank (inbox closed) or the full URL of your form service' })])
           .default(''),
       })
       .prefault({}),

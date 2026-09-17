@@ -35,8 +35,9 @@ account, or Spotify invalidates it, redo these steps.
 
    The response's `refresh_token` field is what you need next.
 
-6. In **Netlify → Site configuration → Environment variables**, add three
-   secrets scoped to Functions: `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`,
-   `SPOTIFY_REFRESH_TOKEN`. Never put these in the repo.
-7. Redeploy (or trigger a new deploy) so the function picks up the new
-   environment variables.
+6. In the GitHub repo, **Settings → Secrets and variables → Actions → New
+   repository secret**, add three secrets: `SPOTIFY_CLIENT_ID`,
+   `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN`. Never put these in the
+   repo itself. (For local previews, put the same three lines in a `.env`
+   file — see `.env.example`.)
+7. **Actions → Deploy → Run workflow** so the site is rebuilt with them.

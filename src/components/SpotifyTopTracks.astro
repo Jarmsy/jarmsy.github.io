@@ -1,93 +1,96 @@
 ---
-// Live tracks from Spotify, fetched client-side from a Netlify function
-// (netlify/functions/spotify-top-tracks.js) so it can update without a
-// rebuild. If the function isn't configured or Spotify errors, this
-// section just doesn't render — the rest of the page is unaffected.
-// Shows a shuffled sample of the top 50 (not just a fixed top 5), so
-// there's plenty to discover.
+// Top tracks from Spotify, fetched at build time (src/lib/spotify.ts) and
+// baked into the page: the scheduled rebuild keeps them fresh, and nothing
+// runs on a server. If Spotify isn't configured or errors, this section
+// isn't rendered at all — the rest of the page is unaffected.
+//
+// The page ships with one weighted-random pick already rendered (so it works
+// without JavaScript); the full pool of 50 per range is embedded as JSON so
+// Shuffle and the range chips can re-pick in the browser.
+import { getTopTracks } from '../lib/spotify';
+import { weightedSample } from '../lib/sample';
 
+const SHOW_COUNT = 5;
+// Gentle weighting: rank runs 1–50, so using it raw would make the
+// most-played track ~50x likelier than the least-played and the bottom
+// half would almost never surface. 1 + rank/25 keeps it to about 3x,
+// which favours the heavy rotation without hiding the deep cuts.
+const weight = (t: { rank: number }) => 1 + t.rank / 25;
+
+const tracks = await getTopTracks();
+const initial = tracks ? weightedSample(tracks.short, SHOW_COUNT, weight) : [];
 ---
 
-<section class="spotify" id="on-repeat" data-spotify hidden>
-  <div class="head">
-    <h2>On repeat</h2>
-    <div class="controls">
-      <div class="range" role="group" aria-label="Time range">
-        <button type="button" class="chip active" data-range="short">last 4 weeks</button>
-        <button type="button" class="chip" data-range="medium">last 6 months</button>
+{tracks && (
+  <section class="spotify" id="on-repeat" data-spotify data-show-count={SHOW_COUNT}>
+    <div class="head">
+      <h2>On repeat</h2>
+      <div class="controls">
+        <div class="range" role="group" aria-label="Time range">
+          <button type="button" class="chip active" data-range="short">last 4 weeks</button>
+          <button type="button" class="chip" data-range="medium">last 6 months</button>
+        </div>
+        <button type="button" class="shuffle" data-shuffle>Shuffle</button>
       </div>
-      <button type="button" class="shuffle" data-shuffle>Shuffle</button>
     </div>
-  </div>
-  <ol class="tracks" data-tracks></ol>
-  <p class="label note">From my <a href="https://open.spotify.com/user/12181509275?si=650914a4eb5a4e0b" target="_blank" rel="noopener noreferrer">Spotify</a>.</p>
-</section>
+    <ol class="tracks" data-tracks>
+      {initial.map((track) => (
+        <li>
+          {track.cover && <img src={track.cover} alt="" width="48" height="48" loading="lazy" />}
+          <span class="info">
+            <a class="title" href={track.link} target="_blank" rel="noopener">{track.title}</a>
+            <span class="label by">{track.by}</span>
+          </span>
+        </li>
+      ))}
+    </ol>
+    <p class="label note">From my <a href="https://open.spotify.com/user/12181509275?si=650914a4eb5a4e0b" target="_blank" rel="noopener noreferrer">Spotify</a>.</p>
+    <script is:inline type="application/json" data-pool set:html={JSON.stringify(tracks)} />
+  </section>
+)}
 
 <script>
   import { weightedSample } from '../lib/sample';
 
-  const SHOW_COUNT = 5;
-  const maybeSection = document.querySelector<HTMLElement>('[data-spotify]');
-  const maybeList = maybeSection?.querySelector<HTMLElement>('[data-tracks]');
+  const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
-  if (maybeSection && maybeList) {
-    const section = maybeSection;
-    const list = maybeList;
-    const shuffleBtn = section.querySelector<HTMLButtonElement>('[data-shuffle]');
-    const cache = new Map<string, any[]>();
+  function init() {
+    const section = document.querySelector<HTMLElement>('[data-spotify]');
+    const list = section?.querySelector<HTMLElement>('[data-tracks]');
+    const json = section?.querySelector<HTMLElement>('[data-pool]')?.textContent;
+    if (!section || !list || !json) return;
+
+    const pools: Record<string, any[]> = JSON.parse(json);
+    const showCount = Number(section.dataset.showCount) || 5;
     let currentRange = 'short';
 
-    function render(pool: any[]) {
-      list.innerHTML = '';
-      // Gentle weighting: rank runs 1–50, so using it raw would make the
-      // most-played track ~50x likelier than the least-played and the bottom
-      // half would almost never surface. 1 + rank/25 keeps it to about 3x,
-      // which favours the heavy rotation without hiding the deep cuts.
-      const picked = weightedSample(pool, SHOW_COUNT, (t: any) => 1 + (t.rank ?? 1) / 25);
-      for (const track of picked) {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          ${track.cover ? `<img src="${track.cover}" alt="" width="48" height="48" loading="lazy" />` : ''}
-          <span class="info">
-            <a class="title" href="${track.link}" target="_blank" rel="noopener">${track.title}</a>
-            <span class="label by">${track.by}</span>
-          </span>
-        `;
-        list.appendChild(li);
-      }
-    }
-
-    async function load(range: string) {
-      currentRange = range;
-      const cached = cache.get(range);
-      if (cached) return render(cached);
-      try {
-        const res = await fetch(`/.netlify/functions/spotify-top-tracks?range=${range}`);
-        if (!res.ok) throw new Error('not ok');
-        const { tracks } = await res.json();
-        if (!Array.isArray(tracks) || tracks.length === 0) throw new Error('empty');
-        cache.set(range, tracks);
-        render(tracks);
-        section.hidden = false;
-      } catch {
-        section.hidden = true;
-      }
+    function render() {
+      const picked = weightedSample(pools[currentRange] ?? [], showCount, (t: any) => 1 + (t.rank ?? 1) / 25);
+      list!.innerHTML = picked
+        .map(
+          (track) => `<li>
+            ${track.cover ? `<img src="${esc(track.cover)}" alt="" width="48" height="48" loading="lazy" />` : ''}
+            <span class="info">
+              <a class="title" href="${esc(track.link)}" target="_blank" rel="noopener">${esc(track.title)}</a>
+              <span class="label by">${esc(track.by)}</span>
+            </span>
+          </li>`,
+        )
+        .join('');
     }
 
     section.querySelectorAll<HTMLButtonElement>('[data-range]').forEach((btn) => {
       btn.addEventListener('click', () => {
         section.querySelectorAll('.chip').forEach((c) => c.classList.toggle('active', c === btn));
-        load(btn.dataset.range!);
+        currentRange = btn.dataset.range!;
+        render();
       });
     });
-
-    shuffleBtn?.addEventListener('click', () => {
-      const pool = cache.get(currentRange);
-      if (pool) render(pool);
-    });
-
-    load('short');
+    section.querySelector('[data-shuffle]')?.addEventListener('click', render);
   }
+
+  // Runs on first load and again after every client-side navigation.
+  document.addEventListener('astro:page-load', init);
 </script>
 
 <style>
@@ -97,9 +100,6 @@
     background: var(--bg-raised);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-  }
-  .spotify[hidden] {
-    display: none;
   }
   .head {
     display: flex;
@@ -152,29 +152,29 @@
     display: grid;
     gap: var(--space-2);
   }
-  .tracks li {
+  .tracks :global(li) {
     display: flex;
     align-items: center;
     gap: var(--space-3);
   }
-  .tracks img {
+  .tracks :global(img) {
     border-radius: 4px;
     flex: none;
   }
-  .info {
+  .tracks :global(.info) {
     display: flex;
     flex-direction: column;
     gap: 0.1em;
     min-width: 0;
   }
-  .title {
+  .tracks :global(.title) {
     color: var(--text);
     text-decoration: none;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .title:hover {
+  .tracks :global(.title:hover) {
     color: var(--accent);
   }
   .note {

@@ -1,0 +1,57 @@
+# Builds the site and publishes it to GitHub Pages.
+#
+# Runs on every push to main, on a schedule (so the Spotify and Letterboxd
+# sections stay fresh without anyone touching anything), and on demand from
+# the Actions tab ("Run workflow") — handy right after logging a film.
+#
+# Secrets (Settings → Secrets and variables → Actions): SPOTIFY_CLIENT_ID,
+# SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN. If they're missing the build
+# still succeeds; the Spotify section is simply left out.
+
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 */6 * * *' # four times a day, at :17 past (GitHub asks you to avoid :00)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two deploys at once; a newer one replaces a queued one.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+          SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+          SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

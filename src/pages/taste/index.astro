@@ -5,9 +5,18 @@ import TasteList from '../../components/TasteList.astro';
 import SpotifyTopTracks from '../../components/SpotifyTopTracks.astro';
 import LetterboxdReviews from '../../components/LetterboxdReviews.astro';
 import { getSite } from '../../lib/site';
+import { getTopTracks } from '../../lib/spotify';
+import { getLetterboxd } from '../../lib/letterboxd';
 
 const site = await getSite();
-const [books, creators] = await Promise.all([getCollection('books'), getCollection('creators')]);
+const [books, creators, spotify, letterboxd] = await Promise.all([
+  getCollection('books'),
+  getCollection('creators'),
+  // Fetched once at build time and cached; the widgets reuse the same result.
+  // Only needed here so the jump links match the sections that actually render.
+  getTopTracks(),
+  getLetterboxd(site.letterboxd.username),
+]);
 
 const sections = [
   { title: 'Books', items: books, file: 'content/taste/books.yaml' },
@@ -19,8 +28,8 @@ const sections = [
   <h1>Taste</h1>
   <p class="muted">What I've been listening to, watching and reading — and the people who make things I admire. Newest at the top.</p>
   <nav class="jump label" aria-label="Sections">
-    <a href="#on-repeat">Music</a>
-    <a href="#last-watched">Films</a>
+    {spotify && <a href="#on-repeat">Music</a>}
+    {letterboxd && <a href="#last-watched">Films</a>}
     {sections.map((s) => <a href={`#${s.title.toLowerCase()}`}>{s.title}</a>)}
   </nav>
 

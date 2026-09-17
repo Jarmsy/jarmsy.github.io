@@ -72,7 +72,7 @@ Applied: *Ragebait and the Architecture of Influence* publishes with a light edi
 | Takes | Short opinions with spice and an as-of date; retire when he changes his mind | one sentence | whenever | friends, everyone |
 | Taste | Books, film, music, shows. One line each. Links out. | one line | weekly | friends |
 | CV | Web page plus print-ready PDF | — | per change | recruiters |
-| Inbox | A form for notes, anonymous or not; received privately via the host (Netlify Forms). Added 2026-09-14. | — | — | everyone |
+| Inbox | A form for notes, anonymous or not; received privately by email via a form service (Formspree). Added 2026-09-14. | — | — | everyone |
 | **Should** | | | | |
 | Photos | A curated set. The cockpit is the signature. *(No photos yet — design imagery-light with slots.)* | an image | seasonal | friends |
 | Questions | Things he's trying to figure out | one question | whenever | professors |

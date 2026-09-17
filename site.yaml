@@ -16,7 +16,7 @@ motto: Systems are made of people.
 corollary: ""                     # the line under the motto — leave "" to hide it
 one_liner: Mechanical engineer turned policy researcher. Pilot.
 email: harmsyjohn@gmail.com
-url: https://johnharms.netlify.app   # the site's address (RSS + sitemap use it); change when you get a domain
+url: https://jarmsy.github.io   # the site's address (RSS + sitemap use it); change when you get a domain
 
 # --- Navigation ----------------------------------------------
 # Header links, in order. Any room not listed here still exists
@@ -69,13 +69,13 @@ takes:
   spice: [mild, spicy, will die on this hill]   # labels for spice levels 1, 2, 3
 
 # The inbox: a form where anyone can leave you a note, anonymously or not.
-# Notes are received by the site's host (Netlify Forms) and sent to your email —
-# set that up once under Netlify → Forms → Notifications.
-# To send notes somewhere else instead, put that service's form URL in `action`.
+# The site is static, so notes are delivered by a form service (Formspree, free):
+# create a form there and paste its endpoint URL into `action`. Each note then
+# arrives by email. See README → "The inbox".
 inbox:
   enabled: true
   intro: Leave me a note — a thought, a disagreement, a recommendation. Anonymous is fine. If you'd like a reply, say how to reach you.
-  action: ""          # blank = Netlify Forms. Or a URL such as https://formspree.io/f/xxxx
+  action: ""          # where notes are delivered, e.g. https://formspree.io/f/xxxx (blank = closed; page points to email)
 
 dates:
   locale: en-US       # how dates are written, e.g. en-US → "July 6, 2026"

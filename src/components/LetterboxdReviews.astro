@@ -1,29 +1,69 @@
 ---
-// Live Letterboxd activity, fetched client-side from a Netlify function
-// (netlify/functions/letterboxd-reviews.js) so it updates without a
-// rebuild. If the function errors or no username is set, this just
-// doesn't render — the rest of the page is unaffected.
+// Letterboxd activity, read at build time from the public diary feed
+// (src/lib/letterboxd.ts) and baked into the page: the scheduled rebuild
+// keeps it fresh, and nothing runs on a server. If the feed can't be read
+// or no username is set, this section isn't rendered — the rest of the
+// page is unaffected.
+//
+// "Last watched" is fixed; "Top reviews lately" ships with one weighted-
+// random pick already rendered (works without JavaScript) and the full pool
+// embedded as JSON so Shuffle can re-pick in the browser.
+import { getLetterboxd, type Entry } from '../lib/letterboxd';
+import { weightedSample } from '../lib/sample';
+
 interface Props {
   username: string;
   topCount: number;
 }
 
 const { username, topCount } = Astro.props;
+const data = await getLetterboxd(username);
+const initial = data ? weightedSample(data.pool, topCount, (e) => e.rating ?? 1) : [];
+
+function stars(rating: number | null) {
+  if (rating === null) return '';
+  return '★'.repeat(Math.floor(rating)) + (rating % 1 >= 0.5 ? '½' : '');
+}
 ---
 
-{username && (
-  <section class="letterboxd" id="last-watched" data-letterboxd data-username={username} data-top-count={topCount} hidden>
+{data && (
+  <section class="letterboxd" id="last-watched" data-letterboxd data-top-count={topCount}>
     <div class="recent">
       <h2>Last watched</h2>
-      <div class="card" data-recent></div>
-    </div>
-    <div class="top">
-      <div class="top-head">
-        <h2>Top reviews lately</h2>
-        <button type="button" class="shuffle" data-shuffle>Shuffle</button>
+      <div class="card">
+        {data.mostRecent.poster && <img src={data.mostRecent.poster} alt="" loading="lazy" />}
+        <div class="info">
+          <a class="title" href={data.mostRecent.link} target="_blank" rel="noopener">
+            {data.mostRecent.title}{data.mostRecent.year ? ` (${data.mostRecent.year})` : ''}
+          </a>
+          {data.mostRecent.rating !== null && (
+            <span class="rating" aria-label={`${data.mostRecent.rating} of 5 stars`}>{stars(data.mostRecent.rating)}</span>
+          )}
+          {data.mostRecent.review && <p class="review">{data.mostRecent.review}</p>}
+        </div>
       </div>
-      <ol class="list" data-top></ol>
     </div>
+    {data.pool.length > 0 && (
+      <div class="top">
+        <div class="top-head">
+          <h2>Top reviews lately</h2>
+          <button type="button" class="shuffle" data-shuffle>Shuffle</button>
+        </div>
+        <ol class="list" data-top>
+          {initial.map((e: Entry) => (
+            <li>
+              {e.poster && <img src={e.poster} alt="" loading="lazy" />}
+              <div class="info">
+                <a class="title" href={e.link} target="_blank" rel="noopener">{e.title}{e.year ? ` (${e.year})` : ''}</a>
+                {e.rating !== null && <span class="rating" aria-label={`${e.rating} of 5 stars`}>{stars(e.rating)}</span>}
+                {e.review && <p class="review">{e.review}</p>}
+              </div>
+            </li>
+          ))}
+        </ol>
+        <script is:inline type="application/json" data-pool set:html={JSON.stringify(data.pool)} />
+      </div>
+    )}
     <p class="label note">From my <a href={`https://letterboxd.com/${username}/`} target="_blank" rel="noopener noreferrer">Letterboxd</a>.</p>
   </section>
 )}
@@ -31,56 +71,40 @@ const { username, topCount } = Astro.props;
 <script>
   import { weightedSample } from '../lib/sample';
 
+  const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+
   function stars(rating: number | null) {
     if (rating === null) return '';
-    const full = Math.floor(rating);
-    const half = rating % 1 >= 0.5;
-    return '★'.repeat(full) + (half ? '½' : '');
+    return '★'.repeat(Math.floor(rating)) + (rating % 1 >= 0.5 ? '½' : '');
   }
 
   function card(entry: any): string {
     return `
-      ${entry.poster ? `<img src="${entry.poster}" alt="" loading="lazy" />` : ''}
+      ${entry.poster ? `<img src="${esc(entry.poster)}" alt="" loading="lazy" />` : ''}
       <div class="info">
-        <a class="title" href="${entry.link}" target="_blank" rel="noopener">${entry.title}${entry.year ? ` (${entry.year})` : ''}</a>
+        <a class="title" href="${esc(entry.link)}" target="_blank" rel="noopener">${esc(entry.title)}${entry.year ? ` (${entry.year})` : ''}</a>
         ${entry.rating !== null ? `<span class="rating" aria-label="${entry.rating} of 5 stars">${stars(entry.rating)}</span>` : ''}
-        ${entry.review ? `<p class="review">${entry.review}</p>` : ''}
+        ${entry.review ? `<p class="review">${esc(entry.review)}</p>` : ''}
       </div>
     `;
   }
 
-  const section = document.querySelector<HTMLElement>('[data-letterboxd]');
-  if (section) {
-    const recentEl = section.querySelector<HTMLElement>('[data-recent]');
-    const topEl = section.querySelector<HTMLElement>('[data-top]');
-    const shuffleBtn = section.querySelector<HTMLButtonElement>('[data-shuffle]');
-    const username = section.dataset.username!;
-    const topCount = Number(section.dataset.topCount) || 3;
+  function init() {
+    const section = document.querySelector<HTMLElement>('[data-letterboxd]');
+    const topEl = section?.querySelector<HTMLElement>('[data-top]');
+    const json = section?.querySelector<HTMLElement>('[data-pool]')?.textContent;
+    if (!section || !topEl || !json) return;
 
-    function renderTop(pool: any[]) {
-      if (!topEl) return;
+    const pool: any[] = JSON.parse(json);
+    const topCount = Number(section.dataset.topCount) || 3;
+    section.querySelector('[data-shuffle]')?.addEventListener('click', () => {
       const picked = weightedSample(pool, topCount, (e) => e.rating ?? 1);
       topEl.innerHTML = picked.map((e) => `<li>${card(e)}</li>`).join('');
-    }
-
-    fetch(`/.netlify/functions/letterboxd-reviews?username=${encodeURIComponent(username)}`)
-      .then((res) => (res.ok ? res.json() : Promise.reject()))
-      .then(({ mostRecent, pool }) => {
-        if (!mostRecent) throw new Error('empty');
-        if (recentEl) recentEl.innerHTML = card(mostRecent);
-
-        if (Array.isArray(pool) && pool.length > 0) {
-          renderTop(pool);
-          shuffleBtn?.addEventListener('click', () => renderTop(pool));
-        } else {
-          section.querySelector('.top')?.remove();
-        }
-        section.hidden = false;
-      })
-      .catch(() => {
-        section.hidden = true;
-      });
+    });
   }
+
+  // Runs on first load and again after every client-side navigation.
+  document.addEventListener('astro:page-load', init);
 </script>
 
 <style>
@@ -92,9 +116,6 @@ const { username, topCount } = Astro.props;
     border-radius: var(--radius);
     display: grid;
     gap: var(--space-4);
-  }
-  .letterboxd[hidden] {
-    display: none;
   }
   .letterboxd h2 {
     font-size: var(--step-0);
@@ -124,7 +145,7 @@ const { username, topCount } = Astro.props;
     color: var(--accent);
   }
   .card,
-  .list li {
+  .list :global(li) {
     display: flex;
     gap: var(--space-3);
   }
@@ -135,26 +156,31 @@ const { username, topCount } = Astro.props;
     border-radius: 4px;
     flex: none;
   }
-  .info {
+  .card :global(.info),
+  .list :global(.info) {
     display: flex;
     flex-direction: column;
     gap: 0.2em;
     min-width: 0;
   }
-  .title {
+  .card :global(.title),
+  .list :global(.title) {
     color: var(--text);
     text-decoration: none;
     font-weight: 600;
   }
-  .title:hover {
+  .card :global(.title:hover),
+  .list :global(.title:hover) {
     color: var(--accent);
   }
-  .rating {
+  .card :global(.rating),
+  .list :global(.rating) {
     color: var(--accent);
     letter-spacing: 0.1em;
     font-size: var(--step--1);
   }
-  .review {
+  .card :global(.review),
+  .list :global(.review) {
     margin: 0.2em 0 0;
     color: var(--text-muted);
     font-size: var(--step--1);
@@ -167,7 +193,7 @@ const { username, topCount } = Astro.props;
     display: grid;
     gap: var(--space-3);
   }
-  .list li + li {
+  .list :global(li + li) {
     padding-top: var(--space-3);
     border-top: 1px solid var(--border);
   }

@@ -106,42 +106,55 @@ gathers matching writing, takes, work and questions. Nothing to maintain.
 ### The inbox
 
 `/inbox/` is a plain form: a note, an optional name, an optional way to reach
-the sender. Notes are received by Netlify Forms (the host) and appear under
-**Forms** in the Netlify dashboard; turn on **Forms → Notifications → Email**
-once to get each note by email. A hidden honeypot field plus Netlify's spam
-filter keep bots out. To receive notes somewhere else, put that service's form
-URL in `site.yaml` → `inbox.action`; to pause the inbox, set `enabled: false`
-(the page then points people to email).
+the sender. The site itself is static (nothing runs on a server), so notes are
+delivered by a form service: put its URL in `site.yaml` → `inbox.action` and
+the form posts there; each note arrives by email. The site is set up for
+[Formspree](https://formspree.io) (free tier: 50 notes a month, anonymous
+submissions allowed): create a form there, pick "Redirect after submit" off,
+and paste the form's endpoint URL. A hidden honeypot field plus Formspree's
+own filtering keep bots out. Nothing secret is in the site — the only thing a
+visitor can see is that URL, and the worst it enables is sending you spam,
+which the monthly cap bounds. Leave `action` blank (or set `enabled: false`)
+to close the inbox; the page then points people to email.
 
 ### Spotify ("On repeat" on the Taste page)
 
-A live top-5-tracks widget, fetched from a small Netlify function
-(`netlify/functions/spotify-top-tracks.js`) so it updates without a rebuild.
-This is the site's Music section — there's no manual `music.yaml`. Needs
-three secrets set once in **Netlify → Site configuration → Environment
-variables** (never in this repo): `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`,
-`SPOTIFY_REFRESH_TOKEN`. If they're missing or Spotify errors, the section
-just doesn't show — nothing else on the page is affected. The refresh token
-doesn't expire on its own; if Spotify ever revokes it, redo the one-time
-authorization in `docs/spotify-setup.md`.
+A top-tracks widget with a shuffle and a 4-weeks / 6-months toggle. The
+tracks are fetched **when the site is built** (`src/lib/spotify.ts`), not by
+visitors' browsers and not by a server — GitHub rebuilds the site four times a
+day, so the list is never more than a few hours old. This is the site's Music
+section — there's no manual `music.yaml`. Needs three secrets set once in
+**GitHub → Settings → Secrets and variables → Actions** (never in this repo):
+`SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN`. To see
+the section in local previews too, copy `.env.example` to `.env` and fill it
+in (`.env` is git-ignored). If the secrets are missing or Spotify errors, the
+section is left out — nothing else on the page is affected, and the build
+still succeeds. The refresh token doesn't expire on its own; if Spotify ever
+revokes it, redo the one-time authorization in `docs/spotify-setup.md`.
 
 ### Letterboxd ("Last watched" / "Top reviews lately" on the Taste page)
 
-A live widget, fetched from a small Netlify function
-(`netlify/functions/letterboxd-reviews.js`) that reads your public diary RSS
-feed — no account, no secrets, since Letterboxd's feed is public. This is the
-site's Films section — there's no manual `films.yaml`. Set your username in
+Read from your public diary RSS feed when the site is built
+(`src/lib/letterboxd.ts`) — no account, no secrets. Same freshness as
+Spotify: a few hours at most; to update it right after logging a film, open
+the repo's **Actions** tab → **Deploy** → **Run workflow**. This is the site's
+Films section — there's no manual `films.yaml`. Set your username in
 `site.yaml` → `letterboxd.username`; leave it blank to turn the widget off.
-`letterboxd.top_count` controls how many "top reviews" show (only entries
-where you actually wrote something are eligible, ranked by your star rating).
-If the feed can't be reached, the section just doesn't show.
+`letterboxd.top_count` controls how many "top reviews" show at once (only
+entries where you actually wrote something are eligible; Shuffle re-picks,
+weighted by your star rating). If the feed can't be reached, the section is
+left out and the build still succeeds.
 
 ## Hosting
 
-The site is deployed by Netlify from the `main` branch on GitHub: every merge
-to `main` rebuilds and publishes it. Build settings live in `netlify.toml`.
-Once the site has its address, put it in `site.yaml` → `url` so the RSS feed
-and sitemap use it.
+The site lives on **GitHub Pages**, built by the workflow in
+`.github/workflows/deploy.yml`. It runs on every push to `main`, four times a
+day on a schedule (that's what keeps the Spotify and Letterboxd sections
+fresh), and whenever you press **Run workflow** in the Actions tab. There is
+no hosting account to keep alive and no usage credits to run out of: if a
+scheduled build fails (say Spotify is down), the previous version stays up.
+The site's address is in `site.yaml` → `url`; change it when you add a domain
+(**Settings → Pages → Custom domain** on GitHub, plus a DNS record).
 
 ## Where things live
 
@@ -157,7 +170,7 @@ src/
   content.config.ts    what each content file may contain — the rules behind the error messages
   components/ layouts/ pages/ lib/    the machinery
 public/                files served as-is: favicon.svg, cv.pdf, images/
-netlify.toml           how the host builds the site
+.github/workflows/     how GitHub builds and publishes the site
 docs/brief.md          the site brief — what this site is for and why it's shaped this way
 ```
 

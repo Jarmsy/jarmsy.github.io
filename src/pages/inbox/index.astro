@@ -1,18 +1,23 @@
 ---
-// The inbox: a plain HTML form, so it works without JavaScript.
-// Where notes go is set in site.yaml → inbox.action (blank = Netlify Forms).
+// The inbox: a plain HTML form, so it works without JavaScript. The site
+// itself is static, so notes are delivered by a form service whose URL is
+// set in site.yaml → inbox.action (Formspree, or any service that accepts a
+// plain POST). No secrets live here: the only thing exposed is that URL,
+// and the worst anyone can do with it is send you spam.
 import Base from '../../layouts/Base.astro';
 import { getSite } from '../../lib/site';
 
 const site = await getSite();
 const { enabled, intro, action } = site.inbox;
-const useNetlify = enabled && action === '';
+// Without a delivery address there is nowhere for notes to go: point to email.
+const open = enabled && action !== '';
+const thanks = new URL('/inbox/thanks/', site.url).href;
 ---
 
 <Base title="Inbox" description="Leave me a note — anonymous is fine.">
   <h1>Inbox</h1>
 
-  {!enabled ? (
+  {!open ? (
     <p class="muted">
       The inbox is closed right now. <a href={`mailto:${site.email}`}>Email me</a> instead.
     </p>
@@ -20,18 +25,13 @@ const useNetlify = enabled && action === '';
     <>
       <p class="intro">{intro}</p>
 
-      <form
-        class="note"
-        name="inbox"
-        method="POST"
-        action={useNetlify ? '/inbox/thanks/' : action}
-        data-netlify={useNetlify ? 'true' : undefined}
-        netlify-honeypot={useNetlify ? 'website' : undefined}
-      >
-        {useNetlify && <input type="hidden" name="form-name" value="inbox" />}
-
+      <form class="note" name="inbox" method="POST" action={action}>
+        <!-- Formspree conventions: subject line, where to land afterwards, and a
+             honeypot (bots fill every field; a filled _gotcha is dropped silently). -->
+        <input type="hidden" name="_subject" value={`Note via ${site.url}`} />
+        <input type="hidden" name="_next" value={thanks} />
         <p class="trap" aria-hidden="true">
-          <label>Leave this field empty <input name="website" tabindex="-1" autocomplete="off" /></label>
+          <label>Leave this field empty <input name="_gotcha" tabindex="-1" autocomplete="off" /></label>
         </p>
 
         <div class="field">
