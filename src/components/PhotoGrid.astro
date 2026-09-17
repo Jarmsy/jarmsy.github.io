@@ -1,6 +1,9 @@
 ---
+// The photo grid. Each thumbnail links to a large version of the image, so
+// it works without JavaScript; with it, a lightbox (native <dialog>) opens
+// in place with previous/next, arrow keys, Esc, and click-outside to close.
 import type { CollectionEntry } from 'astro:content';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { monthYear } from '../lib/format';
 
 interface Props {
@@ -9,25 +12,105 @@ interface Props {
 }
 
 const { photos, locale } = Astro.props;
+
+// Large versions for the lightbox: capped at 2000px wide, still optimised.
+const large = await Promise.all(
+  photos.map(({ data }) => getImage({ src: data.src, width: 2000, format: 'webp' })),
+);
+const meta = (data: CollectionEntry<'photos'>['data']) =>
+  [data.place, data.date && monthYear(data.date, locale)].filter(Boolean).join(' · ');
 ---
 
-<ul class="grid">
-  {photos.map(({ data }) => (
+<ul class="grid" data-gallery>
+  {photos.map(({ data }, i) => (
     <li>
       <figure>
-        <Image src={data.src} alt={data.alt} width={900} loading="lazy" />
+        <a
+          class="thumb"
+          href={large[i].src}
+          data-photo
+          data-caption={data.caption ?? ''}
+          data-meta={meta(data)}
+          aria-label={`Open larger: ${data.caption ?? data.alt}`}
+        >
+          <Image src={data.src} alt={data.alt} width={900} loading="lazy" />
+        </a>
         {(data.caption || data.place || data.date) && (
           <figcaption>
             {data.caption && <span>{data.caption}</span>}
-            <span class="label">
-              {[data.place, data.date && monthYear(data.date, locale)].filter(Boolean).join(' · ')}
-            </span>
+            <span class="label">{meta(data)}</span>
           </figcaption>
         )}
       </figure>
     </li>
   ))}
 </ul>
+
+<dialog class="lightbox" data-lightbox aria-label="Photo viewer">
+  <button type="button" class="close" data-close aria-label="Close">×</button>
+  <button type="button" class="nav prev" data-prev aria-label="Previous photo">←</button>
+  <figure>
+    <img alt="" data-lightbox-img />
+    <figcaption>
+      <span data-lightbox-caption></span>
+      <span class="label" data-lightbox-meta></span>
+    </figcaption>
+  </figure>
+  <button type="button" class="nav next" data-next aria-label="Next photo">→</button>
+</dialog>
+
+<script>
+  function init() {
+    const dialog = document.querySelector<HTMLDialogElement>('[data-lightbox]');
+    const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-gallery] [data-photo]')];
+    if (!dialog || links.length === 0 || typeof dialog.showModal !== 'function') return;
+
+    const img = dialog.querySelector<HTMLImageElement>('[data-lightbox-img]')!;
+    const caption = dialog.querySelector<HTMLElement>('[data-lightbox-caption]')!;
+    const meta = dialog.querySelector<HTMLElement>('[data-lightbox-meta]')!;
+    let current = 0;
+
+    function show(index: number) {
+      current = (index + links.length) % links.length;
+      const link = links[current];
+      const thumb = link.querySelector('img');
+      img.src = link.href;
+      img.alt = thumb?.alt ?? '';
+      caption.textContent = link.dataset.caption ?? '';
+      meta.textContent = link.dataset.meta ?? '';
+      // Warm the neighbours so the arrows feel instant.
+      for (const n of [current + 1, current - 1]) {
+        new Image().src = links[(n + links.length) % links.length].href;
+      }
+    }
+
+    links.forEach((link, i) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        show(i);
+        dialog.showModal();
+      });
+    });
+
+    dialog.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
+    dialog.querySelector('[data-prev]')?.addEventListener('click', () => show(current - 1));
+    dialog.querySelector('[data-next]')?.addEventListener('click', () => show(current + 1));
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') show(current - 1);
+      if (event.key === 'ArrowRight') show(current + 1);
+      if (event.key === 'Escape') dialog.close(); // browsers do this themselves, but not all reliably
+    });
+    // A click on the backdrop (outside the figure and buttons) closes it.
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('close', () => {
+      img.removeAttribute('src');
+    });
+  }
+
+  document.addEventListener('astro:page-load', init);
+</script>
 
 <style>
   .grid {
@@ -38,19 +121,114 @@ const { photos, locale } = Astro.props;
     grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
     gap: var(--space-4);
   }
-  figure {
+  .grid figure {
     margin: 0;
   }
-  img {
+  .thumb {
+    display: block;
+    cursor: zoom-in;
+  }
+  .thumb img {
     width: 100%;
     height: auto;
     display: block;
     border: 1px solid var(--border);
+    transition: border-color var(--dur) var(--ease);
   }
-  figcaption {
+  .thumb:hover img,
+  .thumb:focus-visible img {
+    border-color: var(--accent);
+  }
+  .grid figcaption {
     display: grid;
     gap: var(--space-1);
     margin-top: var(--space-2);
     font-size: var(--step--1);
+  }
+
+  /* The lightbox */
+  .lightbox {
+    border: 0;
+    padding: 0;
+    max-width: 100vw;
+    max-height: 100vh;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    color: var(--bg);
+    display: none;
+    place-items: center;
+  }
+  .lightbox[open] {
+    display: grid;
+  }
+  .lightbox::backdrop {
+    background: rgb(0 0 0 / 0.88);
+  }
+  .lightbox figure {
+    margin: 0;
+    display: grid;
+    gap: var(--space-2);
+    justify-items: center;
+    max-width: min(92vw, 1600px);
+  }
+  .lightbox img {
+    max-width: 92vw;
+    max-height: 82vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+  .lightbox figcaption {
+    display: grid;
+    gap: var(--space-1);
+    text-align: center;
+    font-size: var(--step--1);
+    color: rgb(255 255 255 / 0.85);
+  }
+  .lightbox figcaption .label {
+    color: rgb(255 255 255 / 0.6);
+  }
+  .lightbox button {
+    position: fixed;
+    font: inherit;
+    font-family: var(--font-mono);
+    font-size: var(--step-1);
+    line-height: 1;
+    color: rgb(255 255 255 / 0.8);
+    background: rgb(0 0 0 / 0.4);
+    border: 1px solid rgb(255 255 255 / 0.25);
+    border-radius: 999px;
+    width: 2.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+    transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  .lightbox button:hover,
+  .lightbox button:focus-visible {
+    color: #fff;
+    border-color: #fff;
+    outline: none;
+  }
+  .close {
+    top: var(--space-3);
+    right: var(--space-3);
+  }
+  .nav {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .prev {
+    left: var(--space-3);
+  }
+  .next {
+    right: var(--space-3);
+  }
+  @media (max-width: 40rem) {
+    .nav {
+      top: auto;
+      bottom: var(--space-3);
+      transform: none;
+    }
   }
 </style>
