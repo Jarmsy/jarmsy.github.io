@@ -10,7 +10,7 @@ updated: 2026-09-18
 
 I'm John. I trained as a mechanical engineer, I fly small planes, and I've just moved to Hyde Park in Chicago to study computational analysis and public policy at the University of Chicago's Harris School. This page is the long version of why those three things belong together.
 
-## The stack
+## My layers of interest
 
 A year ago I described my worldview as "an often reformulating understanding of the structures of life that begin with quantum physics, go through biology, to neuroscience, psychology, and the behavior of humans past and present." I stand by that, with one floor added on top: institutions, and the policies that come out of them.
 
