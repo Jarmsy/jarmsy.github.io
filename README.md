@@ -32,7 +32,7 @@ extensions (Astro, YAML) — they flag mistakes as you type.
 
 | … | Edit |
 |---|---|
-| Change my name, motto, tagline, email, domain | `site.yaml` |
+| Change my name, tagline, front-page paragraph, email, domain | `site.yaml` |
 | Swap the front-page portrait | image into `content/photos/`, filename in `site.yaml` → `portrait` |
 | Reorder, hide, or add header / footer links | `site.yaml` → `nav`, `footer` |
 | Change what the home page shows, and how many | `site.yaml` → `home` |

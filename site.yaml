@@ -16,6 +16,15 @@ motto: Systems are made of people.
 corollary: ""                     # the line under the motto — leave "" to hide it
 one_liner: Mechanical engineer turned policy researcher. Pilot.
 portrait: portrait.jpg            # a photo of you on the front page — a filename from content/photos/, or "" for none
+# A short paragraph for the front page, under the one-liner. The ">" means the
+# following indented lines are one paragraph; blank it out (intro: "") to hide.
+intro: >
+  My approach to problems comes from working as a project engineer, student researcher,
+  and pilot: leverage what I know, what I don't, and let curiosity drive where I go for
+  answers. I've also found that bringing out the best in a team matters as much as my own
+  performance — usually by understanding what's actually in someone's way. Policy shapes
+  the structure underneath most of the problems I care about, and that's where I aim to
+  apply myself now.
 email: harmsyjohn@gmail.com
 url: https://jarmsy.github.io   # the site's address (RSS + sitemap use it); change when you get a domain
 

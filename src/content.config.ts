@@ -39,6 +39,7 @@ const settings = defineCollection({
     corollary: z.string().default(''),
     one_liner: z.string().default(''),
     portrait: z.string().default(''),
+    intro: z.string().default(''),
     email: z.email({ error: 'email must look like name@example.com' }),
     url: z.url({ error: 'url must be a full address like https://example.com' }),
     nav: z.array(link).default([]),

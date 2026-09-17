@@ -48,7 +48,7 @@ const currently = (
     <div class="intro">
       <h1 class="name">{site.name}</h1>
       {site.one_liner && <p class="one-liner">{site.one_liner}</p>}
-      {site.motto && <p class="motto">{site.motto}{site.corollary && <span class="corollary"> {site.corollary}</span>}</p>}
+      {site.intro && <p class="intro-text">{site.intro.trim()}</p>}
     </div>
     {portrait && <Image src={portrait} alt={`${site.name}`} width={520} densities={[1, 2]} class="portrait" loading="eager" />}
   </section>
@@ -111,8 +111,8 @@ const currently = (
 </Base>
 
 <style>
-  /* Name and one-liner lead; the motto is a quiet aside, and the portrait
-     sits beside them (below them on narrow screens). */
+  /* Name and one-liner lead, then a short paragraph in John's words; the
+     portrait sits beside them (above them on narrow screens). */
   .hero {
     display: flex;
     align-items: center;
@@ -136,14 +136,10 @@ const currently = (
     max-width: var(--measure);
     margin: 0 0 var(--space-3);
   }
-  .motto {
-    font-family: var(--font-mono);
-    font-size: var(--step--1);
-    color: var(--text-muted);
+  .intro-text {
+    max-width: var(--measure);
     margin: 0;
-  }
-  .corollary {
-    color: var(--text-muted);
+    text-wrap: pretty;
   }
   .portrait {
     flex: 0 0 auto;
