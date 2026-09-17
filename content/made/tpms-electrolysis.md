@@ -20,16 +20,16 @@ featured: true
 
 A PEM electrolyzer splits water into hydrogen and oxygen with electricity. Between the electrode where the reaction happens and the channel that feeds it sits a thin porous layer — the *porous transport layer*, or PTL — that has to do two things at once: let water in, and let the oxygen bubbles that form at the electrode get out. If the bubbles can't leave, they sit on the catalyst and block the water, and the whole thing gets less efficient the harder you push it.
 
-The question our senior design team took on: can you design that sponge instead of just using whatever sintered metal comes off the shelf?
+The question our senior design team took on: can you design that component to outperform the mass produced commercial version? 
 
-We weren't starting from nothing. A [paper published the previous fall](https://doi.org/10.1038/s41598-025-95399-8) had shown that 3D-printed gyroid lattices could outperform commercial sintered PTLs, and its best performer was a gyroid it called G10. That gave us our baseline — the same G10 — and our question: if one of these surfaces beats the incumbent, do the others beat the gyroid?
+Early on in our literature review we found a great starting point for our research. A [paper published the previous fall](https://doi.org/10.1038/s41598-025-95399-8) had shown that 3D-printed gyroid lattices could outperform commercial sintered PTLs, and its best performer was a gyroid it called G10. That gave us our baseline and our question: if one of these surfaces beats the incumbent sintered designs, do the others beat the gyroid?
 
 <!-- Kaya, M. F. & Kıstı, M. "Innovative anode porous transport layers for polymer
      electrolyte membrane water electrolyzers." Scientific Reports 15, 33751 (30 Sep 2025). -->
 
 ## What we made
 
-We built the PTL out of *triply periodic minimal surfaces* — TPMS lattices, the kind of smooth, self-supporting geometry you can 3D-print but not machine. Each repeating unit cell is between 1 and about 2 mm in width, depth and height. The baseline was a gyroid (called G10 in our runs). Against it we designed a family of **lidinoid** lattices at different unit-cell sizes within that range.
+We built the PTL out of *triply periodic minimal surfaces* — TPMS lattices, they are a smooth, self-supporting geometry you can 3D-print but not machine. Each repeating unit cell is between 1 and about 2 mm in width, depth and height. The baseline was a gyroid (called G10 in our runs). Against it we designed a family of **lidinoid** lattices at different unit-cell sizes within that range.
 
 ![Meshed unit cell of the gyroid: one continuous saddle surface curving in every direction, with round openings](./tpms-gyroid-mesh.png)
 
@@ -71,4 +71,4 @@ Every one of those were human errors: the software was doing exactly what it was
 
 ## What it taught me
 
-That instinct — that the result isn't done until the next person can reproduce it — turned out to matter more to me than the 3.7×.
+The project not only gave me a deep respect for the power of CFD simulation, but the complexity and nuances that must be defined before building my model. I built my composure upon confrontation with errors both explicit in the program and implicit in surprising results. I learned to make mistakes early and often because through them, the nuances of software, meshing, and fluid physics gave me opportunities to discover them. 
