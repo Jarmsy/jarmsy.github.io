@@ -172,7 +172,7 @@ src/
   components/ layouts/ pages/ lib/    the machinery
 public/                files served as-is: favicon.svg, cv.pdf, images/
 .github/workflows/     how GitHub builds and publishes the site
-docs/brief.md          the site brief — what this site is for and why it's shaped this way
+docs/                  reference notes (e.g. the Spotify authorization steps)
 ```
 
 ## When something breaks

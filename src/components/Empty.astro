@@ -9,7 +9,8 @@ const { what, where } = Astro.props;
 ---
 
 <p class="empty">
-  No {what} yet. <span class="label">Add to <code>{where}</code></span>
+  No {what} yet.
+  {import.meta.env.DEV && <span class="label">Add to <code>{where}</code></span>}
 </p>
 
 <style>

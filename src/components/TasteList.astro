@@ -16,9 +16,11 @@ interface Props {
 
 const { title, items, file, limit } = Astro.props;
 const shown = limit ? items.slice(0, limit) : items;
+// An empty list shows a reminder in local previews and nothing on the live site.
+const render = shown.length > 0 || import.meta.env.DEV;
 ---
 
-<section class="taste">
+{render && <section class="taste">
   <h2 id={title.toLowerCase()}>{title}</h2>
   {shown.length === 0 ? (
     <Empty what={title.toLowerCase()} where={file} />
@@ -40,7 +42,7 @@ const shown = limit ? items.slice(0, limit) : items;
       ))}
     </ol>
   )}
-</section>
+</section>}
 
 <style>
   .taste { margin-bottom: var(--space-5); }

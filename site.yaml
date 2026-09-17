@@ -35,14 +35,14 @@ nav:
   - { label: About,   href: /about/ }
   - { label: Writing, href: /writing/ }
   - { label: Made,    href: /made/ }
-  - { label: Takes,   href: /takes/ }
   - { label: Taste,   href: /taste/ }
 
 # Footer links, in order.
 footer:
   - { label: Now,       href: /now/ }
+  - { label: Takes,     href: /takes/ }     # back to the top nav once there are five or so
   - { label: Photos,    href: /photos/ }
-  - { label: Questions, href: /questions/ }
+  # - { label: Questions, href: /questions/ }   # hidden until the questions are your own
   - { label: CV,        href: /cv/ }
   - { label: Inbox,     href: /inbox/ }
   - { label: Colophon,  href: /colophon/ }
@@ -51,10 +51,11 @@ footer:
 # External profiles — shown on the About page and in the footer.
 # Add, remove, reorder. Delete the examples you don't use.
 links:
-  - { label: Email, href: "mailto:harmsyjohn@gmail.com" }
-  # - { label: Letterboxd, href: https://letterboxd.com/yourname }
-  # - { label: Spotify,    href: https://open.spotify.com/user/yourname }
-  # - { label: GitHub,     href: https://github.com/yourname }
+  - { label: Email,      href: "mailto:harmsyjohn@gmail.com" }
+  - { label: GitHub,     href: https://github.com/Jarmsy }
+  - { label: Letterboxd, href: https://letterboxd.com/harmsyjohn/ }
+  - { label: Spotify,    href: https://open.spotify.com/user/12181509275 }
+  # - { label: LinkedIn,   href: https://www.linkedin.com/in/YOUR-HANDLE/ }   # paste your profile address and remove the #
 
 # --- Home page -----------------------------------------------
 # Sections on the home page, top to bottom.
