@@ -1,0 +1,26 @@
+---
+// Unlisted companion to the 2024 election autopsy: one entry per data source.
+// It's reached only from the project page's link. It isn't in the Made list,
+// topic pages, RSS or the sitemap (see `unlisted` in astro.config.mjs).
+// The text lives in content/made/_2024-election-autopsy-data.mdx.
+import { getEntry } from 'astro:content';
+import Article from '../../../layouts/Article.astro';
+import { getSite } from '../../../lib/site';
+import Content, { frontmatter } from '../../../../content/made/_2024-election-autopsy-data.mdx';
+
+const project = await getEntry('made', '2024-election-autopsy');
+if (!project) throw new Error('content/made/2024-election-autopsy.mdx is missing');
+const site = await getSite();
+---
+
+<Article
+  title={frontmatter.title}
+  description={frontmatter.description}
+  eyebrow="data sources"
+  date={project.data.date}
+  locale={site.dates.locale}
+  backHref="/made/2024-election-autopsy/"
+  backLabel={project.data.title}
+>
+  <Content />
+</Article>

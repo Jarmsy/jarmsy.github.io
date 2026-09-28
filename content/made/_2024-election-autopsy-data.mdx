@@ -1,0 +1,109 @@
+---
+title: The data behind the 2024 election autopsy
+description: Each public dataset the project uses, what I took from it, and which part of the analysis it feeds.
+---
+{/* Unlisted companion to content/made/2024-election-autopsy.mdx, shown at
+    /made/2024-election-autopsy/data/ by src/pages/made/2024-election-autopsy/data.astro.
+    The leading "_" keeps it out of the Made list. Facts and counts here come from the
+    analysis repo's report/technical_appendix.md (section A) and the pre-registration
+    addendum; check there before changing one. */}
+
+This is the reference list for [Why Democrats Lost the Voters They Lost](/made/2024-election-autopsy/): every public dataset that page draws on, what I took from each one, and where it shows up. Each section number links to the chart it feeds. I've also noted where a dataset needed fixing or careful handling before I could trust it.
+
+| Dataset | Used in section |
+|---|---|
+| MIT Election Lab returns | [2](/made/2024-election-autopsy/#chart-02_turnout_vs_share), [8](/made/2024-election-autopsy/#chart-08_testA_benchmark) |
+| OpenElections, Michigan | [8](/made/2024-election-autopsy/#chart-08_testA_benchmark) |
+| NYC Board of Elections, with city and census maps | [7](/made/2024-election-autopsy/#chart-07_nyc_same_ballot) |
+| New Jersey and Virginia official results | [7](/made/2024-election-autopsy/#chart-07_nyc_same_ballot) |
+| Cooperative Election Study (yearly surveys) | [2](/made/2024-election-autopsy/#chart-02b_stayhome_counterfactual), [3](/made/2024-election-autopsy/#chart-03_perception_by_party), [5](/made/2024-election-autopsy/#chart-05_issue_positions) |
+| Cooperative Election Study panel, 2020–22–24 | [2](/made/2024-election-autopsy/#chart-02b_stayhome_counterfactual), [4](/made/2024-election-autopsy/#chart-04_rating_2022_predicts_switch), [6](/made/2024-election-autopsy/#chart-06_order_of_events), [the bug](/made/2024-election-autopsy/#chart-sidebar_recall) |
+| American National Election Studies | [6](/made/2024-election-autopsy/#chart-06_order_of_events) |
+| Historical presidential results (American Presidency Project, Leip's Atlas) | [1](/made/2024-election-autopsy/#chart-01_fundamentals) |
+| FRED | [1](/made/2024-election-autopsy/#chart-01_fundamentals), [3](/made/2024-election-autopsy/#chart-03_perception_by_party) |
+| Gallup presidential approval | [1](/made/2024-election-autopsy/#chart-01_fundamentals) |
+| BLS Quarterly Census of Employment and Wages | [3](/made/2024-election-autopsy/#chart-03_perception_by_party) |
+| Census American Community Survey | [3](/made/2024-election-autopsy/#chart-03_perception_by_party), [7](/made/2024-election-autopsy/#chart-07_nyc_same_ballot) |
+| Medill Local News Initiative | [3](/made/2024-election-autopsy/#chart-03_perception_by_party) |
+
+## Election results
+
+### MIT Election Lab county presidential returns
+
+Vote counts for every county from 2000 to 2024, published on Harvard Dataverse. This is the base for the county-level turnout-versus-share split in section 2, the state vote totals behind the stay-home what-if. For Michigan, its 2020 precinct file supplies the 2020 half of the swing measure in section 8.
+
+The county file needed work before it added up. States report votes in three different ways: one total row per county, separate rows for each voting method (mail, early, election day) with no total, or both at once. Keeping only total rows drops whole states; summing everything double-counts others. I used the total row where one exists and summed the method rows where it doesn't, then checked the national totals against the certified results. For 2016, 2020 and 2024 the national totals match the certified results to within about 0.03%, and the two-party split matches exactly: 51.11%, 52.27% and 49.25%. Alaska reports by state house district, and those districts were redrawn in 2022, so it stays in the state and national totals and out of every county comparison.
+
+### Historical presidential results
+
+Two-party vote shares for every presidential election from 1948 to 2024, the outcome the section 1 model predicts. I entered them by hand from the UC Santa Barbara American Presidency Project and Dave Leip's Atlas of U.S. Presidential Elections. Every year uses the Democrat's share of the two major-party votes, so third-party votes drop out. That matters most in years with a strong third candidate: 1968, 1980, 1992 and 1996.
+
+### OpenElections, Michigan precinct results
+
+A volunteer project that compiles official precinct results into clean files. I used its Michigan files for the 2022 and 2024 general elections, rolled precincts up to cities and townships, and built the benchmark in section 8 from them. The 2024 ballot gives the dry run (Slotkin against Harris) and the 2022 ballot the three pairs of down-ballot Democrats. The 2026 results will be added from the certified official file once it exists.
+
+OpenElections' 2020 Michigan file is missing nine counties, and its per-county 2020 files put some precincts in the wrong county, which is why 2020 comes from the MIT precinct file instead. Party labels also vary by county, and some rows have the candidate and party columns swapped, so I identified candidates by surname. Every year reconciles to Michigan's certified statewide totals: within 0.1% for 2020 and 2024 and within 0.05% for 2022.
+
+### New York City Board of Elections, with city and census maps
+
+Results by election district (the smallest unit New York reports) for president in 2020 and 2024, and for mayor, comptroller and public advocate in November 2025. This is section 7: each 2025 Democrat's share compared with Harris's in the same district.
+
+The hard part was that district lines changed in 2022, so the 2020 results sit on different lines from everything else. I used the city planning department's district maps and 2020 census blocks to move each old district's votes onto today's districts in proportion to where people live. That carried over 98.2% of Biden's votes and 99.0% of Trump's; the rest were in old districts with no populated block. The comparison uses the 3,879 districts with at least 50 votes in every contest compared. For the neighborhood controls, race comes from the 2020 census and income, education and age from the American Community Survey (below).
+
+### New Jersey and Virginia official results
+
+The state election offices' results for the November 2025 statewide races, plus the 2020 and 2024 presidential results for the same places: 564 New Jersey municipalities and 133 Virginia localities. They're the "same pattern held in New Jersey and Virginia" line in section 7. I wrote down the comparison before pulling any of this data, because the New York result was already known.
+
+Virginia publishes clean files that match its official totals exactly. New Jersey publishes one PDF per county per race, with the columns in each county's own ballot order, so I read the Democratic and Republican columns from each file's header and checked every county against its printed total.
+
+## Surveys
+
+### Cooperative Election Study, 2016, 2020 and 2024
+
+A large academic survey run with YouGov, about 60,000 people each election year. It gives the economic ratings by party in section 3, the media-diet questions behind "which news sources people followed", and the policy positions in section 5. It also gives the state-by-state rates of 2020 voters who stayed home in 2024, which drive the what-if in section 2.
+
+Two traps in the files: the question numbers changed in 2024, and the 2016 file codes the two candidates in the opposite order from later years. I mapped every item by reading the survey guides rather than trusting the column names, and checked each year's weighted vote against the real result. 2024 comes out at 49.0% Democratic of the two-party vote against an actual 49.25%. People's memory of their 2020 vote turned out to be the bigger problem; that's the next entry.
+
+### Cooperative Election Study panel, 2020–2022–2024
+
+The same study re-interviewed about 6,000 of its 2020 respondents in 2022 and 2024, and 4,015 of them completed the 2024 post-election survey. Their answers are matched to voter files, so turnout is checked against the record rather than self-reported. This panel is the backbone of sections 4 and 6: the 2022 economic rating, Biden approval, Medicare for All and immigration views of the 39 Biden voters who switched to Trump, followed over time.
+
+It's also how I caught "the bug in my own numbers". Because the panel recorded each person's 2020 vote in 2020, I could compare it with what the yearly survey asked them to remember in 2024. I used those error rates to correct the switching estimates and the stay-home what-if in section 2. One detail to watch: the panel's 2024 economy question has a different variable number from the same question in the yearly survey.
+
+### American National Election Studies
+
+The other long-running academic election survey. Its 2016–2020–2024 panel follows 2,171 people across three elections; I linked the 2016, 2020 and 2024 files person by person using the IDs ANES carries between waves. It supplies the "Trump really cares about people like you" item in section 6. ANES's 2024 survey also asked people to name the most important problem facing the country, which is where "prices over immigration, two to one" comes from (35% of the 69 Biden-to-Trump switchers in the 2024 survey named the economy or prices, 16% immigration).
+
+Only 21 of the panel's Biden voters switched to Trump, and their survey weights are extreme: three people carry 44% of the weight. So the chart plots the plain count (2 of 21 in 2020, 10 of 20 in 2024) and shows the weighted share on hover.
+
+## The economy
+
+### FRED
+
+The Federal Reserve Bank of St. Louis data service. Real GDP gives second-quarter growth for each election year in the section 1 model, and the consumer price index converts wages to 2024 dollars for the county comparison in section 3.
+
+### Gallup presidential approval
+
+Gallup's June job-approval rating for the sitting president in each election year since 1948, the other main input to the section 1 model. FRED doesn't carry an approval series, so I entered these by hand from Gallup's published figures.
+
+### BLS Quarterly Census of Employment and Wages
+
+Private-sector employment and pay for every county, from employers' unemployment-insurance filings, for 2012, 2016, 2020 and 2024. This is "their own county's job and wage record" in section 3: I linked each survey respondent to their county's change in jobs and real pay, which let me ask whether people's economic ratings tracked what happened where they live.
+
+The Bureau of Labor Statistics hides figures where one or two employers would be identifiable and reports them as zero. I recoded those to missing so a hidden figure doesn't read as a county with no jobs. Average pay here is per job, so it rises when low-wage jobs disappear. I treat it as a rough measure.
+
+### Census American Community Survey
+
+The Census Bureau's rolling survey of income, education, race and employment. The 2020 five-year county file supplies the county controls in section 3. I chose that year because it's the last one gathered before the 2021–23 inflation. Block-group figures from the 2023 file give the neighborhood controls for New York in section 7.
+
+## Local news
+
+### Medill Local News Initiative
+
+Northwestern University's county-by-county count of local news outlets for 2025, including which counties have none. It's behind the line in section 3 that how much local news was available made no measurable difference.
+
+Medill doesn't offer a download, so I pulled the data from the public service its interactive map reads from. I confirmed my counts matched the ones the site reports: 213 counties with no outlet at all, and 1,526 with exactly one.
+
+---
+
+The full project uses more than this: federal spending records, campaign-finance filings, news-coverage archives and others. They feed parts of the report this page doesn't cover. Everything is in the [repository](https://github.com/Jarmsy/2024-dnc-campaign-autopsy), and the [technical appendix](https://github.com/Jarmsy/2024-dnc-campaign-autopsy/blob/master/report/technical_appendix.md) has the full detail on each source, down to variable names and download steps.

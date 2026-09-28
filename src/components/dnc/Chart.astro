@@ -1,0 +1,215 @@
+---
+// One chart on the 2024 election autopsy page: title, legend, the plot(s),
+// caption, and the numbers as a table for screen readers and the curious.
+// The plots themselves are drawn in the browser by charts.ts.
+// Use in content/made/2024-election-autopsy.mdx:  <Chart id="01_fundamentals" />
+import './dnc.css';
+import { SPECS } from './specs';
+import { AXES, AXIS_LABEL, ORDER_PANELS, ORDER_MORE, perception, benchmark } from './data';
+
+interface Props {
+  id: keyof typeof SPECS;
+  /** Hide the chart's own title when the section heading above already says it. */
+  showTitle?: boolean;
+}
+
+const { id, showTitle = true } = Astro.props;
+const spec = SPECS[id];
+const table = spec.table();
+const captionId = `cap-${id}`;
+const kinds = [...new Set(benchmark.rows.map((r) => r.kind))];
+const pct = (v: number) => `${+(v * 100).toFixed(1)}%`;
+---
+
+<figure class="dnc-chart" id={`chart-${id}`} aria-describedby={captionId}>
+  {showTitle && <p class="chart-title">{spec.title}</p>}
+  {spec.legend && (
+    <ul class="legend" aria-hidden="true">
+      {spec.legend.map((s) => (
+        <li><span class={`key ${s.shape ?? 'dot'}`} style={`--c:${s.color}`}></span>{s.label}</li>
+      ))}
+    </ul>
+  )}
+
+  {id === '02b_stayhome_counterfactual' ? (
+    <>
+      <p class="part-title">The seven swing states (a state flips only if a bar crosses 0)</p>
+      <div class="plot" data-plot={id} data-part="states"></div>
+      <p class="part-title">National (note the larger scale)</p>
+      <div class="plot" data-plot={id} data-part="national"></div>
+    </>
+  ) : id === '03_perception_by_party' ? (
+    <>
+      <p class="part-title">Mean rating of the national economy, from +2 (much better) to −2 (much worse)</p>
+      <div class="plot" data-plot={id}></div>
+    </>
+  ) : id === '05_issue_positions' ? (
+    AXES.map((axis) => (
+      <>
+        <p class="part-title">{AXIS_LABEL[axis]}</p>
+        <div class="plot" data-plot={id} data-part={axis}></div>
+      </>
+    ))
+  ) : id === '06_order_of_events' ? (
+    <>
+      <div class="panels">
+        {ORDER_PANELS.map((p) => (
+          <div class="panel">
+            <p class="part-title">{p.title}</p>
+            <div class="plot" data-plot={id} data-part={p.key}></div>
+          </div>
+        ))}
+      </div>
+      <details class="more">
+        <summary>Two more measures</summary>
+        <div class="panels">
+          {ORDER_MORE.map((p) => (
+            <div class="panel">
+              <p class="part-title">{p.title}</p>
+              <div class="plot" data-plot={id} data-part={p.key}></div>
+            </div>
+          ))}
+        </div>
+      </details>
+    </>
+  ) : id === '08_testA_benchmark' ? (
+    kinds.map((kind) => (
+      <>
+        <p class="part-title">
+          {kind}
+          {kind.startsWith('2024') && <span class="tag">pipeline check (presidential ticket-splitting)</span>}
+        </p>
+        <div class="plot" data-plot={id} data-part={kind}></div>
+      </>
+    ))
+  ) : (
+    <div class="plot" data-plot={id}></div>
+  )}
+
+  {id === '03_perception_by_party' && (
+    <dl class="stats">
+      <div>
+        <dt class="label">of the differences in ratings explained by the county’s actual economic record</dt>
+        <dd>{pct(perception.variance_explained.county_economic_record)}</dd>
+      </div>
+      <div>
+        <dt class="label">explained by party</dt>
+        <dd>{pct(perception.variance_explained.party_identification)}</dd>
+      </div>
+    </dl>
+  )}
+
+  <figcaption id={captionId}>{spec.caption}</figcaption>
+  <details class="data">
+    <summary>The numbers</summary>
+    <div class="table-scroll">
+      <table>
+        <thead><tr>{table.head.map((h) => <th scope="col">{h}</th>)}</tr></thead>
+        <tbody>{table.rows.map((row) => <tr>{row.map((cell) => <td>{cell}</td>)}</tr>)}</tbody>
+      </table>
+    </div>
+  </details>
+</figure>
+
+<script>
+  import './charts';
+</script>
+
+<style>
+  .dnc-chart {
+    margin: var(--space-5) 0;
+    padding: var(--space-3) 0 0;
+    border-top: 1px solid var(--border);
+  }
+  .chart-title {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin: 0 0 var(--space-2);
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+    list-style: none;
+    padding: 0 !important;
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+  .legend li { display: flex; align-items: center; gap: 0.4em; margin: 0 !important; }
+  .key { display: inline-block; flex: none; }
+  .key.dot { width: 0.7em; height: 0.7em; border-radius: 50%; background: var(--c); }
+  .key.ring { width: 0.7em; height: 0.7em; border-radius: 50%; border: 1.5px solid var(--c); }
+  .key.bar { width: 0.9em; height: 0.7em; background: var(--c); border-radius: 1px; }
+  .key.band { width: 0.9em; height: 0.7em; background: color-mix(in srgb, var(--c) 25%, transparent); border: 1px solid var(--c); }
+  .key.line { width: 1.2em; height: 2px; background: var(--c); }
+  .key.dash { width: 1.2em; height: 0; border-top: 2px dashed var(--c); }
+
+  .part-title {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text);
+    margin: var(--space-3) 0 var(--space-1);
+    line-height: 1.35;
+  }
+  .tag {
+    display: table;
+    margin-top: 0.3em;
+    padding: 0 0.5em;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-muted);
+  }
+  .plot { width: 100%; min-height: 2rem; }
+  .plot :global(svg) { display: block; overflow: visible; }
+
+  .panels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: var(--space-2) var(--space-4);
+  }
+  .panel .part-title { min-height: 2.7em; }
+  .more { margin-top: var(--space-3); }
+  .more > summary,
+  .data > summary {
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+  .more > summary:hover,
+  .data > summary:hover { color: var(--accent); }
+
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    margin: var(--space-3) 0 0;
+  }
+  .stats div {
+    padding: var(--space-2) var(--space-3);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+  }
+  .stats dt { font-size: 0.78rem; line-height: 1.35; }
+  .stats dd { margin: 0; font-size: var(--step-2); font-variant-numeric: tabular-nums; }
+
+  figcaption {
+    text-align: left !important;
+    margin-top: var(--space-3) !important;
+    line-height: 1.5;
+  }
+  .data { margin-top: var(--space-2); }
+  .table-scroll { overflow-x: auto; margin-top: var(--space-2); }
+  .table-scroll table { font-family: var(--font-mono); font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+  .table-scroll th { font-weight: 500; }
+</style>

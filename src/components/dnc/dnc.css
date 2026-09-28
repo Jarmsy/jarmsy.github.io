@@ -1,0 +1,32 @@
+/* Chart colours for the 2024 election autopsy page. Group colours are fixed
+   across every chart (colour follows the group, never its position) and were
+   checked for colour-blind separation in both themes by the analysis project. */
+:root {
+  --g-loyal:  #2a78d6;   /* loyal Democrats (Biden→Harris); Democrats */
+  --g-switch: #d97706;   /* switchers (Biden→Trump) */
+  --g-rep:    #b8323a;   /* loyal Republicans (Trump→Trump); Republicans */
+  --g-hi:     #6a55b8;   /* highlight: Harris 2024, Mamdani, El-Sayed */
+  --g-ref:    #8a8a86;   /* other / reference series */
+  --g-part-a: #4d5a66;   /* chart 02 components: one neutral hue, two tones */
+  --g-part-b: #a9b3bc;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --g-loyal:  #3987e5;
+    --g-switch: #c98500;
+    --g-rep:    #d9485c;
+    --g-hi:     #9085e9;
+    --g-ref:    #8f8e87;
+    --g-part-a: #b3bec8;
+    --g-part-b: #5f6b76;
+  }
+}
+:root[data-theme='dark'] {
+  --g-loyal:  #3987e5;
+  --g-switch: #c98500;
+  --g-rep:    #d9485c;
+  --g-hi:     #9085e9;
+  --g-ref:    #8f8e87;
+  --g-part-a: #b3bec8;
+  --g-part-b: #5f6b76;
+}

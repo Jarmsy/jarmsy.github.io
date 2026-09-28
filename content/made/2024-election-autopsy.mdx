@@ -1,0 +1,129 @@
+---
+title: Why Democrats Lost the Voters They Lost
+summary: "What the 2024 swing voters believed and when they changed sides, traced through public election returns and surveys that re-interviewed the same people. Plus a test I've registered in advance for November 2026."
+date: 2026-09-27
+tools: [Python, pandas, statsmodels]
+links:
+  - { label: Code and report, href: https://github.com/Jarmsy/2024-dnc-campaign-autopsy }
+topics: [elections, policy, data]
+featured: true
+---
+{/* Chart numbers come from the analysis repo's portfolio/data/*.json (copied to
+    src/data/dnc-autopsy/). The prose started from portfolio/content.md and was
+    rewritten in John's voice on 2026-09-26; every number in it still matches
+    the JSON. Check a changed number against the JSON before editing it here. */}
+
+import Chart from '../../src/components/dnc/Chart.astro';
+import RecallSidebar from '../../src/components/dnc/RecallSidebar.astro';
+
+## The short version
+
+**The swing voters Democrats lost in 2024 largely agreed with them on the economy. By 2022 they had decided the Biden government wasn't delivering, above all on prices. Their views on Trump, immigration and health care shifted only after they'd switched sides.**
+
+Everything here comes from public data: election returns for every county and several thousand municipalities, plus two large academic surveys that re-interview the *same people* across elections (one starting in 2016, one in 2020, both running through 2024). Partway through, I found an error in my own headline numbers and fixed it; that's in "The bug in my own numbers" below. I also wrote down a test of the argument *before* the November 2026 election, so I can't bend the result to fit afterwards.
+
+**What the work involved:** pulling [10+ public data sources](/made/2024-election-autopsy/data/) into tables that reconcile and can be rebuilt from scratch; setting up comparisons that separate cause from coincidence; checking and correcting my own results; and saying plainly how certain each finding is.
+
+---
+
+## 1. The economy and Biden's approval predicted a loss
+
+<Chart id="01_fundamentals" />
+
+Presidential elections since 1948 track a few conditions closely, mainly economic growth and the sitting president's approval. I fit a model on those past elections and gave it 2024's conditions: an incumbent party at 38% approval, with an open seat. It predicted Harris would get **47.9%** of the two-party vote. She got **49.25%**, a little *better* than predicted.
+
+To see how far off the model usually is, I predicted each election from 1948 to 2020 with that year left out of the fit. The typical miss is about 3.75 points. One data point inflates that: the 2020 pandemic quarter, when GDP fell 28%. Refit without it, the typical miss drops to 2.66 points. Harris lands inside the margin either way.
+
+**What it doesn't show.** This forecasts the total only. It says nothing about which voters moved or why, and that's what the rest of the page is about.
+
+## 2. In the swing states, the losses came from voters changing sides
+
+<Chart id="02_turnout_vs_share" />
+
+Democrats can lose votes two ways: people who stay home (*turnout*) and people who vote the other way (*share*). In the most Democratic counties, Democrats lost **2.9 million votes**, mostly to turnout. That was overwhelmingly in states that weren't competitive, like California and New York. In the swing states, Democratic counties held their turnout, and the losses came from voters changing sides.
+
+I split each county's change in Democratic votes into a turnout part and a share part (a standard decomposition). Then I checked the obvious what-if: if every 2020 voter who stayed home in 2024 had shown up and voted the way they did in 2020, would any state flip? Using survey stay-home rates by state, **none does** under the straightforward estimate.
+
+<Chart id="02b_stayhome_counterfactual" />
+
+**What it doesn't show.** Lower turnout still cost Democrats votes. It just didn't decide any swing state.
+
+## 3. People rated the economy by which party held the White House
+
+<Chart id="03_perception_by_party" />
+
+How someone rated the national economy tracked whether their party held the White House, and it flipped every time power changed hands. I linked each survey respondent (about 60,000 a year) to their own county's job and wage record from federal labor statistics. How their *own county's* economy actually did explains **0.6%** of the differences in people's ratings. Their party explains **34%**.
+
+**What it doesn't show.** Party isn't the only filter. Which news sources people followed also mattered. How much *local* news was available made no measurable difference.
+
+## 4. The bad rating came first
+
+<Chart id="04_rating_2022_predicts_switch" showTitle={false} />
+
+Among Biden 2020 voters, how they rated the economy in **2022** predicted whether they voted Trump in **2024**. Of those who said it had gotten "much worse," **7.9%** switched. Of the 438 who said it had improved, **none** did.
+
+This comes from a panel survey that re-interviewed the same people in 2020, 2022 and 2024. Their rating was given two years before the vote, so it can't be a justification made up after they'd decided.
+
+**What it doesn't show.** Something else may already have been pulling these voters away in 2022, making them rate the economy badly *and* later switch. Section 6 looks at exactly that.
+
+## 5. Switchers sided with Democrats on economics and with Republicans on immigration
+
+<Chart id="05_issue_positions" />
+
+Biden voters who switched to Trump answered like Democrats on economic policy: **77%** wanted Medicaid expanded, and majorities wanted corporations and high earners taxed more. On immigration they sat much closer to Republicans; only **23%** opposed the border wall. Anti-corporate views didn't drive people out either. The most anti-corporate Democrats were the *most* loyal.
+
+A national survey of about 60,000 people asks everyone the same policy questions. I grouped voters by how they voted in 2020 and 2024 and compared the share of each group taking the Democratic position on each issue.
+
+**What it doesn't show.** Holding a view isn't the same as voting on it. These are also 2024 answers, given after the switch, which is why the next section matters most.
+
+## 6. The order of events
+
+<Chart id="06_order_of_events" showTitle={false} />
+
+Following the same people from 2020 to 2024 shows the sequence:
+
+1. **By 2022 they'd soured on the Biden government.** Only **31%** of future switchers approved of Biden, and about four in ten had already voted Republican for Congress.
+2. **They still backed Democratic economic policy.** In 2022, **87%** of them supported Medicare for All, *more* than in 2020.
+3. **Their other views moved after they switched.** Between 2022 and 2024 their support for Medicare for All fell to **47%**, their immigration views hardened, and their view of Trump turned around. In 2020, **2 of 21** said Trump "really cares about people like you"; by 2024, **10 of 20** did.
+
+Two panel surveys (CES 2020–22–24 and ANES 2016–20–24) followed the same individuals, so this tracks how each person changed over time. The samples of switchers are small (39 in one panel, 21 in the other), so the exact percentages are uncertain; hover over a point to see how many people it rests on. The *order* of events is the part that holds up.
+
+My reading of it: these voters judged the incumbent on performance first, mostly on prices, which they named as the top problem two to one over immigration. Then they switched, and their policy views moved toward their new side. Plenty of other Democrats were disappointed too. The ones who left stood out on immigration and social issues, where they were already more conservative in 2016 and 2020, while still voting Democratic.
+
+### The bug in my own numbers
+
+<RecallSidebar />
+
+Most surveys ask people in 2024 how they voted in 2020. The panel let me check those memories against what the same people had said in November 2020, and they didn't hold up well. Of **44** people who "remembered" voting Biden and then voted Trump, only **34** had reported voting Biden at the time; **9** had reported voting Trump.
+
+Fewer than 1% of Trump voters misremember voting Biden. But Trump voters are a huge group and real switchers a small one, so even that small error rate adds a lot of false switchers. Correcting for it lowered my estimate of how many Biden voters switched from **5.2% to 4.1%**, and the ratio of switchers to reverse-switchers from **3.4 to 1** to **2.6 to 1**. The patterns of who switched and why held up, at smaller sizes. I corrected every affected figure in the report and noted what changed.
+
+## 7. An economic-left campaign hasn't yet won these voters back
+
+<Chart id="07_nyc_same_ballot" />
+
+New York City's 2025 mayoral race was the clearest real-world test of an openly economic-left campaign. In the neighborhoods that had swung hardest to Trump, Zohran Mamdani ran ahead of Harris's 2024 share. The two other Democrats on the same ballot, for comptroller and public advocate, gained **even more** in those neighborhoods. Swing voters came back to Democrats in general, and the economic-left candidate didn't win an extra share of them. (Mamdani's share runs lower overall because he also faced Andrew Cuomo, a Democrat running as an independent who won 41% citywide; what matters is how much each candidate gained where voters had swung.)
+
+Comparing candidates on the *same ballot* in the same election districts holds everything about the place and the year constant, which leaves the candidate as the difference. The same pattern showed up in New Jersey and Virginia that day.
+
+**What it doesn't show.** It's one city and one election, measured with neighborhood totals, so it can't see individuals. It shows Mamdani's appeal didn't reach these voters any *better* than other Democrats' did. It also doesn't show that left economics hurt.
+
+---
+
+## What a campaign could take from this
+
+- **The voters Democrats lost agreed with them on economics.** Among the voters who stayed, economic views were what *held* them in the coalition.
+- **By 2022 these voters had stopped believing the government was delivering**, especially on prices. More ambitious promises wouldn't answer that on their own.
+- **Immigration and social views predicted who left.** The switchers' views on both were already in place in 2016 and 2020, while they were still voting Democratic.
+
+## What this can't tell us
+
+- **Why trust broke between 2020 and 2022.** The panels don't observe it directly. Prices are the strongest candidate, but I can't show they caused it.
+- **Whether a different 2024 campaign would have won.** The data describe how voters behaved in the campaign that actually happened.
+- **Exact sizes for small groups.** The panel findings rest on dozens of switchers. I trust the direction and the order; I wouldn't lean on the precise percentages.
+
+---
+
+**Go deeper:** [full report and technical appendix](https://github.com/Jarmsy/2024-dnc-campaign-autopsy/tree/master/report) · [pre-registered November 2026 test](https://github.com/Jarmsy/2024-dnc-campaign-autopsy/blob/master/report/preregistration_2026_general.md) · [code and notebooks](https://github.com/Jarmsy/2024-dnc-campaign-autopsy)
+
+**Methods and tools:** Python (pandas, statsmodels), survey weighting, panel analysis, bootstrap intervals, decomposition, pre-registration. Data: Cooperative Election Study (cross-section and 2020–24 panel), American National Election Studies (2016–20–24 panel), MIT Election Lab, OpenElections, FRED, BLS, Census ACS, NYC Board of Elections.
