@@ -143,7 +143,7 @@ export const SPECS: Record<string, Spec> = {
   '07_nyc_same_ballot': {
     title: 'Every Democrat gained where voters had swung',
     caption:
-      'New York City election districts grouped by how far they swung to Trump in 2024. Each line is a 2025 Democrat’s share minus Harris’s. All three Democrats gained most where the swing was largest, and at about the same rate: per point of swing, Mamdani 0.87, Levine 0.83, Williams 0.92. Mamdani’s line sits lower throughout because he faced former Governor Andrew Cuomo, a Democrat running as an independent who won 41% citywide; the comptroller and public advocate faced no comparable challenger. The comparison that matters is how steeply each line rises.',
+      'New York City election districts grouped by how far they swung to Trump in 2024. Each line is a 2025 Democrat’s share minus Harris’s. All three Democrats gained most where the swing was largest, and at about the same rate: per point of swing, Mamdani 0.87, Levine 0.83, Williams 0.92. Mamdani’s line sits lower throughout because he faced former Governor Andrew Cuomo, a Democrat running as an independent who won 41% citywide; the comptroller and public advocate faced no comparable challenger. Cuomo’s vote was uneven across the city, in the June primary and in November alike, so the slopes can’t settle whether Mamdani had an extra draw with swing voters.',
     legend: [
       { label: nyc.labels.mamdani, color: G.hi, shape: 'line' },
       { label: nyc.labels.levine, color: G.ref, shape: 'dash' },

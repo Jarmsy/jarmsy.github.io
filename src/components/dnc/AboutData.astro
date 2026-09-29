@@ -1,0 +1,52 @@
+---
+// A closed-by-default "About the data" box at the end of each section of the
+// 2024 election autopsy: where the numbers come from, how many people or places
+// they rest on, and how far to trust them. Content is written in the MDX.
+//   <AboutData>…markdown…</AboutData>
+interface Props {
+  label?: string;
+}
+const { label = 'About the data' } = Astro.props;
+---
+
+<details class="about-data">
+  <summary><span class="label">{label}</span></summary>
+  <div class="body">
+    <slot />
+  </div>
+</details>
+
+<style>
+  .about-data {
+    margin: var(--space-3) 0 var(--space-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-raised);
+  }
+  summary {
+    cursor: pointer;
+    padding: var(--space-2) var(--space-3);
+    list-style-position: inside;
+  }
+  summary .label {
+    color: var(--text);
+  }
+  summary:hover .label {
+    color: var(--accent);
+  }
+  .body {
+    padding: 0 var(--space-3) var(--space-2);
+    font-size: var(--step--1);
+    line-height: 1.55;
+  }
+  .body :global(p) {
+    margin: 0 0 var(--space-2);
+  }
+  .body :global(ul) {
+    margin: 0 0 var(--space-2);
+    padding-left: 1.2rem;
+  }
+  .body :global(li + li) {
+    margin-top: var(--space-1);
+  }
+</style>

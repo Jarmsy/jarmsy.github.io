@@ -8,7 +8,7 @@ description: Each public dataset the project uses, what I took from it, and whic
     analysis repo's report/technical_appendix.md (section A) and the pre-registration
     addendum; check there before changing one. */}
 
-This is the reference list for [Why Democrats Lost the Voters They Lost](/made/2024-election-autopsy/): every public dataset that page draws on, what I took from each one, and where it shows up. Each section number links to the chart it feeds. I've also noted where a dataset needed fixing or careful handling before I could trust it.
+This is the reference list for [The 2024 Autopsy, From Public Data](/made/2024-election-autopsy/): every public dataset that page draws on, what I took from each one, and where it shows up. Each section number links to the chart it feeds. I've also noted where a dataset needed fixing or careful handling before I could trust it.
 
 | Dataset | Used in section |
 |---|---|
@@ -54,7 +54,7 @@ The hard part was that district lines changed in 2022, so the 2020 results sit o
 
 ### New Jersey and Virginia official results
 
-The state election offices' results for the November 2025 statewide races, plus the 2020 and 2024 presidential results for the same places: 564 New Jersey municipalities and 133 Virginia localities. They're the "same pattern held in New Jersey and Virginia" line in section 7. I wrote down the comparison before pulling any of this data, because the New York result was already known.
+The state election offices' results for the November 2025 statewide races, plus the 2020 and 2024 presidential results for the same places: 564 New Jersey municipalities and 133 Virginia localities. They're the races without a third candidate that section 7 compares New York against. I wrote down the comparison before pulling any of this data, because the New York result was already known.
 
 Virginia publishes clean files that match its official totals exactly. New Jersey publishes one PDF per county per race, with the columns in each county's own ballot order, so I read the Democratic and Republican columns from each file's header and checked every county against its printed total.
 
@@ -90,13 +90,13 @@ Gallup's June job-approval rating for the sitting president in each election yea
 
 ### BLS Quarterly Census of Employment and Wages
 
-Private-sector employment and pay for every county, from employers' unemployment-insurance filings, for 2012, 2016, 2020 and 2024. This is "their own county's job and wage record" in section 3: I linked each survey respondent to their county's change in jobs and real pay, which let me ask whether people's economic ratings tracked what happened where they live.
+Private-sector employment and pay for every county, from employers' unemployment-insurance filings, for 2012, 2016, 2020 and 2024. This is most of the county economic record in section 3: I linked each survey respondent to their county's change in jobs and real pay, which let me ask whether people's economic ratings tracked what happened where they live.
 
 The Bureau of Labor Statistics hides figures where one or two employers would be identifiable and reports them as zero. I recoded those to missing so a hidden figure doesn't read as a county with no jobs. Average pay here is per job, so it rises when low-wage jobs disappear. I treat it as a rough measure.
 
 ### Census American Community Survey
 
-The Census Bureau's rolling survey of income, education, race and employment. The 2020 five-year county file supplies the county controls in section 3. I chose that year because it's the last one gathered before the 2021–23 inflation. Block-group figures from the 2023 file give the neighborhood controls for New York in section 7. The 2016–2020 file also gives population, education, income and race for Michigan's cities and townships, used in the stricter Michigan version of the section 8 test, and for counties in Ohio, Wisconsin and Pennsylvania, used to check it.
+The Census Bureau's rolling survey of income, education, race and employment. The 2020 five-year county file supplies the unemployment rate in section 3’s county record, and the county controls. I chose that year because it's the last one gathered before the 2021–23 inflation. Block-group figures from the 2023 file give the neighborhood controls for New York in section 7. The 2016–2020 file also gives population, education, income and race for Michigan's cities and townships, used in the stricter Michigan version of the section 8 test, and for counties in Ohio, Wisconsin and Pennsylvania, used to check it.
 
 ## Local news
 

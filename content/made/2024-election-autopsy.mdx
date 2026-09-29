@@ -1,11 +1,12 @@
 ---
-title: Why Democrats Lost the Voters They Lost
-summary: "What the 2024 swing voters believed and when they changed sides, traced through public election returns and surveys that re-interviewed the same people. Plus a test I've registered in advance for November 2026."
+title: The 2024 Autopsy, From Public Data
+summary: "Why Democrats lost the voters they lost: what the 2024 swing voters believed and when they changed sides, traced through public election returns and surveys that re-interviewed the same people. Plus a test I've registered in advance for November 2026."
 date: 2026-09-27
 tools: [Python, pandas, statsmodels]
 links:
   - { label: Code and report, href: https://github.com/Jarmsy/2024-dnc-campaign-autopsy }
 topics: [elections, policy, data]
+cover: ./election-autopsy-cover.png
 featured: true
 ---
 {/* Chart numbers come from the analysis repo's portfolio/data/*.json (copied to
@@ -15,12 +16,13 @@ featured: true
 
 import Chart from '../../src/components/dnc/Chart.astro';
 import SlopeFormula from '../../src/components/dnc/SlopeFormula.astro';
+import AboutData from '../../src/components/dnc/AboutData.astro';
 
 ## The short version
 
 **The swing voters Democrats lost in 2024 largely agreed with them on the economy. By 2022 they had decided the Biden government wasn't delivering, above all on prices. Their views on Trump, immigration and health care shifted only after they'd switched sides.**
 
-Everything here comes from public data: election returns for every county and several thousand municipalities, plus two large academic surveys that re-interview the *same people* across elections (one starting in 2016, one in 2020, both running through 2024). I also wrote down a test of the argument *before* the November 2026 election, so I can't bend the result to fit afterwards.
+The Democratic National Committee commissioned its own review of 2024, withheld it for months, and in May 2026 released an unfinished version its chair disowned. This one is independent, and everything here comes from public data: election returns for every county and several thousand municipalities, plus two large academic surveys that re-interview the *same people* across elections (one starting in 2016, one in 2020, both running through 2024). I also wrote down a test of the argument *before* the November 2026 election, so I can't bend the result to fit afterwards.
 
 **What the work involved:** pulling [10+ public data sources](/made/2024-election-autopsy/data/) into tables that reconcile and can be rebuilt from scratch; setting up comparisons that separate cause from coincidence; and saying plainly how certain each finding is.
 
@@ -32,9 +34,17 @@ Everything here comes from public data: election returns for every county and se
 
 Presidential elections since 1948 track a few conditions closely, mainly economic growth and the sitting president's approval. I fit a model on those past elections and gave it 2024's conditions: an incumbent party at 38% approval, with an open seat. It predicted Harris would get **47.9%** of the two-party vote. She got **49.25%**, a little *better* than predicted.
 
-To see how far off the model usually is, I predicted each election from 1948 to 2020 with that year left out of the fit. The typical miss is about 3.75 points. One data point inflates that: the 2020 pandemic quarter, when GDP fell 28%. Refit without it, the typical miss drops to 2.66 points. Harris lands inside the margin either way.
+To see how far off the model usually is, I predicted each election from 1948 to 2020 with that year left out of the fit. The typical miss is about 3.75 points. One data point inflates that: the 2020 pandemic quarter, when GDP fell 28%. Refit without it, the typical miss drops to 2.66 points. Harris lands inside the model's usual error either way.
 
 **What it doesn't show.** This forecasts the total only. It says nothing about which voters moved or why, and that's what the rest of the page is about.
+
+<AboutData>
+
+- **Sources:** each election's Democratic share of the two-party vote, 1948–2024 ([American Presidency Project and Leip's Atlas](/made/2024-election-autopsy/data/#historical-presidential-results)); second-quarter GDP growth ([FRED](/made/2024-election-autopsy/data/#fred)); the president's June approval ([Gallup](/made/2024-election-autopsy/data/#gallup-presidential-approval)).
+- **How much data:** 19 elections, 1948 to 2020, to fit the model. 2024 was left out and predicted.
+- **How far to trust it:** 19 elections is a small base, and one of them, 2020, moves the fit a lot. That's why the error is given both with and without it.
+
+</AboutData>
 
 ## 2. In the swing states, the losses came from voters changing sides
 
@@ -42,19 +52,38 @@ To see how far off the model usually is, I predicted each election from 1948 to 
 
 Democrats can lose votes two ways: people who stay home (*turnout*) and people who vote the other way (*share*). In the most Democratic counties, Democrats lost **2.9 million votes**, mostly to turnout. That was overwhelmingly in states that weren't competitive, like California and New York. In the swing states, Democratic counties held their turnout, and the losses came from voters changing sides.
 
-I split each county's change in Democratic votes into a turnout part and a share part (a standard decomposition). Then I checked the obvious what-if: if every 2020 voter who stayed home in 2024 had shown up and voted the way they did in 2020, would any state flip? Using survey stay-home rates by state, **none does** under the straightforward estimate.
+I split each county's change in Democratic votes into a turnout part and a share part (a standard decomposition). Then I checked the obvious what-if: if every 2020 voter who stayed home in 2024 had shown up and voted the way they did in 2020, would any state flip? Using survey stay-home rates by state, **none does** in the main estimate. Under one alternative survey weighting Michigan would, but that rests on a few dozen people who stayed home.
 
 <Chart id="02b_stayhome_counterfactual" />
 
 **What it doesn't show.** Lower turnout still cost Democrats votes. It just didn't decide any swing state.
 
+<AboutData>
+
+- **Sources:** official county vote counts for 2016, 2020 and 2024 ([MIT Election Lab](/made/2024-election-autopsy/data/#mit-election-lab-county-presidential-returns)). The what-if uses the 2024 [Cooperative Election Study](/made/2024-election-autopsy/data/#cooperative-election-study-2016-2020-and-2024), a large academic survey.
+- **How much data:** 3,111 counties. Alaska is left out because it reports results by legislative district, and those lines changed in 2022. The what-if uses each state's stay-home rate among about 20,000 respondents who remembered voting Biden in 2020 and about 14,000 who remembered voting Trump, corrected with the panel survey for misremembered votes.
+- **How far to trust it:** the turnout-and-share split is exact arithmetic on official counts. The what-if rests on survey rates, and in the smaller swing states those come from a few hundred people each.
+
+</AboutData>
+
 ## 3. People rated the economy by which party held the White House
 
 <Chart id="03_perception_by_party" />
 
-How someone rated the national economy tracked whether their party held the White House, and it flipped every time power changed hands. I linked each survey respondent (about 60,000 a year) to their own county's job and wage record from federal labor statistics. How their *own county's* economy actually did explains **0.6%** of the differences in people's ratings. Their party explains **34%**.
+How someone rated the national economy tracked whether their party held the White House, and it flipped every time power changed hands. I linked each survey respondent (about 60,000 a year) to their own county's economic record. That record is the change from 2020 to 2024 in the county's private-sector jobs and in its average private-sector pay per job, adjusted for inflation, from the payroll filings employers make for unemployment insurance. It also includes the county's unemployment rate from the census. It describes the place someone lives, so it can't see their own paycheck or the prices they paid. On its own it explains **0.6%** of the differences in people's ratings. Their party explains **34%**.
 
-**What it doesn't show.** Party isn't the only filter. Which news sources people followed also mattered. How much *local* news was available made no measurable difference.
+What people said about their own lives adds almost as much again. How much they felt prices had risen explains another **10%** on top of party, and whether their household income had gone up or down another **9%**. Together with party, those two explain about half (**51%**). Added on top of party, the county record contributes less than 1%.
+
+**What it doesn't show.** The prices and income answers are people's own reports and aren't measurements. Party colors them too, though far less than the economy rating: it explains 11% and 6% of them, against 34%. Which news sources people followed adds a little more (another 5% on top of party), though the survey can only really tell TV channels and newspapers apart. How much *local* news was available made no measurable difference.
+
+<AboutData>
+
+- **Sources:** the [Cooperative Election Study](/made/2024-election-autopsy/data/#cooperative-election-study-2016-2020-and-2024) for 2016, 2020 and 2024. The county record comes from the [Bureau of Labor Statistics](/made/2024-election-autopsy/data/#bls-quarterly-census-of-employment-and-wages) and the [Census Bureau](/made/2024-election-autopsy/data/#census-american-community-survey), and local news counts from Northwestern's [Medill Local News Initiative](/made/2024-election-autopsy/data/#medill-local-news-initiative).
+- **How many people:** about 60,000 respondents a year (64,600 in 2016, 61,000 in 2020, 60,000 in 2024). The 2024 models use the roughly 56,000 who answered the economy question and live in a county with complete data, spread over about 2,650 counties.
+- **How the survey works:** YouGov recruits people online and selects a sample matched to the adult population, and the study then weights it to correct for remaining differences.
+- **How far to trust it:** checked against real results, the weighted survey gets the two-party vote within about a point in every year: in 2024, 49.0% Democratic against an actual 49.25%.
+
+</AboutData>
 
 ## 4. The bad rating came first
 
@@ -64,7 +93,16 @@ Among Biden 2020 voters, how they rated the economy in **2022** predicted whethe
 
 This comes from a panel survey that re-interviewed the same people in 2020, 2022 and 2024. Their rating was given two years before the vote, so it can't be a justification made up after they'd decided.
 
-**What it doesn't show.** Something else may already have been pulling these voters away in 2022, making them rate the economy badly *and* later switch. I checked one version of that. Their party loyalty had already started slipping by 2022, and the link still holds after accounting for it. A sharper check holds 2022 behaviour fixed: among Biden voters who still voted Democratic for Congress in 2022, those who called the economy much worse that year went on to switch at the highest rate (7 of 181, 3.9%), against 1.4% of those who said it was the same or somewhat worse and none of the 383 who saw improvement. It rests on seven switchers. Other causes are still possible, and section 6 looks at them.
+**What it doesn't show.** Something else may already have been pulling these voters away in 2022, making them rate the economy badly *and* later switch. I checked two versions of that. First, their party loyalty had already started slipping by 2022, and the link still holds after accounting for it. Second, I looked only at Biden voters who still voted Democratic for Congress in 2022, so none of them had left yet. Those who called the economy much worse that year still switched at the highest rate: 7 of 181 (3.9%), against 1.4% of those who said it was the same or somewhat worse and none of the 383 who saw improvement. That check rests on seven switchers. Other causes are still possible, and section 6 looks at them.
+
+<AboutData>
+
+- **Source:** the [Cooperative Election Study's panel](/made/2024-election-autopsy/data/#cooperative-election-study-panel-202020222024), which interviewed the same people in 2020, 2022 and 2024. Whether they voted is checked against voter files built from state records.
+- **How many people:** 1,684 people who reported voting Biden in November 2020 and voted for Harris or Trump in 2024. Of those, 39 switched to Trump.
+- **How it's counted:** the chart shows unweighted rates. The weighted rates are in the table under the chart; they show the same pattern except between the two middle answers, which rest on 13 and 6 switchers.
+- **How far to trust it:** 39 switchers is a small number, so the percentages are rough. The people who stayed in the panel through 2024 are older, more educated and more likely to be regular voters than the original 2020 sample, though their party mix changed little.
+
+</AboutData>
 
 ## 5. Switchers sided with Democrats on economics and with Republicans on immigration
 
@@ -76,6 +114,16 @@ A national survey of about 60,000 people asks everyone the same policy questions
 
 **What it doesn't show.** Holding a view isn't the same as voting on it. The numbers are averages over a mixed group: three in ten switchers were on the left on both economics and culture, and about a third on the right on both. These are also 2024 answers, given after the switch, which is why the next section matters most.
 
+<AboutData>
+
+- **Source:** the 2024 [Cooperative Election Study](/made/2024-election-autopsy/data/#cooperative-election-study-2016-2020-and-2024), a one-time survey of about 60,000 people.
+- **How many people in each group:** 16,473 loyal Democrats (Biden, then Harris), 334 switchers (Biden, then Trump) and 12,240 loyal Republicans (Trump both times). The shares are weighted.
+- **How the groups are defined:** by how people said they voted in 2020 and 2024. Memories of the 2020 vote aren't perfect. In the panel survey, about a quarter of the people who remembered switching hadn't voted for Biden in 2020, and most of them had reported voting Trump. Including them makes the switchers look somewhat less Democratic on economics than they were, and changes their immigration answers very little.
+- **How far to trust it:** 334 people is enough to show the pattern clearly. Because of the weighting they count for about 145 respondents, so each switcher share has a margin of error of about 6 to 8 points either way (Medicaid: 77%, somewhere between 70% and 83%). That covers sampling only, not the recall problem above.
+- **How representative:** the survey matches the whole electorate's vote within about a point, but that doesn't guarantee a group this small. Switchers are about 4–5% of Biden voters, and the weights are set for the population as a whole. Online surveys also tend to reach more engaged, attentive people, so the switchers here may lean toward the more engaged, politically consistent ones. There's no outside count of switchers to check against, because the ballot is secret.
+
+</AboutData>
+
 ## 6. The order of events
 
 <Chart id="06_order_of_events" showTitle={false} />
@@ -84,21 +132,39 @@ Following the same people from 2020 to 2024 shows the sequence:
 
 1. **By 2022 they'd soured on the Biden government.** Only **31%** of future switchers approved of Biden, and about four in ten had already voted Republican for Congress.
 2. **They still backed Democratic economic policy.** In 2022, **87%** of them supported Medicare for All, *more* than in 2020.
-3. **Their other views moved after they switched.** Between 2022 and 2024 their support for Medicare for All fell to **47%**, their immigration views hardened (loyal Democrats' moved the same way, about half as far), and their view of Trump turned around. In 2020, **2 of 21** said Trump "really cares about people like you"; by 2024, **10 of 20** did.
+3. **Their other views moved after they switched.** Between 2022 and 2024 their support for Medicare for All fell to **47%**, their immigration views hardened (loyal Democrats' views moved the same way, about half as far), and their view of Trump turned around. In 2020, **2 of 21** said Trump "really cares about people like you"; by 2024, **10 of 20** did.
 
-Two panel surveys (CES 2020–22–24 and ANES 2016–20–24) followed the same individuals, so this tracks how each person changed over time. The samples of switchers are small (39 in one panel, 21 in the other), so the exact percentages are uncertain; hover over a point to see how many people it rests on. The *order* of events is the part that holds up. Switchers here are defined by the vote people reported at the time, not the one they remembered in 2024: remembered votes turned out to count some Trump voters as switchers.
+Two panel surveys, the Cooperative Election Study (2020–22–24) and the American National Election Studies (2016–20–24), followed the same individuals, so this tracks how each person changed over time. The samples of switchers are small (39 in one panel, 21 in the other), so the exact percentages are uncertain; hover over a point to see how many people it rests on. The *order* of events is the part that holds up. Switchers here are defined by the vote people reported at the time, not the one they remembered in 2024: remembered votes turned out to count some Trump voters as switchers.
 
 My reading of it: these voters judged the incumbent on performance first, mostly on prices, which they named as the top problem two to one over immigration. Then they switched, and their policy views moved toward their new side. Plenty of other Democrats were disappointed too. The ones who left stood out on immigration and social issues, where they were already more conservative in 2016 and 2020, while still voting Democratic.
 
-## 7. An economic-left campaign hasn't yet won these voters back
+<AboutData>
+
+- **Sources:** two separate panel surveys: the [Cooperative Election Study's 2020–22–24 panel](/made/2024-election-autopsy/data/#cooperative-election-study-panel-202020222024) and the [American National Election Studies' 2016–20–24 panel](/made/2024-election-autopsy/data/#american-national-election-studies).
+- **How many people:** in the first, 39 switchers and about 1,640 loyal Democrats. In the second, 2,171 people were interviewed in all three elections, and 21 of the Biden voters among them switched to Trump.
+- **How far to trust it:** these are the smallest groups on the page. In the second panel, three of the 21 switchers carry 44% of the survey weight, so its line uses plain counts (2 of 21, 10 of 20). The two panels ask different questions, so each covers a different part of the sequence.
+
+</AboutData>
+
+## 7. New York 2025: every Democrat regained ground where voters had swung
 
 <Chart id="07_nyc_same_ballot" />
 
-New York City's 2025 mayoral race was the clearest real-world test of an openly economic-left campaign. In the neighborhoods that had swung hardest to Trump, Zohran Mamdani ran ahead of Harris's 2024 share. The two other Democrats on the same ballot, for comptroller and public advocate, gained on Harris at about the same rate: for each point a district had swung to Trump, Mamdani gained **0.87** points on Harris, Levine **0.83** and Williams **0.92**. Swing voters came back to Democrats in general, and the economic-left candidate didn't win an extra share of them. (Mamdani's share runs lower overall because he also faced Andrew Cuomo, a Democrat running as an independent who won 41% citywide; what matters is how much each candidate gained where voters had swung.)
+New York City's 2025 mayoral race was the clearest recent test of an openly economic-left campaign, Zohran Mamdani's. In the neighborhoods that had swung hardest to Trump, he ran ahead of Harris's 2024 share. So did the two other Democrats on the same ballot, for comptroller and public advocate: for each point a district had swung to Trump, Mamdani gained **0.87** points on Harris, Levine **0.83** and Williams **0.92**. The neighborhoods that had swung came back to Democrats across the ballot.
 
-Comparing candidates on the *same ballot* in the same election districts holds everything about the place and the year constant, which leaves the candidate as the difference. The same pattern showed up in New Jersey and Virginia that day.
+Whether Mamdani's campaign had any extra pull with them is harder to say. He also faced Andrew Cuomo, a Democrat running as an independent who won 41% citywide, while the other two faced only a Republican. That's why Mamdani's line sits about twenty points below Levine's. Comparing how steeply the lines rise gets around that only if Cuomo drew Democrats away evenly across the city, and the data can't confirm it. In the June primary, Cuomo did better in the neighborhoods that later swung than in those that hadn't: 43% against Mamdani in the most-swung tenth, 33% in the least-swung, and best of all in between. So his November pull probably wasn't even either. His November vote followed the same shape (32% in the least-swung tenth, about 46% in the middle, 39% in the most-swung), but neighborhood totals can't show whether those votes came from Democrats or from Trump voters.
 
-**What it doesn't show.** It's one city and one election, measured with neighborhood totals, so it can't see individuals. It shows Mamdani's appeal didn't reach these voters any *better* than other Democrats' did. It also doesn't show that left economics hurt.
+Races that day without a third candidate show the same broad pattern. In New Jersey and Virginia, Democrats also gained most where the swing had been largest. On Virginia's ballot, the progressive running for lieutenant governor gained no faster in the swing areas than the moderate running for governor, though Virginia's places varied little in how much they had swung. But all of them ran on the cost of living, and only Mamdani ran an openly economic-left campaign.
+
+**What it doesn't show.** It's one city and one election, measured with neighborhood totals. Because of the three-way race, it can't say whether Mamdani's economics won extra swing voters back or not. It also doesn't show that left economics hurt.
+
+<AboutData>
+
+- **Sources:** [New York City Board of Elections](/made/2024-election-autopsy/data/#new-york-city-board-of-elections-with-city-and-census-maps) results by election district: president in 2020 and 2024, and mayor, comptroller and public advocate in November 2025, plus the ballot-level records from the June 2025 primary. City planning maps and 2020 census blocks line up the 2020 results with today's districts. [New Jersey and Virginia](/made/2024-election-autopsy/data/#new-jersey-and-virginia-official-results) results come from their state election offices.
+- **How much data:** 3,879 New York City election districts with at least 50 votes in each general election, 564 New Jersey municipalities and 133 Virginia localities.
+- **How far to trust it:** these are official counts, not a survey, so there's no sampling error. The limit is that they're totals for places, so they can't show how any individual voted. Moving the 2020 results onto today's district lines carried over 98–99% of the votes.
+
+</AboutData>
 
 ## 8. The test I've registered for November 2026
 
@@ -108,13 +174,23 @@ In November 2026, Michigan votes on an economic-left Senate candidate who has al
 
 <SlopeFormula />
 
-I published the exact test before the election, so I can't reinterpret the result afterwards. I also measured what normal looks like. Among mainstream Democrats sharing a Michigan ballot in 2018 and 2022, the gap between any two moves only a little with the swing, with slopes between **−0.09 and +0.04** (the 2022 pairs use the same 2020-to-2024 swing as the 2026 test; the 2018 pairs use the swing before that election, 2012 to 2016). Before the election I also ran the test on two cases where I knew what it should find: Sherrod Brown in Ohio and Tammy Baldwin in Wisconsin, Democrats widely seen as running ahead in places that swung to Trump. It picked both up, at **+0.17** and **+0.18**. Both were incumbents running beside newcomers, so I also checked a long-time incumbent running beside a newcomer on Michigan's 2018 ballot. That produced no measurable slope, so being better known doesn't create one by itself, which also matters for Benson against El-Sayed.
+I published the exact test before the election, so I can't reinterpret the result afterwards. I also measured what normal looks like. Among mainstream Democrats sharing a Michigan ballot in 2018 and 2022, the gap between any two moves only a little with the swing, with slopes between **−0.09 and +0.04** (the 2022 pairs use the same 2020-to-2024 swing as the 2026 test; the 2018 pairs use the swing before that election, 2012 to 2016).
+
+Before the election I also ran the test on two cases where I knew what it should find: Sherrod Brown in Ohio and Tammy Baldwin in Wisconsin, Democrats widely seen as running ahead in places that swung to Trump. It picked both up, at **+0.17** and **+0.18**. Both were incumbents running beside newcomers, so I also checked a long-time incumbent running beside a newcomer on Michigan's 2018 ballot. That produced no measurable slope, so being better known doesn't create one by itself. That matters here because Benson is a sitting statewide officeholder and El-Sayed a first-time nominee.
 
 The same checks turned up a weakness. When I swapped in the swing from 2008 to 2012, which has nothing to do with Trump, the slopes came out just as large. Candidates run stronger in some kinds of places than others, and almost any measure of how places differ picks that up. So before the election I added a stricter version that also accounts for each place's earlier swings and its Republican vote share. On the check cases it kept Brown (**+0.14**) and Baldwin (**+0.12**) positive, and the unrelated swing's pull fell to under two-thirds of the Trump swing's. For Michigan, the stricter version also holds each town's population, education, income and racial makeup fixed, and compares towns only with others in the same county. Those extra controls couldn't be tested on the check cases, and in county data they left Brown's and Baldwin's signal too uncertain to tell from zero. So if the stricter Michigan version finds nothing while the version with only the earlier swings and Republican share finds a slope, I'll count that as weak evidence against an effect. Results come after certification in late November 2026.
 
 The 2024 rows are a dry run of the same code on Slotkin (Senate) against Harris (President), and their slope is large: **+0.237**. That's because the swing is measured from the presidential vote, and Harris is one of the two candidates being compared. A voter who went from Biden in 2020 to Trump in 2024 and still voted for Slotkin raises the town's swing and Slotkin's lead over Harris at the same time, so towns with more of these ticket-splitters sit higher on both. More generally, anything that pulled Harris down in a particular town without pulling Slotkin down raises both numbers at once. The dry run only shows the pipeline works. The 2018 and 2022 pairs are the fair comparison for 2026: neither year had a presidential race on the ballot, so neither candidate is part of the swing measure.
 
 **What could confuse it.** Some things could hit El-Sayed harder in some towns than others: concentrated attack ads, prejudice against a Muslim candidate, strong Arab-American support in Dearborn (one pre-registered version of the test leaves out Dearborn, Dearborn Heights and Hamtramck), and his position on Gaza. Voters who said they switched from Biden to Trump were much more likely than loyal Democrats to want the US to stay out of the war (28% against 11%), though they were close to loyal Democrats on arming Israel. Across the country, support for arming Israel doesn't line up with how much an area swung once you compare people of the same party, but in Michigan there's a hint that swing counties wanted the US to stay out. So a positive result could partly reflect that, and I won't credit it to his economics alone.
+
+<AboutData>
+
+- **Sources:** Michigan precinct results from [OpenElections](/made/2024-election-autopsy/data/#openelections-michigan-precinct-results) and, for 2020, the [MIT Election Lab](/made/2024-election-autopsy/data/#mit-election-lab-county-presidential-returns), rolled up to cities and townships. The check cases use Ohio, Wisconsin and Pennsylvania county results, and the stricter version adds [Census](/made/2024-election-autopsy/data/#census-american-community-survey) data on each place. The Gaza figures come from the 2024 [Cooperative Election Study](/made/2024-election-autopsy/data/#cooperative-election-study-2016-2020-and-2024) and [American National Election Studies](/made/2024-election-autopsy/data/#american-national-election-studies).
+- **How much data:** about 1,500 Michigan cities and townships (1,436 in the 2022 benchmark), leaving out places with fewer than 200 votes. The Ohio and Wisconsin checks use counties.
+- **How far to trust it:** official counts again, and each Michigan year matches the state's certified totals to within 0.1%. The main risks are the ones in "What could confuse it", plus the small number of check cases: two known populists and three ordinary pairs.
+
+</AboutData>
 
 ---
 
@@ -134,4 +210,4 @@ The 2024 rows are a dry run of the same code on Slotkin (Senate) against Harris 
 
 **Go deeper:** [full report and technical appendix](https://github.com/Jarmsy/2024-dnc-campaign-autopsy/tree/master/report) · [pre-registered November 2026 test](https://github.com/Jarmsy/2024-dnc-campaign-autopsy/blob/master/report/preregistration_2026_general.md) · [code and notebooks](https://github.com/Jarmsy/2024-dnc-campaign-autopsy)
 
-**Methods and tools:** Python (pandas, statsmodels), survey weighting, panel analysis, bootstrap intervals, decomposition, pre-registration. Data: Cooperative Election Study (cross-section and 2020–24 panel), American National Election Studies (2016–20–24 panel), MIT Election Lab, OpenElections, FRED, BLS, Census ACS, NYC Board of Elections.
+**Methods and tools:** Python (pandas, statsmodels), survey weighting, panel analysis, bootstrap intervals, decomposition, pre-registration. Data: Cooperative Election Study (cross-section and 2020–24 panel), American National Election Studies (2016–20–24 panel), MIT Election Lab, OpenElections, FRED, BLS, Census ACS, NYC Board of Elections, and [more](/made/2024-election-autopsy/data/).
