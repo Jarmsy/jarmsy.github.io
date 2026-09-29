@@ -6,6 +6,7 @@ import * as Plot from '@observablehq/plot';
 import {
   fundamentals, turnout, stayhome, perception, rating, issues, order, nyc, benchmark,
   num, signed1, pct1, pct0, millions, votes, binLabel, PARTIES, isIndex, RATING_ORDER,
+  BENCHMARK_KINDS, isPositiveControl,
 } from './data';
 
 const C = {
@@ -320,11 +321,24 @@ const draw07: Render = (w) => {
 // ---- 08 -----------------------------------------------------------
 const draw08: Render = (w, kind) => {
   // Rows sit at fixed pixel offsets: two label lines, then the dot and its interval.
-  const rows = benchmark.rows.filter((r) => r.kind === kind).map((r, i) => ({ ...r, i }));
-  const first = kind === benchmark.rows[0].kind;
+  // A comparison too long for one line moves its place and year ("…, Ohio 2018, counties") down to the sample line.
+  const fits = (text: string) => text.length * 6.6 <= w - 24;
+  const rows = benchmark.rows
+    .filter((r) => r.kind === kind)
+    .map((r, i) => {
+      const cut = r.comparison.indexOf(', ', r.comparison.lastIndexOf(')')); // not inside "(Sen, incumbent)"
+      const wrap = !fits(r.comparison) && cut > 0;
+      return {
+        ...r,
+        i,
+        line1: wrap ? r.comparison.slice(0, cut) : r.comparison,
+        line2: wrap ? `${r.comparison.slice(cut + 2)} · ${r.sample}` : r.sample,
+      };
+    });
+  const first = kind === BENCHMARK_KINDS[0];
   const dryRun = kind?.startsWith('2024');
   const pending = rows.every((r) => r.slope == null);
-  const color = dryRun ? C.ref : C.ink;
+  const color = dryRun ? C.ref : isPositiveControl(kind) ? C.hi : C.ink;
   const rowH = 54;
   const top = first ? 24 : 6;
   const n = rows.length;
@@ -342,8 +356,8 @@ const draw08: Render = (w, kind) => {
       Plot.rectX([0], { x1: -0.1, x2: 0.1, fill: C.ref, fillOpacity: 0.16 }),
       first ? Plot.text([0], { x: 0, frameAnchor: 'top', dy: -14, text: () => 'ordinary candidate differences', fill: C.muted }) : null,
       Plot.ruleX([0], { stroke: C.muted }),
-      Plot.text(rows, { x: -0.2, y: 'i', text: 'comparison', textAnchor: 'start', dy: 10, fill: C.ink }),
-      Plot.text(rows, { x: -0.2, y: 'i', text: 'sample', textAnchor: 'start', dy: 22, fill: C.muted }),
+      Plot.text(rows, { x: -0.2, y: 'i', text: 'line1', textAnchor: 'start', dy: 10, fill: C.ink }),
+      Plot.text(rows, { x: -0.2, y: 'i', text: 'line2', textAnchor: 'start', dy: 22, fill: C.muted }),
       pending
         ? Plot.text(rows, { x: 0, y: (r) => r.i + mark, text: () => 'result: late November 2026', fill: C.hi, fontWeight: 600, stroke: C.bg, strokeWidth: 3, paintOrder: 'stroke' })
         : null,

@@ -60,3 +60,12 @@ export const isIndex = (measure: string) => measure.startsWith('immigration');
 export const binLabel = (bin: string) => bin.replace(' (', '\n').replace(')', '');
 
 export const RATING_ORDER = rating.ratings.map((r) => r.rating_2022);
+
+/** Chart 08's groups, top to bottom: benchmarks, checks, the dry run, then the 2026 test. */
+const KIND_ORDER = ['2018 benchmark', '2022 benchmark', '2018 familiarity', 'known populist', '2024 dry run', 'the pre-registered test'];
+const kindRank = (kind: string) => {
+  const i = KIND_ORDER.findIndex((prefix) => kind.startsWith(prefix));
+  return i === -1 ? KIND_ORDER.length : i;
+};
+export const BENCHMARK_KINDS = [...new Set(benchmark.rows.map((r) => r.kind))].sort((a, b) => kindRank(a) - kindRank(b));
+export const isPositiveControl = (kind = '') => kind.startsWith('known populist');

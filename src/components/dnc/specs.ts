@@ -104,7 +104,7 @@ export const SPECS: Record<string, Spec> = {
   '05_issue_positions': {
     title: 'Where the switchers stood on the issues',
     caption:
-      'Share taking the Democratic position, 2024. Switchers (orange) sit near loyal Democrats on economic policy and near loyal Republicans on immigration.',
+      'Share taking the Democratic position, 2024. Switchers (orange) sit between the two parties on economic policy, mostly on the Democratic side, and near loyal Republicans on immigration.',
     legend: [
       { label: 'Loyal Democrats (Biden→Harris)', color: G.loyal, shape: 'dot' },
       { label: 'Switchers (Biden→Trump)', color: G.switch, shape: 'dot' },
@@ -143,7 +143,7 @@ export const SPECS: Record<string, Spec> = {
   '07_nyc_same_ballot': {
     title: 'Every Democrat gained where voters had swung',
     caption:
-      'New York City election districts grouped by how far they swung to Trump in 2024. Each line is a 2025 Democrat’s share minus Harris’s. All three Democrats gained most where the swing was largest; the comptroller and public advocate gained more than Mamdani. Mamdani’s line sits lower throughout because he faced former Governor Andrew Cuomo, a Democrat running as an independent who won 41% citywide; the comptroller and public advocate faced no comparable challenger. The comparison that matters is how steeply each line rises.',
+      'New York City election districts grouped by how far they swung to Trump in 2024. Each line is a 2025 Democrat’s share minus Harris’s. All three Democrats gained most where the swing was largest, and at about the same rate: per point of swing, Mamdani 0.87, Levine 0.83, Williams 0.92. Mamdani’s line sits lower throughout because he faced former Governor Andrew Cuomo, a Democrat running as an independent who won 41% citywide; the comptroller and public advocate faced no comparable challenger. The comparison that matters is how steeply each line rises.',
     legend: [
       { label: nyc.labels.mamdani, color: G.hi, shape: 'line' },
       { label: nyc.labels.levine, color: G.ref, shape: 'dash' },
@@ -160,7 +160,7 @@ export const SPECS: Record<string, Spec> = {
   '08_testA_benchmark': {
     title: 'The pre-registered test',
     caption:
-      'How much the gap between two Democrats on the same Michigan ballot tracks the 2020→24 swing to Trump. Ordinary down-ballot pairs sit near zero. The 2026 El-Sayed–Benson result will count as meaningful only if it lands clearly outside the grey band.',
+      'How much the gap between two candidates on the same Michigan or Midwest ballot tracks the swing to Trump. Pairs of mainstream Democrats sit near zero. Sherrod Brown and Tammy Baldwin, known for running ahead in places that swung to Trump, come out clearly positive. Rows from 2018 use the swing before that election, 2012 to 2016. El-Sayed’s result against Benson comes after certification in late November 2026.',
     table: () => ({
       head: ['Comparison', 'Sample', 'Kind', 'Slope', 'Interval'],
       rows: benchmark.rows.map((r) => [

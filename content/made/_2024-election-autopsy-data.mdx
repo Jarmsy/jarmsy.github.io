@@ -13,7 +13,7 @@ This is the reference list for [Why Democrats Lost the Voters They Lost](/made/2
 | Dataset | Used in section |
 |---|---|
 | MIT Election Lab returns | [2](/made/2024-election-autopsy/#chart-02_turnout_vs_share), [8](/made/2024-election-autopsy/#chart-08_testA_benchmark) |
-| OpenElections, Michigan | [8](/made/2024-election-autopsy/#chart-08_testA_benchmark) |
+| OpenElections (Michigan, Ohio, Wisconsin, Pennsylvania) | [8](/made/2024-election-autopsy/#chart-08_testA_benchmark) |
 | NYC Board of Elections, with city and census maps | [7](/made/2024-election-autopsy/#chart-07_nyc_same_ballot) |
 | New Jersey and Virginia official results | [7](/made/2024-election-autopsy/#chart-07_nyc_same_ballot) |
 | Cooperative Election Study (yearly surveys) | [2](/made/2024-election-autopsy/#chart-02b_stayhome_counterfactual), [3](/made/2024-election-autopsy/#chart-03_perception_by_party), [5](/made/2024-election-autopsy/#chart-05_issue_positions) |
@@ -23,7 +23,7 @@ This is the reference list for [Why Democrats Lost the Voters They Lost](/made/2
 | FRED | [1](/made/2024-election-autopsy/#chart-01_fundamentals), [3](/made/2024-election-autopsy/#chart-03_perception_by_party) |
 | Gallup presidential approval | [1](/made/2024-election-autopsy/#chart-01_fundamentals) |
 | BLS Quarterly Census of Employment and Wages | [3](/made/2024-election-autopsy/#chart-03_perception_by_party) |
-| Census American Community Survey | [3](/made/2024-election-autopsy/#chart-03_perception_by_party), [7](/made/2024-election-autopsy/#chart-07_nyc_same_ballot) |
+| Census American Community Survey | [3](/made/2024-election-autopsy/#chart-03_perception_by_party), [7](/made/2024-election-autopsy/#chart-07_nyc_same_ballot), [8](/made/2024-election-autopsy/#chart-08_testA_benchmark) |
 | Medill Local News Initiative | [3](/made/2024-election-autopsy/#chart-03_perception_by_party) |
 
 ## Election results
@@ -43,6 +43,8 @@ Two-party vote shares for every presidential election from 1948 to 2024, the out
 A volunteer project that compiles official precinct results into clean files. I used its Michigan files for the 2022 and 2024 general elections, rolled precincts up to cities and townships, and built the benchmark in section 8 from them. The 2024 ballot gives the dry run (Slotkin against Harris) and the 2022 ballot the three pairs of down-ballot Democrats. The 2026 results will be added from the certified official file once it exists.
 
 OpenElections' 2020 Michigan file is missing nine counties, and its per-county 2020 files put some precincts in the wrong county, which is why 2020 comes from the MIT precinct file instead. Party labels also vary by county, and some rows have the candidate and party columns swapped, so I identified candidates by surname. Every year reconciles to Michigan's certified statewide totals: within 0.1% for 2020 and 2024 and within 0.05% for 2022.
+
+To check the section 8 test before the election, I also used its files for Michigan 2008–2018, Ohio 2018, Wisconsin 2018 and Pennsylvania 2022. Every Michigan contest matched the certified statewide totals exactly, as did Wisconsin and Pennsylvania; Ohio came within 0.2%.
 
 ### New York City Board of Elections, with city and census maps
 
@@ -94,7 +96,7 @@ The Bureau of Labor Statistics hides figures where one or two employers would be
 
 ### Census American Community Survey
 
-The Census Bureau's rolling survey of income, education, race and employment. The 2020 five-year county file supplies the county controls in section 3. I chose that year because it's the last one gathered before the 2021–23 inflation. Block-group figures from the 2023 file give the neighborhood controls for New York in section 7.
+The Census Bureau's rolling survey of income, education, race and employment. The 2020 five-year county file supplies the county controls in section 3. I chose that year because it's the last one gathered before the 2021–23 inflation. Block-group figures from the 2023 file give the neighborhood controls for New York in section 7. The 2016–2020 file also gives population, education, income and race for Michigan's cities and townships, used in the stricter Michigan version of the section 8 test, and for counties in Ohio, Wisconsin and Pennsylvania, used to check it.
 
 ## Local news
 

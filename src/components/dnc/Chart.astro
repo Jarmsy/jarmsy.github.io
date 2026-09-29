@@ -5,7 +5,7 @@
 // Use in content/made/2024-election-autopsy.mdx:  <Chart id="01_fundamentals" />
 import './dnc.css';
 import { SPECS } from './specs';
-import { AXES, AXIS_LABEL, ORDER_PANELS, ORDER_MORE, perception, benchmark } from './data';
+import { AXES, AXIS_LABEL, ORDER_PANELS, ORDER_MORE, perception, BENCHMARK_KINDS } from './data';
 
 interface Props {
   id: keyof typeof SPECS;
@@ -17,7 +17,6 @@ const { id, showTitle = true } = Astro.props;
 const spec = SPECS[id];
 const table = spec.table();
 const captionId = `cap-${id}`;
-const kinds = [...new Set(benchmark.rows.map((r) => r.kind))];
 const pct = (v: number) => `${+(v * 100).toFixed(1)}%`;
 ---
 
@@ -73,7 +72,7 @@ const pct = (v: number) => `${+(v * 100).toFixed(1)}%`;
       </details>
     </>
   ) : id === '08_testA_benchmark' ? (
-    kinds.map((kind) => (
+    BENCHMARK_KINDS.map((kind) => (
       <>
         <p class="part-title">
           {kind}

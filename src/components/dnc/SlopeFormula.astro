@@ -1,0 +1,104 @@
+---
+// Section 8 of the 2024 election autopsy: how the "slope" in chart 08 is
+// calculated. Method from the analysis repo's report/preregistration_2026_general.md
+// (Test A) and its addendum 1. The formula is MathML, which current browsers render natively.
+---
+
+<aside class="formula" aria-labelledby="slope-formula-title">
+  <p class="label" id="slope-formula-title">How the slope is calculated</p>
+  <p>For each Michigan city or township <var>i</var>:</p>
+  <ul>
+    <li><strong>gap<sub>i</sub></strong> = El-Sayed’s share − Benson’s share, in points, where each share is the Democrat’s votes ÷ (Democratic + Republican votes)</li>
+    <li><strong>swing<sub>i</sub></strong> = Trump’s share in 2024 − Trump’s share in 2020, measured the same way</li>
+  </ul>
+  <p>
+    Fit a straight line, gap = <var>a</var> + <var>b</var> × swing, through all the towns, with bigger towns counting
+    for more (each is weighted by its votes cast, <var>w<sub>i</sub></var>). Towns with fewer than 200 votes are
+    left out. The slope is
+  </p>
+  <div class="math-scroll">
+    <math display="block">
+      <mi>b</mi>
+      <mo>=</mo>
+      <mfrac>
+        <mrow>
+          <munder><mo>∑</mo><mi>i</mi></munder>
+          <msub><mi>w</mi><mi>i</mi></msub>
+          <mo stretchy="false">(</mo>
+          <msub><mtext>swing</mtext><mi>i</mi></msub>
+          <mo>−</mo>
+          <mover accent="true"><mi>s</mi><mo>¯</mo></mover>
+          <mo stretchy="false">)</mo>
+          <mo stretchy="false">(</mo>
+          <msub><mtext>gap</mtext><mi>i</mi></msub>
+          <mo>−</mo>
+          <mover accent="true"><mi>g</mi><mo>¯</mo></mover>
+          <mo stretchy="false">)</mo>
+        </mrow>
+        <mrow>
+          <munder><mo>∑</mo><mi>i</mi></munder>
+          <msub><mi>w</mi><mi>i</mi></msub>
+          <msup>
+            <mrow>
+              <mo stretchy="false">(</mo>
+              <msub><mtext>swing</mtext><mi>i</mi></msub>
+              <mo>−</mo>
+              <mover accent="true"><mi>s</mi><mo>¯</mo></mover>
+              <mo stretchy="false">)</mo>
+            </mrow>
+            <mn>2</mn>
+          </msup>
+        </mrow>
+      </mfrac>
+    </math>
+  </div>
+  <p>
+    where <var>s̄</var> and <var>ḡ</var> are the vote-weighted averages of swing and gap across all the towns. The
+    whiskers on the chart are 95% confidence intervals for <var>b</var>, using standard errors that don’t assume every
+    town is equally noisy.
+  </p>
+  <p>
+    The stricter version fits the same kind of line but also includes each town’s earlier swings (2008–12, 2012–16,
+    2016–20), its 2020 Republican share, four census measures and a term for each county; <var>b</var> is then the
+    swing’s slope with all of those held fixed.
+  </p>
+  <p>
+    <strong>Reading it.</strong> <var>b</var> = +0.1 means that for every extra point a town swung to Trump,
+    El-Sayed ran 0.1 points further ahead of Benson. So a town that swung 10 points would have him 1 point further
+    ahead than a town that didn’t swing at all. <var>b</var> = 0 means his gap to Benson is the same everywhere,
+    whichever way the town moved in 2024.
+  </p>
+</aside>
+
+<style>
+  .formula {
+    margin: var(--space-4) 0;
+    padding: var(--space-3) var(--space-4);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: var(--step--1);
+    line-height: 1.55;
+  }
+  .formula .label {
+    margin: 0 0 var(--space-2);
+  }
+  .formula p,
+  .formula ul {
+    margin: 0 0 var(--space-2);
+  }
+  .formula p:last-child {
+    margin-bottom: 0;
+  }
+  .math-scroll {
+    overflow-x: auto;
+    margin: var(--space-2) 0 var(--space-3);
+    font-size: var(--step-0);
+  }
+  math {
+    font-family: math, 'Cambria Math', 'STIX Two Math', serif;
+  }
+  var {
+    font-style: italic;
+  }
+</style>

@@ -15,6 +15,7 @@ featured: true
 
 import Chart from '../../src/components/dnc/Chart.astro';
 import RecallSidebar from '../../src/components/dnc/RecallSidebar.astro';
+import SlopeFormula from '../../src/components/dnc/SlopeFormula.astro';
 
 ## The short version
 
@@ -64,17 +65,17 @@ Among Biden 2020 voters, how they rated the economy in **2022** predicted whethe
 
 This comes from a panel survey that re-interviewed the same people in 2020, 2022 and 2024. Their rating was given two years before the vote, so it can't be a justification made up after they'd decided.
 
-**What it doesn't show.** Something else may already have been pulling these voters away in 2022, making them rate the economy badly *and* later switch. Section 6 looks at exactly that.
+**What it doesn't show.** Something else may already have been pulling these voters away in 2022, making them rate the economy badly *and* later switch. I checked one version of that. Their party loyalty had already started slipping by 2022, and the link still holds after accounting for it. A sharper check holds 2022 behaviour fixed: among Biden voters who still voted Democratic for Congress in 2022, those who called the economy much worse that year went on to switch at the highest rate (7 of 181, 3.9%), against 1.4% of those who said it was the same or somewhat worse and none of the 383 who saw improvement. It rests on seven switchers. Other causes are still possible, and section 6 looks at them.
 
 ## 5. Switchers sided with Democrats on economics and with Republicans on immigration
 
 <Chart id="05_issue_positions" />
 
-Biden voters who switched to Trump answered like Democrats on economic policy: **77%** wanted Medicaid expanded, and majorities wanted corporations and high earners taxed more. On immigration they sat much closer to Republicans; only **23%** opposed the border wall. Anti-corporate views didn't drive people out either. The most anti-corporate Democrats were the *most* loyal.
+Biden voters who switched to Trump mostly took the Democratic side on economic policy: **77%** wanted Medicaid expanded, and majorities wanted corporations and high earners taxed more. On immigration they sat much closer to Republicans; only **23%** opposed the border wall. Anti-corporate views didn't drive people out either. The most anti-corporate Democrats were the *most* loyal.
 
 A national survey of about 60,000 people asks everyone the same policy questions. I grouped voters by how they voted in 2020 and 2024 and compared the share of each group taking the Democratic position on each issue.
 
-**What it doesn't show.** Holding a view isn't the same as voting on it. These are also 2024 answers, given after the switch, which is why the next section matters most.
+**What it doesn't show.** Holding a view isn't the same as voting on it. The numbers are averages over a mixed group: three in ten switchers were on the left on both economics and culture, and about a third on the right on both. These are also 2024 answers, given after the switch, which is why the next section matters most.
 
 ## 6. The order of events
 
@@ -84,7 +85,7 @@ Following the same people from 2020 to 2024 shows the sequence:
 
 1. **By 2022 they'd soured on the Biden government.** Only **31%** of future switchers approved of Biden, and about four in ten had already voted Republican for Congress.
 2. **They still backed Democratic economic policy.** In 2022, **87%** of them supported Medicare for All, *more* than in 2020.
-3. **Their other views moved after they switched.** Between 2022 and 2024 their support for Medicare for All fell to **47%**, their immigration views hardened, and their view of Trump turned around. In 2020, **2 of 21** said Trump "really cares about people like you"; by 2024, **10 of 20** did.
+3. **Their other views moved after they switched.** Between 2022 and 2024 their support for Medicare for All fell to **47%**, their immigration views hardened (loyal Democrats' moved the same way, about half as far), and their view of Trump turned around. In 2020, **2 of 21** said Trump "really cares about people like you"; by 2024, **10 of 20** did.
 
 Two panel surveys (CES 2020–22–24 and ANES 2016–20–24) followed the same individuals, so this tracks how each person changed over time. The samples of switchers are small (39 in one panel, 21 in the other), so the exact percentages are uncertain; hover over a point to see how many people it rests on. The *order* of events is the part that holds up.
 
@@ -102,11 +103,27 @@ Fewer than 1% of Trump voters misremember voting Biden. But Trump voters are a h
 
 <Chart id="07_nyc_same_ballot" />
 
-New York City's 2025 mayoral race was the clearest real-world test of an openly economic-left campaign. In the neighborhoods that had swung hardest to Trump, Zohran Mamdani ran ahead of Harris's 2024 share. The two other Democrats on the same ballot, for comptroller and public advocate, gained **even more** in those neighborhoods. Swing voters came back to Democrats in general, and the economic-left candidate didn't win an extra share of them. (Mamdani's share runs lower overall because he also faced Andrew Cuomo, a Democrat running as an independent who won 41% citywide; what matters is how much each candidate gained where voters had swung.)
+New York City's 2025 mayoral race was the clearest real-world test of an openly economic-left campaign. In the neighborhoods that had swung hardest to Trump, Zohran Mamdani ran ahead of Harris's 2024 share. The two other Democrats on the same ballot, for comptroller and public advocate, gained on Harris at about the same rate: for each point a district had swung to Trump, Mamdani gained **0.87** points on Harris, Levine **0.83** and Williams **0.92**. Swing voters came back to Democrats in general, and the economic-left candidate didn't win an extra share of them. (Mamdani's share runs lower overall because he also faced Andrew Cuomo, a Democrat running as an independent who won 41% citywide; what matters is how much each candidate gained where voters had swung.)
 
 Comparing candidates on the *same ballot* in the same election districts holds everything about the place and the year constant, which leaves the candidate as the difference. The same pattern showed up in New Jersey and Virginia that day.
 
 **What it doesn't show.** It's one city and one election, measured with neighborhood totals, so it can't see individuals. It shows Mamdani's appeal didn't reach these voters any *better* than other Democrats' did. It also doesn't show that left economics hurt.
+
+## 8. The test I've registered for November 2026
+
+<Chart id="08_testA_benchmark" />
+
+In November 2026, Michigan votes on an economic-left Senate candidate who has also been an outspoken critic of Israel's war in Gaza (Abdul El-Sayed) and a mainstream Democrat for governor (Jocelyn Benson) on the same ballot. If economic-left politics reaches the voters who swung to Trump, El-Sayed should do relatively better than Benson in the towns that swung most.
+
+<SlopeFormula />
+
+I published the exact test before the election, so I can't reinterpret the result afterwards. I also measured what normal looks like. Among mainstream Democrats sharing a Michigan ballot in 2018 and 2022, the gap between any two moves only a little with the swing, with slopes between **−0.09 and +0.04** (the 2022 pairs use the same 2020-to-2024 swing as the 2026 test; the 2018 pairs use the swing before that election, 2012 to 2016). Before the election I also ran the test on two cases where I knew what it should find: Sherrod Brown in Ohio and Tammy Baldwin in Wisconsin, Democrats widely seen as running ahead in places that swung to Trump. It picked both up, at **+0.17** and **+0.18**. Both were incumbents running beside newcomers, so I also checked a long-time incumbent running beside a newcomer on Michigan's 2018 ballot. That produced no measurable slope, so being better known doesn't create one by itself, which also matters for Benson against El-Sayed.
+
+The same checks turned up a weakness. When I swapped in the swing from 2008 to 2012, which has nothing to do with Trump, the slopes came out just as large. Candidates run stronger in some kinds of places than others, and almost any measure of how places differ picks that up. So before the election I added a stricter version that also accounts for each place's earlier swings and its Republican vote share. On the check cases it kept Brown (**+0.14**) and Baldwin (**+0.12**) positive, and the unrelated swing's pull fell to under two-thirds of the Trump swing's. For Michigan, the stricter version also holds each town's population, education, income and racial makeup fixed, and compares towns only with others in the same county. Those extra controls couldn't be tested on the check cases, and in county data they left Brown's and Baldwin's signal too uncertain to tell from zero. So if the stricter Michigan version finds nothing while the version with only the earlier swings and Republican share finds a slope, I'll count that as weak evidence against an effect. Results come after certification in late November 2026.
+
+The 2024 rows are a dry run of the same code on Slotkin (Senate) against Harris (President), and their slope is large: **+0.237**. That's because the swing is measured from the presidential vote, and Harris is one of the two candidates being compared. A voter who went from Biden in 2020 to Trump in 2024 and still voted for Slotkin raises the town's swing and Slotkin's lead over Harris at the same time, so towns with more of these ticket-splitters sit higher on both. More generally, anything that pulled Harris down in a particular town without pulling Slotkin down raises both numbers at once. The dry run only shows the pipeline works. The 2018 and 2022 pairs are the fair comparison for 2026: neither year had a presidential race on the ballot, so neither candidate is part of the swing measure.
+
+**What could confuse it.** Some things could hit El-Sayed harder in some towns than others: concentrated attack ads, prejudice against a Muslim candidate, strong Arab-American support in Dearborn (one pre-registered version of the test leaves out Dearborn, Dearborn Heights and Hamtramck), and his position on Gaza. Voters who said they switched from Biden to Trump were much more likely than loyal Democrats to want the US to stay out of the war (28% against 11%), though they were close to loyal Democrats on arming Israel. Across the country, support for arming Israel doesn't line up with how much an area swung once you compare people of the same party, but in Michigan there's a hint that swing counties wanted the US to stay out. So a positive result could partly reflect that, and I won't credit it to his economics alone.
 
 ---
 
