@@ -12,9 +12,8 @@ import issues from '../../data/dnc-autopsy/05_issue_positions.json';
 import order from '../../data/dnc-autopsy/06_order_of_events.json';
 import nyc from '../../data/dnc-autopsy/07_nyc_same_ballot.json';
 import benchmark from '../../data/dnc-autopsy/08_testA_benchmark.json';
-import recall from '../../data/dnc-autopsy/sidebar_recall.json';
 
-export { fundamentals, turnout, stayhome, perception, rating, issues, order, nyc, benchmark, recall };
+export { fundamentals, turnout, stayhome, perception, rating, issues, order, nyc, benchmark };
 
 // ---- Formatting ------------------------------------------------
 

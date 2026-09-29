@@ -14,16 +14,15 @@ featured: true
     the JSON. Check a changed number against the JSON before editing it here. */}
 
 import Chart from '../../src/components/dnc/Chart.astro';
-import RecallSidebar from '../../src/components/dnc/RecallSidebar.astro';
 import SlopeFormula from '../../src/components/dnc/SlopeFormula.astro';
 
 ## The short version
 
 **The swing voters Democrats lost in 2024 largely agreed with them on the economy. By 2022 they had decided the Biden government wasn't delivering, above all on prices. Their views on Trump, immigration and health care shifted only after they'd switched sides.**
 
-Everything here comes from public data: election returns for every county and several thousand municipalities, plus two large academic surveys that re-interview the *same people* across elections (one starting in 2016, one in 2020, both running through 2024). Partway through, I found an error in my own headline numbers and fixed it; that's in "The bug in my own numbers" below. I also wrote down a test of the argument *before* the November 2026 election, so I can't bend the result to fit afterwards.
+Everything here comes from public data: election returns for every county and several thousand municipalities, plus two large academic surveys that re-interview the *same people* across elections (one starting in 2016, one in 2020, both running through 2024). I also wrote down a test of the argument *before* the November 2026 election, so I can't bend the result to fit afterwards.
 
-**What the work involved:** pulling [10+ public data sources](/made/2024-election-autopsy/data/) into tables that reconcile and can be rebuilt from scratch; setting up comparisons that separate cause from coincidence; checking and correcting my own results; and saying plainly how certain each finding is.
+**What the work involved:** pulling [10+ public data sources](/made/2024-election-autopsy/data/) into tables that reconcile and can be rebuilt from scratch; setting up comparisons that separate cause from coincidence; and saying plainly how certain each finding is.
 
 ---
 
@@ -87,17 +86,9 @@ Following the same people from 2020 to 2024 shows the sequence:
 2. **They still backed Democratic economic policy.** In 2022, **87%** of them supported Medicare for All, *more* than in 2020.
 3. **Their other views moved after they switched.** Between 2022 and 2024 their support for Medicare for All fell to **47%**, their immigration views hardened (loyal Democrats' moved the same way, about half as far), and their view of Trump turned around. In 2020, **2 of 21** said Trump "really cares about people like you"; by 2024, **10 of 20** did.
 
-Two panel surveys (CES 2020–22–24 and ANES 2016–20–24) followed the same individuals, so this tracks how each person changed over time. The samples of switchers are small (39 in one panel, 21 in the other), so the exact percentages are uncertain; hover over a point to see how many people it rests on. The *order* of events is the part that holds up.
+Two panel surveys (CES 2020–22–24 and ANES 2016–20–24) followed the same individuals, so this tracks how each person changed over time. The samples of switchers are small (39 in one panel, 21 in the other), so the exact percentages are uncertain; hover over a point to see how many people it rests on. The *order* of events is the part that holds up. Switchers here are defined by the vote people reported at the time, not the one they remembered in 2024: remembered votes turned out to count some Trump voters as switchers.
 
 My reading of it: these voters judged the incumbent on performance first, mostly on prices, which they named as the top problem two to one over immigration. Then they switched, and their policy views moved toward their new side. Plenty of other Democrats were disappointed too. The ones who left stood out on immigration and social issues, where they were already more conservative in 2016 and 2020, while still voting Democratic.
-
-### The bug in my own numbers
-
-<RecallSidebar />
-
-Most surveys ask people in 2024 how they voted in 2020. The panel let me check those memories against what the same people had said in November 2020, and they didn't hold up well. Of **44** people who "remembered" voting Biden and then voted Trump, only **34** had reported voting Biden at the time; **9** had reported voting Trump.
-
-Fewer than 1% of Trump voters misremember voting Biden. But Trump voters are a huge group and real switchers a small one, so even that small error rate adds a lot of false switchers. Correcting for it lowered my estimate of how many Biden voters switched from **5.2% to 4.1%**, and the ratio of switchers to reverse-switchers from **3.4 to 1** to **2.6 to 1**. The patterns of who switched and why held up, at smaller sizes. I corrected every affected figure in the report and noted what changed.
 
 ## 7. An economic-left campaign hasn't yet won these voters back
 
