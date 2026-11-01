@@ -1,0 +1,234 @@
+---
+// The 53 markets where attributing documented agreements raises HHI: one row
+// per market, the record (hollow) against operation (filled), with a switch
+// between the two definitions of control. Rows are plain HTML positioned in
+// percent of the 0–10,000 HHI scale, so labels stay legible at phone width.
+// Data: src/data/fcc-ownership/markets.json.
+// Use in content/made/tv-ownership-concentration.mdx:  <MarketsChart />
+import './fcc.css';
+import data from '../../data/fcc-ownership/markets.json';
+
+type Market = { market: string; stations: number; tv_homes: number; record: number; operation: number; programming: number };
+const markets = data.markets as Market[];
+const pct = (v: number) => `${v / 100}%`;
+const fmt = (v: number) => v.toLocaleString('en-US');
+const moversP = markets.filter((d) => d.programming > d.record).length;
+const counts = {
+  operation: `${markets.length} of 210 markets move`,
+  programming: `${moversP} of 210 markets move`,
+};
+const ticks = [
+  { v: 0, cls: 'start' },
+  { v: 1800, cls: 'ref' },
+  { v: 5000, cls: '' },
+  { v: 10000, cls: 'end' },
+];
+---
+
+<figure class="fcc-chart markets-chart" data-def="operation" aria-describedby="cap-markets">
+  <p class="chart-title">The {markets.length} markets where the agreements change the picture</p>
+
+  <div class="switch" role="group" aria-label="What counts as operational control">
+    <button type="button" data-fcc-def="operation" aria-pressed="true">Every documented agreement</button>
+    <button type="button" data-fcc-def="programming" aria-pressed="false">Only where the operator programs</button>
+  </div>
+
+  <ul class="legend" aria-hidden="true">
+    <li><span class="key ring"></span>On the record</li>
+    <li><span class="key dot"></span>In operation</li>
+    <li><span class="key ref"></span>1,800</li>
+  </ul>
+  <p class="count" aria-live="polite" data-count-operation={counts.operation} data-count-programming={counts.programming}>
+    {counts.operation}
+  </p>
+
+  <div class="row axis" aria-hidden="true">
+    <span class="name">HHI</span>
+    <span class="track">
+      <span class="scale">
+        {ticks.map((t) => <span class={`tick ${t.cls}`} style={`left:${pct(t.v)}`}>{fmt(t.v)}</span>)}
+      </span>
+    </span>
+  </div>
+  <ol class="rows" aria-label="Markets, record and operational HHI. Values in the table below.">
+    {markets.map((d) => (
+      <li
+        class="row"
+        data-moves-p={String(d.programming > d.record)}
+        style={`--r:${pct(d.record)};--o:${pct(d.operation)};--p:${pct(d.programming)}`}
+        data-tip={`${d.market} · ${d.stations} stations\nOn the record: ${fmt(d.record)}\nIn operation, every agreement: ${fmt(d.operation)}\nIn operation, programming only: ${fmt(d.programming)}`}
+      >
+        <span class="name">{d.market}</span>
+        <span class="track">
+          <span class="scale">
+            <span class="bar"></span>
+            <span class="mk rec"></span>
+            <span class="mk op"></span>
+          </span>
+        </span>
+      </li>
+    ))}
+  </ol>
+
+  <figcaption id="cap-markets">
+    Each row is a market, sorted by how far it moves when every documented agreement counts. 10,000 means
+    one company runs every station in the market. Switch to “only where the operator
+    programs” and all but {moversP} rows stop moving. The other {210 - markets.length} markets aren’t shown,
+    because no documented agreement changes them.
+  </figcaption>
+  <details class="data">
+    <summary>The numbers</summary>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Market</th>
+            <th scope="col">Stations</th>
+            <th scope="col">TV households</th>
+            <th scope="col">Record</th>
+            <th scope="col">Operation, every agreement</th>
+            <th scope="col">Operation, programming only</th>
+          </tr>
+        </thead>
+        <tbody>
+          {markets.map((d) => (
+            <tr>
+              <td>{d.market}</td>
+              <td>{d.stations}</td>
+              <td>{fmt(d.tv_homes)}</td>
+              <td>{fmt(d.record)}</td>
+              <td>{fmt(d.operation)}</td>
+              <td>{fmt(d.programming)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </details>
+</figure>
+
+<script>
+  import './tooltip';
+
+  document.addEventListener('click', (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>('[data-fcc-def]');
+    const fig = button?.closest<HTMLElement>('.markets-chart');
+    if (!button || !fig) return;
+    const def = button.dataset.fccDef!;
+    fig.dataset.def = def;
+    fig.querySelectorAll('[data-fcc-def]').forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
+    const count = fig.querySelector<HTMLElement>('.count');
+    if (count) count.textContent = count.dataset[`count${def[0].toUpperCase()}${def.slice(1)}`] ?? '';
+  });
+</script>
+
+<style>
+  .switch {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-3);
+  }
+  .switch button {
+    font: inherit;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 999px;
+    padding: 0.2em 0.85em;
+    cursor: pointer;
+    transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  .switch button:hover { color: var(--text); }
+  .switch button[aria-pressed='true'] {
+    color: var(--text);
+    border-color: var(--text);
+  }
+  .count {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--text);
+    margin: 0 0 var(--space-2);
+  }
+
+  .rows { list-style: none; padding: 0 !important; margin: 0; }
+  .row {
+    display: grid;
+    grid-template-columns: minmax(0, 13rem) 1fr;
+    align-items: center;
+    height: 1.25rem;
+    margin: 0 !important;
+  }
+  .rows .row:hover { background: color-mix(in srgb, var(--text) 6%, transparent); }
+  .name {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: var(--space-2);
+  }
+  .track { position: relative; height: 100%; }
+  .scale { position: absolute; inset: 0 6px; }
+  .rows .scale::before {
+    content: '';
+    position: absolute;
+    left: 18%;
+    top: 0;
+    bottom: 0;
+    border-left: 2px dotted var(--text-muted);
+    opacity: 0.7;
+  }
+
+  .axis { height: 1.5rem; align-items: end; }
+  .axis .name { color: var(--text-muted); }
+  .tick {
+    position: absolute;
+    bottom: 0.2rem;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .tick.start { transform: none; }
+  .tick.end { transform: translateX(-100%); }
+
+  .bar {
+    position: absolute;
+    top: 50%;
+    height: 2px;
+    left: var(--r);
+    width: calc(var(--o) - var(--r));
+    transform: translateY(-50%);
+    background: var(--o-operated);
+    opacity: 0.55;
+  }
+  .mk {
+    position: absolute;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    transform: translate(-50%, -50%);
+  }
+  .mk.rec { left: var(--r); border: 2px solid var(--o-record); background: var(--bg); z-index: 1; }
+  .mk.op { left: var(--o); background: var(--o-operated); box-shadow: 0 0 0 2px var(--bg); z-index: 2; }
+
+  .markets-chart[data-def='programming'] .mk.op { left: var(--p); }
+  .markets-chart[data-def='programming'] .bar { width: calc(var(--p) - var(--r)); }
+  .markets-chart[data-def='programming'] .row[data-moves-p='false'] .scale > span { opacity: 0.3; }
+  .markets-chart[data-def='programming'] .row[data-moves-p='false'] .name { color: var(--text-muted); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .mk.op, .bar { transition: left 320ms var(--ease), width 320ms var(--ease), opacity 320ms var(--ease); }
+  }
+  @media (max-width: 36rem) {
+    .row { grid-template-columns: minmax(0, 8.5rem) 1fr; }
+    .tick.start { display: none; }
+  }
+</style>

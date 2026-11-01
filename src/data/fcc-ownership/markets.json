@@ -1,0 +1,429 @@
+{
+ "source": "media-ownership-concentration/data/national_market_hhi.csv (2026-10-01 LMS run)",
+ "markets": [
+  {
+   "market": "Lake Charles",
+   "stations": 2,
+   "tv_homes": 93820,
+   "record": 5000,
+   "operation": 10000,
+   "programming": 5000
+  },
+  {
+   "market": "Victoria",
+   "stations": 2,
+   "tv_homes": 32440,
+   "record": 5000,
+   "operation": 10000,
+   "programming": 10000
+  },
+  {
+   "market": "Joplin-Pittsburg",
+   "stations": 4,
+   "tv_homes": 145700,
+   "record": 2500,
+   "operation": 5000,
+   "programming": 2500
+  },
+  {
+   "market": "Wichita Falls-Lawton",
+   "stations": 4,
+   "tv_homes": 155550,
+   "record": 2500,
+   "operation": 5000,
+   "programming": 2500
+  },
+  {
+   "market": "Meridian",
+   "stations": 3,
+   "tv_homes": 67300,
+   "record": 3333,
+   "operation": 5556,
+   "programming": 5556
+  },
+  {
+   "market": "San Angelo",
+   "stations": 3,
+   "tv_homes": 55400,
+   "record": 3333,
+   "operation": 5556,
+   "programming": 3333
+  },
+  {
+   "market": "Terre Haute",
+   "stations": 3,
+   "tv_homes": 135360,
+   "record": 3333,
+   "operation": 5556,
+   "programming": 3333
+  },
+  {
+   "market": "Utica",
+   "stations": 3,
+   "tv_homes": 101400,
+   "record": 3333,
+   "operation": 5556,
+   "programming": 3333
+  },
+  {
+   "market": "Wilmington",
+   "stations": 3,
+   "tv_homes": 192610,
+   "record": 3333,
+   "operation": 5556,
+   "programming": 3333
+  },
+  {
+   "market": "Youngstown",
+   "stations": 3,
+   "tv_homes": 253470,
+   "record": 3333,
+   "operation": 5556,
+   "programming": 3333
+  },
+  {
+   "market": "Columbus, GA",
+   "stations": 5,
+   "tv_homes": 222640,
+   "record": 2800,
+   "operation": 4400,
+   "programming": 2800
+  },
+  {
+   "market": "Grand Junction-Montrose",
+   "stations": 5,
+   "tv_homes": 70120,
+   "record": 2800,
+   "operation": 4400,
+   "programming": 4400
+  },
+  {
+   "market": "Springfield, MO",
+   "stations": 5,
+   "tv_homes": 411720,
+   "record": 2800,
+   "operation": 4400,
+   "programming": 2800
+  },
+  {
+   "market": "Abilene-Sweetwater",
+   "stations": 4,
+   "tv_homes": 113570,
+   "record": 2500,
+   "operation": 3750,
+   "programming": 2500
+  },
+  {
+   "market": "Baton Rouge",
+   "stations": 4,
+   "tv_homes": 329960,
+   "record": 2500,
+   "operation": 3750,
+   "programming": 2500
+  },
+  {
+   "market": "Billings",
+   "stations": 4,
+   "tv_homes": 110680,
+   "record": 2500,
+   "operation": 3750,
+   "programming": 3750
+  },
+  {
+   "market": "Erie",
+   "stations": 4,
+   "tv_homes": 151720,
+   "record": 2500,
+   "operation": 3750,
+   "programming": 3750
+  },
+  {
+   "market": "Evansville",
+   "stations": 4,
+   "tv_homes": 280960,
+   "record": 3750,
+   "operation": 5000,
+   "programming": 3750
+  },
+  {
+   "market": "Lansing",
+   "stations": 4,
+   "tv_homes": 249650,
+   "record": 3750,
+   "operation": 5000,
+   "programming": 3750
+  },
+  {
+   "market": "Peoria-Bloomington",
+   "stations": 4,
+   "tv_homes": 242510,
+   "record": 3750,
+   "operation": 5000,
+   "programming": 3750
+  },
+  {
+   "market": "Rockford",
+   "stations": 4,
+   "tv_homes": 174990,
+   "record": 3750,
+   "operation": 5000,
+   "programming": 3750
+  },
+  {
+   "market": "Topeka",
+   "stations": 4,
+   "tv_homes": 174430,
+   "record": 2500,
+   "operation": 3750,
+   "programming": 2500
+  },
+  {
+   "market": "Baltimore",
+   "stations": 6,
+   "tv_homes": 1092620,
+   "record": 2222,
+   "operation": 3333,
+   "programming": 3333
+  },
+  {
+   "market": "Columbus, OH",
+   "stations": 6,
+   "tv_homes": 913550,
+   "record": 2222,
+   "operation": 3333,
+   "programming": 3333
+  },
+  {
+   "market": "Davenport-Rock Island-Moline",
+   "stations": 6,
+   "tv_homes": 298960,
+   "record": 2222,
+   "operation": 3333,
+   "programming": 2222
+  },
+  {
+   "market": "Dayton",
+   "stations": 6,
+   "tv_homes": 466930,
+   "record": 1667,
+   "operation": 2778,
+   "programming": 1667
+  },
+  {
+   "market": "Flint-Saginaw-Bay City",
+   "stations": 6,
+   "tv_homes": 435300,
+   "record": 2222,
+   "operation": 3333,
+   "programming": 2222
+  },
+  {
+   "market": "Providence-New Bedford",
+   "stations": 6,
+   "tv_homes": 605930,
+   "record": 1667,
+   "operation": 2778,
+   "programming": 2222
+  },
+  {
+   "market": "Shreveport",
+   "stations": 6,
+   "tv_homes": 376690,
+   "record": 2778,
+   "operation": 3889,
+   "programming": 2778
+  },
+  {
+   "market": "Little Rock-Pine Bluff",
+   "stations": 9,
+   "tv_homes": 555370,
+   "record": 1852,
+   "operation": 2840,
+   "programming": 1852
+  },
+  {
+   "market": "Austin",
+   "stations": 7,
+   "tv_homes": 729300,
+   "record": 1837,
+   "operation": 2653,
+   "programming": 2653
+  },
+  {
+   "market": "Reno",
+   "stations": 7,
+   "tv_homes": 265980,
+   "record": 2245,
+   "operation": 3061,
+   "programming": 2245
+  },
+  {
+   "market": "Syracuse",
+   "stations": 7,
+   "tv_homes": 372090,
+   "record": 1837,
+   "operation": 2653,
+   "programming": 1837
+  },
+  {
+   "market": "Monroe-El Dorado",
+   "stations": 5,
+   "tv_homes": 173260,
+   "record": 2000,
+   "operation": 2800,
+   "programming": 2000
+  },
+  {
+   "market": "Toledo",
+   "stations": 5,
+   "tv_homes": 403700,
+   "record": 2000,
+   "operation": 2800,
+   "programming": 2000
+  },
+  {
+   "market": "Montgomery-Selma",
+   "stations": 8,
+   "tv_homes": 232300,
+   "record": 2500,
+   "operation": 3125,
+   "programming": 2500
+  },
+  {
+   "market": "Tyler-Longview",
+   "stations": 6,
+   "tv_homes": 265070,
+   "record": 2222,
+   "operation": 2778,
+   "programming": 2222
+  },
+  {
+   "market": "Burlington-Plattsburgh",
+   "stations": 6,
+   "tv_homes": 309870,
+   "record": 2778,
+   "operation": 3333,
+   "programming": 2778
+  },
+  {
+   "market": "Mobile-Pensacola",
+   "stations": 13,
+   "tv_homes": 530630,
+   "record": 1124,
+   "operation": 1598,
+   "programming": 1124
+  },
+  {
+   "market": "Albany-Schenectady-Troy",
+   "stations": 7,
+   "tv_homes": 532890,
+   "record": 2245,
+   "operation": 2653,
+   "programming": 2245
+  },
+  {
+   "market": "Amarillo",
+   "stations": 7,
+   "tv_homes": 194670,
+   "record": 2245,
+   "operation": 2653,
+   "programming": 2245
+  },
+  {
+   "market": "Charleston-Huntington",
+   "stations": 7,
+   "tv_homes": 441520,
+   "record": 1837,
+   "operation": 2245,
+   "programming": 1837
+  },
+  {
+   "market": "Greenville-Spartanburg-Asheville",
+   "stations": 7,
+   "tv_homes": 842020,
+   "record": 1837,
+   "operation": 2245,
+   "programming": 2245
+  },
+  {
+   "market": "Jackson, MS",
+   "stations": 7,
+   "tv_homes": 325850,
+   "record": 1429,
+   "operation": 1837,
+   "programming": 1429
+  },
+  {
+   "market": "Lubbock",
+   "stations": 7,
+   "tv_homes": 158400,
+   "record": 3061,
+   "operation": 3469,
+   "programming": 3061
+  },
+  {
+   "market": "Wilkes-Barre-Scranton",
+   "stations": 7,
+   "tv_homes": 563540,
+   "record": 2653,
+   "operation": 3061,
+   "programming": 2653
+  },
+  {
+   "market": "Nashville",
+   "stations": 10,
+   "tv_homes": 1002840,
+   "record": 1400,
+   "operation": 1800,
+   "programming": 1400
+  },
+  {
+   "market": "Albuquerque-Santa Fe",
+   "stations": 22,
+   "tv_homes": 679380,
+   "record": 1198,
+   "operation": 1570,
+   "programming": 1198
+  },
+  {
+   "market": "Birmingham",
+   "stations": 11,
+   "tv_homes": 710180,
+   "record": 1240,
+   "operation": 1570,
+   "programming": 1570
+  },
+  {
+   "market": "Odessa-Midland",
+   "stations": 8,
+   "tv_homes": 155110,
+   "record": 2188,
+   "operation": 2500,
+   "programming": 2188
+  },
+  {
+   "market": "San Antonio",
+   "stations": 12,
+   "tv_homes": 911680,
+   "record": 1111,
+   "operation": 1389,
+   "programming": 1111
+  },
+  {
+   "market": "Salt Lake City",
+   "stations": 16,
+   "tv_homes": 897390,
+   "record": 1016,
+   "operation": 1250,
+   "programming": 1016
+  },
+  {
+   "market": "Wichita-Hutchinson",
+   "stations": 17,
+   "tv_homes": 441760,
+   "record": 2111,
+   "operation": 2318,
+   "programming": 2318
+  }
+ ]
+}

@@ -1,0 +1,87 @@
+/* Chart colours for the TV-ownership page. "On the record" is always blue,
+   "in operation" always red-orange, in every chart. Both pairs were run through
+   the dataviz palette validator against this site's surfaces (light #faf7f2,
+   dark #191613): all checks pass. Marks also differ by shape (hollow ring vs
+   filled dot, dashed vs solid line), so colour is never the only cue. */
+:root {
+  --o-record:   #2a78d6;
+  --o-operated: #c23b12;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --o-record:   #3987e5;
+    --o-operated: #e5552a;
+  }
+}
+:root[data-theme='dark'] {
+  --o-record:   #3987e5;
+  --o-operated: #e5552a;
+}
+
+/* Shared chart frame. Global (not scoped) because the tooltip element is
+   created by tooltip.ts at runtime. */
+.fcc-chart {
+  position: relative;
+  margin: var(--space-5) 0;
+  padding: var(--space-3) 0 0;
+  border-top: 1px solid var(--border);
+}
+.fcc-chart .chart-title {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin: 0 0 var(--space-2);
+}
+.fcc-chart .legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  list-style: none;
+  padding: 0 !important;
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.fcc-chart .legend li { display: flex; align-items: center; gap: 0.45em; margin: 0 !important; }
+.fcc-chart .key { display: inline-block; flex: none; }
+.fcc-chart .key.ring { width: 0.7em; height: 0.7em; border-radius: 50%; border: 2px solid var(--o-record); box-sizing: border-box; }
+.fcc-chart .key.dot { width: 0.7em; height: 0.7em; border-radius: 50%; background: var(--o-operated); }
+.fcc-chart .key.ref { width: 0; height: 0.9em; border-left: 2px dotted var(--text-muted); margin: 0 0.3em; }
+.fcc-chart figcaption {
+  text-align: left !important;
+  margin-top: var(--space-3) !important;
+  line-height: 1.5;
+}
+.fcc-chart .data { margin-top: var(--space-2); }
+.fcc-chart .data > summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+.fcc-chart .data > summary:hover { color: var(--accent); }
+.fcc-chart .table-scroll { overflow-x: auto; margin-top: var(--space-2); }
+.fcc-chart .table-scroll table { font-family: var(--font-mono); font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+.fcc-chart .table-scroll th { font-weight: 500; }
+
+.fcc-tip {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  max-width: min(21rem, 100%);
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--text);
+  white-space: pre-line;
+  font-variant-numeric: tabular-nums;
+}

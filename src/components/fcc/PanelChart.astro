@@ -1,0 +1,111 @@
+---
+// Baltimore, 2009–2023: HHI on the record and in operation. Drawn server-side
+// as SVG; colours come from fcc.css, so both themes work without JavaScript.
+// Data: src/data/fcc-ownership/panel.json.
+// Use in content/made/tv-ownership-concentration.mdx:  <PanelChart />
+import './fcc.css';
+import data from '../../data/fcc-ownership/panel.json';
+
+type Point = { year: number; stations: number; record: number; operation: number };
+const pts = data.panel.baltimore as Point[];
+const W = 400, H = 230;
+const m = { l: 42, r: 12, t: 16, b: 26 };
+const years = pts.map((p) => p.year);
+const [y0, y1] = [years[0], years[years.length - 1]];
+const X = (yr: number) => m.l + ((yr - y0) / (y1 - y0)) * (W - m.l - m.r);
+const Y = (v: number) => m.t + (1 - v / 4000) * (H - m.t - m.b);
+const step = X(years[1]) - X(years[0]);
+const fmt = (v: number) => v.toLocaleString('en-US');
+const line = (key: 'record' | 'operation') => pts.map((p) => `${X(p.year)},${Y(p[key])}`).join(' ');
+const ticks = [0, 1000, 2000, 3000, 4000];
+---
+
+<figure class="fcc-chart panel-chart" aria-describedby="cap-panel">
+  <p class="chart-title">Baltimore, 2009–2023 <span class="muted">· 6 stations</span></p>
+  <ul class="legend" aria-hidden="true">
+    <li><span class="key ring"></span>On the record</li>
+    <li><span class="key dot"></span>In operation</li>
+    <li><span class="key ref"></span>1,800: “highly concentrated” above this line</li>
+  </ul>
+
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Baltimore: HHI on the record and in operation, 2009 to 2023. Values in the table below.">
+    {ticks.map((t) => (
+      <g>
+        <line class="grid" x1={m.l} x2={W - m.r} y1={Y(t)} y2={Y(t)} />
+        <text class="tick" x={m.l - 6} y={Y(t) + 3.5} text-anchor="end">{fmt(t)}</text>
+      </g>
+    ))}
+    {years.map((yr) => (
+      <text class="tick" x={X(yr)} y={H - 8} text-anchor="middle">{yr}</text>
+    ))}
+    <line class="ref" x1={m.l} x2={W - m.r} y1={Y(1800)} y2={Y(1800)} />
+    <text class="tick" x={W - m.r} y={Y(1800) - 5} text-anchor="end">1,800</text>
+
+    <polyline class="ln record" points={line('record')} />
+    <polyline class="ln operated" points={line('operation')} />
+    {pts.map((p) => <circle class="pt record" cx={X(p.year)} cy={Y(p.record)} r="4" />)}
+    {pts.map((p) => <circle class="pt operated" cx={X(p.year)} cy={Y(p.operation)} r="4" />)}
+
+    <text class="direct" x={W - m.r} y={Y(3333) - 10} text-anchor="end">In operation</text>
+    <text class="direct" x={X(2009)} y={Y(1667) + 17}>On the record</text>
+    <text class="note" x={X(2013) + 8} y={Y(3333) + 20}>2013: Sinclair starts</text>
+    <text class="note" x={X(2013) + 8} y={Y(3333) + 32}>running a third station</text>
+
+    {pts.map((p) => (
+      <rect
+        class="hit"
+        x={X(p.year) - step / 2}
+        y={m.t}
+        width={step}
+        height={H - m.t - m.b}
+        data-tip={`Baltimore, ${p.year}\nOn the record: ${fmt(p.record)}\nIn operation: ${fmt(p.operation)}`}
+      />
+    ))}
+  </svg>
+
+  <figcaption id="cap-panel">
+    HHI of Baltimore’s six stations, in each year stations filed ownership reports (every two years). The record
+    never moves. In operation, HHI is already 2,222 in 2009, when Sinclair runs two stations, and steps up to 3,333
+    in 2013, when it begins running WUTB.
+  </figcaption>
+  <details class="data">
+    <summary>The numbers</summary>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th scope="col">Year</th><th scope="col">On the record</th><th scope="col">In operation</th></tr>
+        </thead>
+        <tbody>
+          {pts.map((p) => (
+            <tr>
+              <td>{p.year}</td>
+              <td>{fmt(p.record)}</td>
+              <td>{fmt(p.operation)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </details>
+</figure>
+
+<script>
+  import './tooltip';
+</script>
+
+<style>
+  .chart-title .muted { font-weight: normal; }
+  svg { display: block; width: 100%; max-width: 30rem; height: auto; overflow: visible; }
+  .grid { stroke: var(--border); stroke-width: 1; }
+  .ref { stroke: var(--text-muted); stroke-width: 1.2; stroke-dasharray: 1 3; stroke-linecap: round; }
+  .tick { font-family: var(--font-mono); font-size: 10px; fill: var(--text-muted); }
+  .ln { fill: none; stroke-width: 2; stroke-linejoin: round; }
+  .ln.record { stroke: var(--o-record); stroke-dasharray: 5 3; }
+  .ln.operated { stroke: var(--o-operated); }
+  .pt.record { fill: var(--bg); stroke: var(--o-record); stroke-width: 2; }
+  .pt.operated { fill: var(--o-operated); stroke: var(--bg); stroke-width: 2; }
+  .direct, .note { font-family: var(--font-mono); font-size: 11px; fill: var(--text); }
+  .note { fill: var(--text-muted); }
+  .hit { fill: transparent; pointer-events: all; }
+  .hit:hover { fill: var(--text); opacity: 0.05; }
+</style>

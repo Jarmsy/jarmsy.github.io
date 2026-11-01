@@ -1,0 +1,55 @@
+{
+ "source": "media-ownership-concentration/data/panel_hhi_summary.csv",
+ "panel": {
+  "baltimore": [
+   {
+    "year": 2009,
+    "stations": 6,
+    "record": 1667,
+    "operation": 2222
+   },
+   {
+    "year": 2011,
+    "stations": 6,
+    "record": 1667,
+    "operation": 2222
+   },
+   {
+    "year": 2013,
+    "stations": 6,
+    "record": 1667,
+    "operation": 3333
+   },
+   {
+    "year": 2015,
+    "stations": 6,
+    "record": 1667,
+    "operation": 3333
+   },
+   {
+    "year": 2017,
+    "stations": 6,
+    "record": 1667,
+    "operation": 3333
+   },
+   {
+    "year": 2019,
+    "stations": 6,
+    "record": 1667,
+    "operation": 3333
+   },
+   {
+    "year": 2021,
+    "stations": 6,
+    "record": 1667,
+    "operation": 3333
+   },
+   {
+    "year": 2023,
+    "stations": 6,
+    "record": 1667,
+    "operation": 3333
+   }
+  ]
+ }
+}
