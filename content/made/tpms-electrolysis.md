@@ -50,7 +50,7 @@ In two-phase, the same geometry showed **70% lower inlet pressure** and **17% le
 
 *Two-phase results with oxygen generation switched on. The cheap single-phase simulation had already predicted this ranking.*
 
-Two caveats. The lidinoids are also more porous (39% vs 23%), so some of the gain is simply more hole — though even per unit of porosity they win, and the cheap single-phase simulation predicted the ranking of the expensive two-phase one every time. And the two-phase model we ended up with leaves out the force I'd most want in — more on that below.
+Two caveats. The lidinoids are also more porous (39% vs 23%), so some of the gain is simply more hole — though even per unit of porosity they win. And the two-phase model we ended up with leaves out the force I'd most want in — more on that below.
 
 ## What actually happened
 
