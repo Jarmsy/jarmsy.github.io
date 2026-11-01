@@ -9,7 +9,7 @@ import { load } from 'js-yaml';
 const site = /** @type {{ url?: string }} */ (load(readFileSync('./site.yaml', 'utf8')));
 
 // Pages that build but stay out of the sitemap: reachable only by a link.
-const unlisted = ['/inbox/thanks/', '/made/2024-election-autopsy/data/'];
+const unlisted = ['/inbox/thanks/', '/made/2024-election-autopsy/data/', '/made/tv-ownership-concentration/data/'];
 
 // https://astro.build/config
 export default defineConfig({

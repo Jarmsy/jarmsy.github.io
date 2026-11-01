@@ -1,0 +1,26 @@
+---
+// Unlisted companion to the TV ownership study: one entry per source.
+// It's reached only from the project page's link. It isn't in the Made list,
+// topic pages, RSS or the sitemap (see `unlisted` in astro.config.mjs).
+// The text lives in content/made/_tv-ownership-concentration-data.mdx.
+import { getEntry } from 'astro:content';
+import Article from '../../../layouts/Article.astro';
+import { getSite } from '../../../lib/site';
+import Content, { frontmatter } from '../../../../content/made/_tv-ownership-concentration-data.mdx';
+
+const project = await getEntry('made', 'tv-ownership-concentration');
+if (!project) throw new Error('content/made/tv-ownership-concentration.mdx is missing');
+const site = await getSite();
+---
+
+<Article
+  title={frontmatter.title}
+  description={frontmatter.description}
+  eyebrow="sources"
+  date={project.data.date}
+  locale={site.dates.locale}
+  backHref="/made/tv-ownership-concentration/"
+  backLabel={project.data.title}
+>
+  <Content />
+</Article>
