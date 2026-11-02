@@ -16,7 +16,7 @@ A PEM electrolyzer splits water into hydrogen and oxygen with electricity. Betwe
 
 The question our senior design team took on: can you design that component to outperform the mass-produced commercial version?
 
-Early on in our literature review we found a great starting point for our research. A [paper published the previous fall](https://doi.org/10.1038/s41598-025-95399-8) had shown that 3D-printed gyroid lattices could outperform commercial sintered PTLs, and its best performer was a gyroid it called G10. That gave us our baseline and our question: if one of these surfaces beats the incumbent sintered designs, do the others beat the gyroid?
+Early on in our literature review we found a great starting point for our research. A [paper published the previous fall](https://doi.org/10.1038/s41598-025-95399-8) had shown that 3D-printed gyroid lattices could outperform commercial titanium screen and felt PTLs, and its best performer was a gyroid it called G10. That gave us our baseline and our question: if one of these surfaces beats the commercial screens and felt, do the others beat the gyroid?
 
 <!-- Kaya, M. F. & Kıstı, M. "Innovative anode porous transport layers for polymer
      electrolyte membrane water electrolyzers." Scientific Reports 15, 33751 (30 Sep 2025). -->
