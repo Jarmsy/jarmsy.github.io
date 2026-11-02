@@ -14,7 +14,7 @@ Chicago, IL · [Download the PDF](/John_Harms_CV.pdf) · [Get in touch](/inbox/)
 
 **University of Wisconsin–Madison** — B.S. in Mechanical Engineering, Physics Certificate, 2021–2026. GPA 3.8/4.0.
 
-- Dean's Honor List (×9); Madison G.L. Larson Scholarship; Richard A. and Barbara A. Zevnik Memorial Scholarship
+- Dean's Honor List (×8); Madison G.L. Larson Scholarship; Richard A. and Barbara A. Zevnik Memorial Scholarship
 - Coursework: Applied Statistics, AI in Mechanical Engineering, MATLAB & Python Programming, Sociology of Race & Ethnicity, Renewable Energy Systems, Photovoltaic Arrays, Fluid Dynamics, Heat Transfer, Advanced CAD
 
 ## Quantitative and data analysis
