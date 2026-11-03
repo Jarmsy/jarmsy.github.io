@@ -47,9 +47,9 @@ Because the download is replaced daily, the October 1 files can't be downloaded 
 
 ### Agreements listed in ownership reports
 
-Ownership reports have to list contracts that bear on control, and the FCC's database holds thousands of LMA, JSA and SSA entries. Each entry is attached to a filing, which can cover many stations, and names companies rather than the station being run; section 5 has the numbers. So these entries can't say on their own which station is run by whom.
+Ownership reports have to list contracts that bear on control, and the FCC's database holds thousands of LMA, JSA and SSA entries. Each entry is attached to a filing, which can cover many stations, and has no field for the station being run or which side runs it; some entries put a call sign in their title, most don't. Section 5 has the numbers. So these entries can't reliably say on their own which station is run by whom.
 
-The study uses them two ways: as the source for the four stations run by private regional companies (Morgan Murphy Media's KVCT and KFJX, Bahakel's WNCF and Coastal's WMDN), and as a check on the biggest sidecar companies, Cunningham, Deerfield and Mission, which they name hundreds of times. They're in the `ownership_reports_contracts` table of the [LMS database files](#fcc-licensing-and-management-system).
+The study uses them two ways: as the source for the four stations run by private regional companies (Morgan Murphy Media's KVCT and KFJX, Bahakel's WNCF and Coastal's WMDN), and as a check on the biggest sidecar companies, Cunningham, Deerfield and Mission, which they name hundreds of times. They also list Vaughan's agreements, under its stations' names. They never cover American Spirit's six stations. They're in the `ownership_reports_contracts` table of the [LMS database files](#fcc-licensing-and-management-system).
 
 ### Station public files
 
@@ -61,7 +61,7 @@ The study uses one station's file directly. KAUZ's file holds its 2009 shared se
 
 ## Operators' SEC filings
 
-Public companies file annual reports (Form 10-K) and reports of major events (Form 8-K) with the Securities and Exchange Commission, and they're legally liable for what's in them. The station groups list the stations they run under agreements with other licensees in these filings. That's why the study's list of agreements is built from them: 59 of the 63 agreements are cited station by station to one of the three filings below. The other four come from the [agreements listed in ownership reports](#agreements-listed-in-ownership-reports).
+Public companies file annual reports (Form 10-K) and reports of major events (Form 8-K) with the Securities and Exchange Commission, and they're legally liable for what's in them. The station groups list the stations they run under agreements with other licensees in these filings. That's why the study's list of agreements is built from them: the agreements for 59 of the 63 stations are cited station by station to one of the three filings below. The other four come from the [agreements listed in ownership reports](#agreements-listed-in-ownership-reports).
 
 ### Nexstar's 2025 annual report
 
@@ -77,7 +77,7 @@ Form 10-K for 2025, filed February 27, 2026. Its station list ("Television Marke
 
 ### Gray's July 2026 purchase announcement
 
-Form 8-K filed July 1, 2026, Exhibit 99.2: Gray's announcement that it would buy American Spirit Media's six stations for $50 million. The first closing, on July 1, started a local management agreement under which Gray runs the six stations until the purchase is complete. It also says Gray has provided back-office services to five of them for more than a decade. The source for Gray's six stations.
+Form 8-K filed July 1, 2026, Exhibit 99.2: Gray's announcement that it would buy American Spirit Media's six stations for $50 million. The first closing, on July 1, started what the filing calls a "limited local management agreement" under which Gray runs the six stations until the purchase is complete; the filing doesn't describe its terms. It also says Gray has provided back-office services to five of them for more than a decade. The source for Gray's six stations.
 
 **Link:** [Gray Media, Form 8-K, Exhibit 99.2](https://www.sec.gov/Archives/edgar/data/43196/000143774926022218/ex_982906.htm) (SEC EDGAR)
 
@@ -85,7 +85,11 @@ Form 8-K filed July 1, 2026, Exhibit 99.2: Gray's announcement that it would buy
 
 ### The local ownership rule
 
-[47 CFR 73.3555](https://www.ecfr.gov/current/title-47/section-73.3555) (eCFR). Paragraph (b) sets how many TV stations one company may "own, operate, or control" in a market. Note 2 sets which ties count toward that limit: (j) makes an LMA count once it covers more than 15% of a station's weekly airtime, and (k) covers joint sales agreements.
+[47 CFR 73.3555](https://www.ecfr.gov/current/title-47/section-73.3555) (eCFR). Paragraph (b) sets how many TV stations one company may "own, operate, or control" in a market: two, since the court decision below struck down its ban on combining two top-four stations. Note 2 sets which ties count toward that limit: (j) makes an LMA count once it covers more than 15% of a station's weekly airtime, and (k) covers joint sales agreements.
+
+### Zimmer Radio v. FCC (2025)
+
+[The Eighth Circuit's opinion](https://ecf.ca8.uscourts.gov/opndir/25/07/241380P.pdf), *Zimmer Radio of Mid-Missouri, Inc. v. FCC*, 145 F.4th 828 (8th Cir. July 23, 2025). It vacated the local rule's ban on combining two of a market's four highest-rated stations and upheld the two-station limit. Its mandate issued October 23, 2025.
 
 ### The FCC's 2014 joint sales rule
 
@@ -101,11 +105,15 @@ Announced March 31, 2014, in a [news release](https://docs.fcc.gov/public/attach
 
 ### FCC v. Prometheus Radio Project (2021)
 
-[The Supreme Court's opinion](https://www.supremecourt.gov/opinions/20pdf/19-1231_i425.pdf), 592 U.S. 414. The Court unanimously upheld the FCC's 2017 order, holding that the agency didn't have to commission new studies before loosening its ownership rules.
+[The Supreme Court's opinion](https://www.supremecourt.gov/opinions/20pdf/19-1231_i425.pdf), 592 U.S. 414. The Court unanimously upheld the FCC's 2017 order, reversing a 2019 Third Circuit decision that had vacated it, and held that the agency didn't have to commission new studies before loosening its ownership rules.
 
 ### The 2023 Merger Guidelines
 
 [The Justice Department and Federal Trade Commission's guidelines](https://www.justice.gov/atr/2023-merger-guidelines) for reviewing mergers. They call a market with an HHI above 1,800 highly concentrated, and presume that a merger raising HHI by more than 100 points in such a market harms competition.
+
+### The Nexstar-TEGNA injunction (2026)
+
+Nexstar [announced that it had closed its purchase of TEGNA](https://www.nexstar.tv/nexstar-media-group-inc-closes-acquisition-of-tegna-inc/) on March 19, 2026. On April 17, 2026, in a suit by eight state attorneys general and DIRECTV, the federal court for the Eastern District of California [ordered the companies to halt integration and keep TEGNA separate](https://ag.ny.gov/sites/default/files/court-filings/nexstar-tegna-merger-litigation-preliminary-injunction-2026.pdf) while the case proceeds. That's why the study counts TEGNA's stations as TEGNA's.
 
 ---
 

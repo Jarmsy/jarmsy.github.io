@@ -1,7 +1,7 @@
 ---
 title: CV
 description: Education, experience, skills, and research interests.
-updated: 2026-09-16
+updated: 2026-11-02
 ---
 
 <!-- Keep this in step with the PDF in public/ when you update either. -->
