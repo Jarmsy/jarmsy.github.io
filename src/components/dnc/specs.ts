@@ -26,11 +26,11 @@ export const SPECS: Record<string, Spec> = {
   '01_fundamentals': {
     title: 'Predicted and actual vote, 1948–2024',
     caption:
-      'Each pair is one election: the model’s prediction (hollow) and the actual result (filled). For 2024 the model, fit on 1948–2020, predicted 47.9%; Harris won 49.25%, inside its usual margin of error (shaded).',
+      'Each pair is one election: the model’s prediction (hollow) and the actual result (filled). For 2024 the model, fit on 1948–2020, predicted 48.3%; Harris won 49.25%, inside its usual margin of error (shaded).',
     legend: [
       { label: 'Model prediction', color: G.ref, shape: 'ring' },
       { label: 'Actual result', color: G.ink, shape: 'dot' },
-      { label: '2024, with ±3.75-point margin', color: G.hi, shape: 'band' },
+      { label: '2024, with ±4.23-point margin', color: G.hi, shape: 'band' },
     ],
     table: () => {
       const h = fundamentals.harris_2024;
