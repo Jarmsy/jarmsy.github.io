@@ -43,7 +43,6 @@ footer:
   - { label: Takes,     href: /takes/ }     # back to the top nav once there are five or so
   - { label: Photos,    href: /photos/ }
   # - { label: Questions, href: /questions/ }   # hidden until the questions are your own
-  - { label: CV,        href: /cv/ }
   - { label: Inbox,     href: /inbox/ }
   - { label: Colophon,  href: /colophon/ }
   - { label: RSS,       href: /rss.xml }
