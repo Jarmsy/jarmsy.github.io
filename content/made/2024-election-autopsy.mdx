@@ -11,8 +11,14 @@ featured: true
 ---
 {/* Chart numbers come from the analysis repo's portfolio/data/*.json (copied to
     src/data/dnc-autopsy/). The prose started from portfolio/content.md and was
-    rewritten in John's voice on 2026-09-26; every number in it still matches
-    the JSON. Check a changed number against the JSON before editing it here. */}
+    rewritten in John's voice on 2026-09-26; every number in it matches
+    the JSON or, for the slopes and Cuomo's shares quoted in the text, the report
+    (notebook 17; Cuomo's decile shares are also in portfolio/data/07b_nyc_cuomo_by_swing.json).
+    Corrected 2026-11-04 to match the repo's New York City re-run, after a parsing
+    error had zeroed vote tallies of 1,000 or more in 50 election districts: the
+    same-ballot slopes, Mamdani's gap to Harris in the most-swung districts and the
+    result with demographics held equal changed (report Part 10, correction notes).
+    Check a changed number against the JSON before editing it here. */}
 
 import Chart from '../../src/components/dnc/Chart.astro';
 import SlopeFormula from '../../src/components/dnc/SlopeFormula.astro';
@@ -150,13 +156,13 @@ My reading of it: these voters judged the incumbent on performance first, mostly
 
 <Chart id="07_nyc_same_ballot" />
 
-New York City's 2025 mayoral race was the clearest recent test of an openly economic-left campaign, Zohran Mamdani's. In the neighborhoods that had swung hardest to Trump, he ran ahead of Harris's 2024 share. So did the two other Democrats on the same ballot, for comptroller and public advocate: for each point a district had swung to Trump, Mamdani gained **0.87** points on Harris, Levine **0.83** and Williams **0.92**. The neighborhoods that had swung came back to Democrats across the ballot.
+New York City's 2025 mayoral race was the clearest recent test of an openly economic-left campaign, Zohran Mamdani's. In the neighborhoods that had swung hardest to Trump, he came within two to three points of Harris's 2024 share. The two other Democrats on the same ballot, for comptroller and public advocate, ran well ahead of hers there, and all three gained on her as the swing grew: for each point a district had swung to Trump, Mamdani gained **0.99** points on Harris, Levine **0.87** and Williams **1.02**. The neighborhoods that had swung came back to Democrats across the ballot.
 
-Whether Mamdani's campaign had any extra pull with them is harder to say. He also faced Andrew Cuomo, a Democrat running as an independent who won 41% citywide, while the other two faced only a Republican. That's why Mamdani's line sits about twenty points below Levine's. Comparing how steeply the lines rise gets around that only if Cuomo drew Democrats away evenly across the city, and the data can't confirm it. In the June primary, Cuomo did better in the neighborhoods that later swung than in those that hadn't: 43% against Mamdani in the most-swung tenth, 33% in the least-swung, and best of all in between. So his November pull probably wasn't even either. His November vote followed the same shape (32% in the least-swung tenth, about 46% in the middle, 39% in the most-swung), but neighborhood totals can't show whether those votes came from Democrats or from Trump voters.
+Did Mamdani's campaign have extra pull with them? There's no sign of it. With the neighborhoods' demographics held equal, he gained less on Harris per point of swing than the other two did (0.25, against 0.66 and 0.44). That comparison is clouded, though. He also faced Andrew Cuomo, a Democrat running as an independent who won 41% citywide, while the other two faced only a Republican. That's why Mamdani's line sits about twenty points below Levine's. Comparing how steeply the lines rise gets around that only if Cuomo drew Democrats away evenly across the city, and the data can't confirm it. In the June primary, Cuomo did better in the neighborhoods that later swung than in those that hadn't: 44% against Mamdani in the most-swung tenth, 33% in the least-swung, and best of all in between. So his November pull probably wasn't even either. His November vote followed the same shape (33% in the least-swung tenth, about 45–47% in the middle, 39% in the most-swung), but neighborhood totals can't show whether those votes came from Democrats or from Trump voters.
 
 Races that day without a third candidate show the same broad pattern. In New Jersey and Virginia, Democrats also gained most where the swing had been largest. On Virginia's ballot, the progressive running for lieutenant governor gained no faster in the swing areas than the moderate running for governor, though Virginia's places varied little in how much they had swung. But all of them ran on the cost of living, and only Mamdani ran an openly economic-left campaign.
 
-**What it doesn't show.** It's one city and one election, measured with neighborhood totals. Because of the three-way race, it can't say whether Mamdani's economics won extra swing voters back or not. It also doesn't show that left economics hurt.
+**What it doesn't show.** It's one city and one election, measured with neighborhood totals. Because of the three-way race, it can't say whether Mamdani's smaller gain reflects weaker pull with swing voters or Cuomo's uneven draw. It also doesn't show that left economics hurt.
 
 <AboutData>
 
