@@ -36,7 +36,11 @@ featured: true
     Zimmer Radio (2025); "at least half" rather than "majority-run"; TEGNA and Gray's "limited"
     agreement in section 3's About box; section 4's small-market wording; what the FCC's contract
     entries record; the agreement checks; the Big-4 comparison now from the October data (KTVE,
-    coded "National Broadcasting Corporation", counted as NBC). */}
+    coded "National Broadcasting Corporation", counted as NBC).
+    Section 4 corrected 2026-11-06: its opening now states the finding without a first-person
+    correction story, and the small-market sidecar share is 7.5% (8 of 106 stations = 7.55%, using
+    national_market_hhi.csv's market sizes; national_stations.csv spells MEMPHIS and MILWAUKEE in
+    capitals for one station each, so group by the market file's sizes). */}
 
 import Stats from '../../src/components/fcc/Stats.astro';
 import PanelChart from '../../src/components/fcc/PanelChart.astro';
@@ -151,9 +155,9 @@ The narrow definition shrinks all of this. Counting only agreements under which 
 
 ## 4. Small markets feel it more, mostly because of who runs their stations
 
-My first chart of this made it look like a small-market problem. The average gap was largest in markets of three or fewer stations and shrank with size, and I wrote that sidecars cluster where ownership limits bind hardest. A test didn't support it, and I withdrew it.
+The average gap is largest in markets of three or fewer stations and shrinks with size. That could suggest sidecars cluster where ownership limits bind hardest, but a test doesn't support that reading.
 
-Two things were mixed together. The size of the effect does fall with market size, but mostly as arithmetic: handing one station of three to a rival moves the index far more than one station of twenty, whatever anyone intended. And a larger share of small-market stations are sidecars: 7.6% of stations in markets of three or fewer, against 3.1% in markets of 13 or more. Markets with nine or more stations hold 14 of them, where scattering them at random would put about 26, a shortfall chance would produce about once in a thousand tries. But Nexstar, Sinclair and Gray, the companies that run nearly all of them, run 53% of the stations in markets of three or fewer and 21% in markets of 13 or more. Count only their stations, and the difference shrinks to what chance could produce: 14 where random placement would put about 16, a gap it produces about a third of the time. That doesn't prove market size plays no role; it says most of the pattern comes from who runs which stations.
+Two things are mixed together. The size of the effect does fall with market size, but mostly as arithmetic: handing one station of three to a rival moves the index far more than one station of twenty, whatever anyone intended. And a larger share of small-market stations are sidecars: 7.5% of stations in markets of three or fewer, against 3.1% in markets of 13 or more. Markets with nine or more stations hold 14 of them, where scattering them at random would put about 26, a shortfall chance would produce about once in a thousand tries. But Nexstar, Sinclair and Gray, the companies that run nearly all of them, run 53% of the stations in markets of three or fewer and 21% in markets of 13 or more. Count only their stations, and the difference shrinks to what chance could produce: 14 where random placement would put about 16, a gap it produces about a third of the time. That doesn't prove market size plays no role; it says most of the pattern comes from who runs which stations.
 
 The same agreement that barely registers in a twenty-station market turns Victoria into a one-company market. And because three of the operators are regional companies working in small markets like Victoria, Joplin and Meridian, a disclosure rule that only covered the national groups would miss them, and in a market that small a single missed agreement is the difference between two operators and one.
 
