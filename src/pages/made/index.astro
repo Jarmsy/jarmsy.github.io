@@ -12,7 +12,7 @@ const items = (await getCollection('made'))
 
 <Base title="Made" description="Things I've built.">
   <h1>Made</h1>
-  <p class="muted">Things I've built, including the parts that went wrong.</p>
+  <p class="muted">Things I've built.</p>
 
   {items.length === 0 ? (
     <Empty what="projects" where="content/made/ (copy _example.md to start)" />

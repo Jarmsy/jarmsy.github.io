@@ -16,18 +16,14 @@ topics: [engineering, energy]
 featured: true              # featured things show first
 ---
 
-Tell it the way you'd tell a friend. Not "problem / approach / result" — what
-you were trying to do, what surprised you, what went wrong, what you'd do
-differently. Headings, lists and images all work.
+Tell it the way you'd tell a friend: what you were trying to do and what
+surprised you. Add a section on a mistake or a lesson only when it offers a
+genuine insight. Headings, lists and images all work.
 
 ## What it was
 
 …
 
 ## What happened
-
-…
-
-## What it taught me
 
 …
